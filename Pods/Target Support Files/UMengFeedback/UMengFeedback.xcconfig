@@ -1,0 +1,6 @@
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/UMengFeedback" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/AFNetworking" "${PODS_ROOT}/Headers/Public/AMapNavi" "${PODS_ROOT}/Headers/Public/AMapSearch" "${PODS_ROOT}/Headers/Public/AlipaySDK-2.0" "${PODS_ROOT}/Headers/Public/IQKeyboardManager" "${PODS_ROOT}/Headers/Public/JPush" "${PODS_ROOT}/Headers/Public/JSONModel" "${PODS_ROOT}/Headers/Public/MBProgressHUD" "${PODS_ROOT}/Headers/Public/Masonry" "${PODS_ROOT}/Headers/Public/SDWebImage" "${PODS_ROOT}/Headers/Public/UMengFeedback" "${PODS_ROOT}/Headers/Public/UMengSocial"
+LIBRARY_SEARCH_PATHS = "$(PODS_ROOT)/UMengFeedback/**"
+OTHER_LDFLAGS = -l"UMFeedback" -l"UMOpus" -framework "AVFoundation"
+PODS_ROOT = ${SRCROOT}
+SKIP_INSTALL = YES

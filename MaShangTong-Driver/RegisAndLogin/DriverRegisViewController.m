@@ -10,6 +10,7 @@
 #import "DriverJoinInViewController.h"
 #import "HomeDriverViewController.h"
 #import "DriverInfoModel.h"
+#import "NYForgetPasswordViewController.h"
 
 @interface DriverRegisViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *numberTextField;
@@ -45,6 +46,10 @@
 }
 
 - (IBAction)forgetPassWord:(UIButton *)sender {
+    
+    
+    NYForgetPasswordViewController *forget = [[NYForgetPasswordViewController alloc] init];
+    [self.navigationController pushViewController:forget animated:YES];
     
 }
 
@@ -92,11 +97,7 @@
                 driverInfo.snum = json[@"info"][@"snum"];
                 driverInfo.point = json[@"info"][@"point"];
                 [USER_DEFAULT setObject:[NSKeyedArchiver archivedDataWithRootObject:driverInfo] forKey:@"user_info"];
-                ValuationRuleModel *valuationRuleModel = [[ValuationRuleModel alloc] initWithDictionary:json[@"info"][@"rule"][0] error:nil];
-                [USER_DEFAULT setObject:[NSKeyedArchiver archivedDataWithRootObject:valuationRuleModel] forKey:@"ValuationRule"];
                 [USER_DEFAULT synchronize];
-                AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-                delegate.model = valuationRuleModel;
             });
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.navigationController pushViewController:[[HomeDriverViewController alloc] init] animated:YES];

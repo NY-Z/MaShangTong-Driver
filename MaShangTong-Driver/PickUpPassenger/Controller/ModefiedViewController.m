@@ -42,7 +42,6 @@
 //    [btn setTitleColor:RGBColor(200, 200, 200, 1.f) forState:UIControlStateNormal];
 //    btn.titleLabel.font = [UIFont systemFontOfSize:12];
 //    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
-#warning ---
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [leftBtn setImage:[UIImage imageNamed:@"fanhui"] forState:UIControlStateNormal];
     [leftBtn addTarget:self action:@selector(backBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -125,10 +124,11 @@
     _lowSpeedTimeLabel.text = [NSString stringWithFormat:@"低速%.1f分钟",[self.priceModel.low_time floatValue]];
     _lowSpeedPriceLabel.text = [NSString stringWithFormat:@"%.1f元",[self.priceModel.low_price floatValue]];
     _longMileagePriceLabel.text = [NSString stringWithFormat:@"%.1f元",[self.priceModel.far_price floatValue]];
-    _nightDrivePriceLabel.text = [NSString stringWithFormat:@"%.1f",[self.priceModel.night_price floatValue]];
-    
-//    NYChangePriceView *change = [[NYChangePriceView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_nightDrivePriceLabel.frame)+60, SCREEN_WIDTH, 45)];
-//    [self.view addSubview:change];
+    _nightDrivePriceLabel.text = [NSString stringWithFormat:@"%.1f元",[self.priceModel.night_price floatValue]];
+    for (NSInteger i = 0; i < 4; i++) {
+        NYChangePriceView *change = [[NYChangePriceView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_nightDrivePriceLabel.frame)+45*(i+1), SCREEN_WIDTH, 45)];
+        [self.view addSubview:change];
+    }
 }
 
 #pragma mark - Action
@@ -142,6 +142,7 @@
 {
     [_confirmBgView setHidden:YES];
     [_coverView setHidden:YES];
+    
     [DownloadManager post:@"http://112.124.115.81/m.php?m=OrderApi&a=boarding" params:@{@"route_id":_model.route_id,@"route_status":@"5"} success:^(id json) {
         NSString *resultStr = [NSString stringWithFormat:@"%@",json[@"result"]];
         if ([resultStr isEqualToString:@"1"]) {
@@ -154,14 +155,13 @@
             [MBProgressHUD showError:@"请重新确认价格"];
         }
     } failure:^(NSError *error) {
-        
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showError:@"请重新确认价格"];
     }];
 }
 
 - (IBAction)waitForPayBtnClicked:(id)sender {
-    
     _coverView.hidden = NO;
     _confirmBgView.hidden = NO;
-    
 }
 @end

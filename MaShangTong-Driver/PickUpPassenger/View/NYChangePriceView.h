@@ -10,4 +10,6 @@
 
 @interface NYChangePriceView : UIView
 
+@property (nonatomic,assign) NSInteger price;
+
 @end

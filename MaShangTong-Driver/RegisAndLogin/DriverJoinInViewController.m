@@ -136,8 +136,6 @@
         return;
     }
     
-//    NYLog(@"%lu",(long)_verification);
-    
     _verification = @"";
     for(int i=0; i<6; i++)
     {
@@ -166,7 +164,6 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"%@",error.localizedDescription);
     }];
-    
 }
 
 - (IBAction)quickJoinInBTnClicked:(UIButton *)sender {

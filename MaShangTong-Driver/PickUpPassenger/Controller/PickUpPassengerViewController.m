@@ -18,6 +18,7 @@
 #import "iflyMSC/IFlySpeechSynthesizerDelegate.h"
 #import "ModefiedViewController.h"
 #import "ActualPriceModel.h"
+#import "InputViewController.h"
 
 @interface PickUpPassengerViewController () <MAMapViewDelegate,AMapNaviManagerDelegate,AMapSearchDelegate,AMapNaviViewControllerDelegate>
 {
@@ -284,12 +285,8 @@
     _chargingBgView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_chargingBgView];
     
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ 元",delegate.model.step]];
-    [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:24],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, 2)];
-    
     priceLabel = [[UILabel alloc] init];
-    priceLabel.attributedText = attri;
+    priceLabel.text = @"   元";
     priceLabel.frame = CGRectMake(106, 0, 80, 40);
     priceLabel.font = [UIFont systemFontOfSize:13];
     [_chargingBgView addSubview:priceLabel];
@@ -872,7 +869,29 @@
 
 - (void)changeEndingControl
 {
-    
+    InputViewController *input = [[InputViewController alloc] init];
+    input.changeDestination = ^(AMapTip *p){
+        [MBProgressHUD showMessage:@"重点修改中，请稍候"];
+        NSString *endCoordinates = [NSString stringWithFormat:@"%f,%f",p.location.latitude,p.location.longitude];
+        [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"orderApi",@"destination"] params:@{@"route_id":_model.route_id,@"end_name":p.name,@"end_coordinates":endCoordinates} success:^(id json) {
+            [MBProgressHUD hideHUD];
+            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+            if ([dataStr isEqualToString:@"0"]) {
+                [MBProgressHUD showError:json[@"info"]];
+                return ;
+            } else if ([dataStr isEqualToString:@"1"]) {
+                [MBProgressHUD showSuccess:json[@"info"]];
+            } else {
+                [MBProgressHUD showError:@"网络错误"];
+            }
+            
+        } failure:^(NSError *error) {
+            [MBProgressHUD hideHUD];
+            [MBProgressHUD showError:@"网络错误"];
+            NSLog(@"%@",error.localizedDescription);
+        }];
+    };
+    [self presentViewController:input animated:YES completion:nil];
 }
 
 #pragma mark - Gesture

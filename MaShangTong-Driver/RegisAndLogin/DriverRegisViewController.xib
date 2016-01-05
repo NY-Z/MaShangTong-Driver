@@ -111,7 +111,7 @@
                 <constraint firstItem="EpW-y9-5Gc" firstAttribute="top" secondItem="zJc-nI-aQ4" secondAttribute="bottom" constant="8" id="xRB-St-Lse"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-            <point key="canvasLocation" x="337.5" y="195.5"/>
+            <point key="canvasLocation" x="390.5" y="192.5"/>
         </view>
     </objects>
     <resources>

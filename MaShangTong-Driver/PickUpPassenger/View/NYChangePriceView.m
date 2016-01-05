@@ -25,19 +25,54 @@
     barrierView.backgroundColor = RGBColor(201, 201, 201, 201);
     [self addSubview:barrierView];
     
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2-30, -8, 60, 16)];
+    nameLabel.text = @"高速费";
+    nameLabel.backgroundColor = [UIColor whiteColor];
+    nameLabel.textColor = RGBColor(180, 180, 180, 1.f);
+    nameLabel.font = [UIFont systemFontOfSize:12];
+    nameLabel.textAlignment = 1;
+    [self addSubview:nameLabel];
+    
     UIButton *minusBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     minusBtn.x = 50;
     minusBtn.y = 11;
     minusBtn.backgroundColor = [UIColor cyanColor];
-    minusBtn.size = CGSizeMake(22, 22);
+    minusBtn.size = CGSizeMake(25, 25);
+    [minusBtn addTarget:self action:@selector(minusBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:minusBtn];
     
     UIButton *plusBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    plusBtn.x = SCREEN_WIDTH-50-22;
+    plusBtn.x = SCREEN_WIDTH-50-25;
     plusBtn.y = 11;
     plusBtn.backgroundColor = [UIColor cyanColor];
-    plusBtn.size = CGSizeMake(22, 22);
+    plusBtn.size = CGSizeMake(25, 25);
+    [plusBtn addTarget:self action:@selector(plusBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:plusBtn];
+    
+    UILabel *priceLabel = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2-40, 11, 80, 25)];
+    priceLabel.text = @"0元";
+    priceLabel.textAlignment = 1;
+    priceLabel.tag = 100;
+    priceLabel.font = [UIFont systemFontOfSize:18];
+    priceLabel.textColor = RGBColor(150, 150, 150, 1.f);
+    [self addSubview:priceLabel];
+}
+
+- (void)minusBtnClicked
+{
+    if (_price == 0) {
+        return;
+    }
+    _price--;
+    UILabel *label = (UILabel *)[self viewWithTag:100];
+    label.text = [NSString stringWithFormat:@"%li元",_price];
+}
+
+- (void)plusBtnClicked
+{
+    _price++;
+    UILabel *label = (UILabel *)[self viewWithTag:100];
+    label.text = [NSString stringWithFormat:@"%li元",_price];
 }
 
 @end

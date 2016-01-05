@@ -18,8 +18,6 @@
 
 @property (nonatomic,assign) CLLocationCoordinate2D driverCoordinate;
 
-@property (nonatomic,strong) ValuationRuleModel *model;
-
 @property (nonatomic,strong) NSString *driverSpeed;
 
 @end

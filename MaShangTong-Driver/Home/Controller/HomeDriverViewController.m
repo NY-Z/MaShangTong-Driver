@@ -34,29 +34,22 @@
 {
     UIView *topView;
     UIView *topBottomView;
-    
     BOOL _isRequest;
     NSTimer *_timer;
-    
     UIView *modeBgView;
-    
     UIButton *listenBtn;
     UIButton *offRunningBtn;
-    
     NSString *_routeId;
-    
-    BOOL _isSpeaking;
     NSArray *_speakingArr;
     NSInteger _speakingArrCount;
     NSInteger _currentSpeakIndex;
-    
     BOOL _isAllowSpeaking;
-    
     BOOL _isLocationSuccess;
-    
     NSInteger _isFirstSetCenter;
-    
     NSInteger _reservaType;
+    
+    NSString *_reservation_type;
+    BOOL _isChangeMode;
 }
 @property (nonatomic, strong) NSArray *annotations;
 @property (nonatomic, strong) MAPolyline *polyline;
@@ -219,6 +212,10 @@
         [_timer setFireDate:[NSDate distantFuture]];
         [self.iFlySpeechSynthesizer stopSpeaking];
     }
+    if (_isChangeMode) {
+        [_timer setFireDate:[NSDate distantPast]];
+        _isChangeMode = NO;
+    }
 }
 
 - (void)configLeftViewController
@@ -329,13 +326,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    ValuationRuleModel *model = [NSKeyedUnarchiver unarchiveObjectWithData:[USER_DEFAULT objectForKey:@"ValuationRule"]];
-    NSLog(@"%@",model);
     [self.view addSubview:self.mapView];
     _isRequest = NO;
     _isAllowSpeaking = YES;
     _isLocationSuccess = NO;
+    _isChangeMode = NO;
     _isFirstSetCenter = 0;
+    _reservation_type = @"1";
     [self configTimer];
     [self configSwitchMode];
     [self configBottom];
@@ -391,28 +388,16 @@
     if (!_isAllowSpeaking) {
         return;
     }
+    if (_speakingArr.count == 0) {
+        return;
+    }
     if (_currentSpeakIndex < _speakingArr.count-1) {
         _currentSpeakIndex++;
         _routeId = _speakingArr[_currentSpeakIndex][@"route_id"];
         [self.iFlySpeechSynthesizer startSpeaking:_speakingArr[_currentSpeakIndex][@"mess"]];
         return;
     }
-    
-    _isSpeaking = YES;
     [self configTimer];
-    
-}
-
-- (void) onSpeakBegin {
-    
-}
-
-- (void) onBufferProgress:(int) progress message:(NSString *)msg {
-    
-}
-
-- (void) onSpeakProgress:(int) progress {
-    
 }
 
 #pragma mark - NSTimerAction
@@ -425,6 +410,7 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"];
     [params setObject:userId forKey:@"user_id"];
+    [params setObject:_reservation_type forKey:@"reservation_type"];
     
     [DownloadManager post:@"http://112.124.115.81/m.php?m=OrderApi&a=sendorder" params:params success:^(id json) {
         if ([json[@"data"] isKindOfClass:[NSArray class]]) {
@@ -435,7 +421,6 @@
             _speakingArr = [result copy];
             _currentSpeakIndex = 0;
             [self.iFlySpeechSynthesizer startSpeaking:_speakingArr[0][@"mess"]];
-            
         }
         else if ([json[@"data"] isKindOfClass:[NSString class]] && _isRequest){
             [_timer setFireDate:[NSDate distantPast]];
@@ -452,28 +437,24 @@
 {
     if (topView.height != 48+74) {
         [UIView animateWithDuration:.3f animations:^{
-            
             topView.height = 122;
             topBottomView.y = 98;
-            
         }];
     } else {
         
         [UIView animateWithDuration:.3f animations:^{
-            
             topView.height = 48;
             topBottomView.y = 24;
-            
         }];
     }
 }
 
 - (void)listenBtnClicked:(UIButton *)btn
 {
-    if (!_routeId) {
+    if (!_routeId || [_routeId isEqualToString:@""]) {
         return;
     }
-    [MBProgressHUD showMessage:@"抢单中。。。"];
+    [MBProgressHUD showMessage:@"抢单中,请稍候"];
     _isRequest = NO;
     _isAllowSpeaking = NO;
     [_timer setFireDate:[NSDate distantFuture]];
@@ -572,12 +553,34 @@
 
 - (void)bookCarBtnClicked:(UIButton *)btn
 {
+    if ([_reservation_type isEqualToString:@"2"]) {
+        return;
+    }
+    _reservation_type = @"2";
     modeBgView.y = SCREEN_HEIGHT;
+    
+    [self.iFlySpeechSynthesizer stopSpeaking];
+    _speakingArr = [NSArray array];
+    _routeId = @"";
+    _currentSpeakIndex = 0;
+    _isChangeMode = YES;
+    [self configTimer];
 }
 
 - (void)rightNowCarBtnClicked:(UIButton *)btn
 {
+    if ([_reservation_type isEqualToString:@"1"]) {
+        return;
+    }
+    _reservation_type = @"1";
     modeBgView.y = SCREEN_HEIGHT;
+    
+    [self.iFlySpeechSynthesizer stopSpeaking];
+    _speakingArr = [NSArray array];
+    _routeId = @"";
+    _currentSpeakIndex = 0;
+    _isChangeMode = YES;
+    [self configTimer];
 }
 
 #pragma mark - AMapNaviManagerDelegate

@@ -94,14 +94,14 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
-    if ([[USER_DEFAULT objectForKey:@"isLogin"] isEqualToString:@"1"]) {
-        self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[HomeDriverViewController alloc] init]];
-    } else {
-        DriverRegisViewController *regisDriver = [[DriverRegisViewController alloc] init];
-        UINavigationController *regisDriverNavi = [[UINavigationController alloc] initWithRootViewController:regisDriver];
-        self.window.rootViewController = regisDriverNavi;
-    }
-    
+//    if ([[USER_DEFAULT objectForKey:@"isLogin"] isEqualToString:@"1"]) {
+//        self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[HomeDriverViewController alloc] init]];
+//    } else {
+//        DriverRegisViewController *regisDriver = [[DriverRegisViewController alloc] init];
+//        UINavigationController *regisDriverNavi = [[UINavigationController alloc] initWithRootViewController:regisDriver];
+//        self.window.rootViewController = regisDriverNavi;
+//    }
+    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[ModefiedViewController alloc] init]];
     [self.window makeKeyAndVisible];
     return YES;
 }

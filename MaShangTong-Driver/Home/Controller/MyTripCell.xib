@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MyTripCellId" id="KGk-i7-Jjw" customClass="MyTripCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dingwei2.png" translatesAutoresizingMaskIntoConstraints="NO" id="KIR-KF-OaR">
+                        <rect key="frame" x="8" y="8" width="17" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="17" id="32q-F2-2Zq"/>
+                            <constraint firstAttribute="height" constant="17" id="54K-gv-ypr"/>
+                        </constraints>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dingwei1.png" translatesAutoresizingMaskIntoConstraints="NO" id="z4P-JK-MHq">
+                        <rect key="frame" x="8" y="33" width="17" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="17" id="URP-61-zgq"/>
+                            <constraint firstAttribute="width" constant="17" id="wzW-Y9-Npo"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="上海市真南路3911弄" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lKl-nO-rXN">
+                        <rect key="frame" x="33" y="8" width="120" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="120" id="cfl-gH-2LE"/>
+                            <constraint firstAttribute="height" constant="20" id="igp-nm-a0q"/>
+                            <constraint firstAttribute="width" constant="110" id="kM3-l7-VdL"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.60392156862745094" green="0.60392156862745094" blue="0.60392156862745094" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="kM3-l7-VdL"/>
+                            </mask>
+                        </variation>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="嘉定区南翔镇共和街南翔公馆" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dX6-zI-n8V">
+                        <rect key="frame" x="33" y="33" width="120" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="120" id="UUg-g2-i9z"/>
+                            <constraint firstAttribute="height" constant="20" id="XS6-Vb-SLd"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" white="0.58999999999999997" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="路程:2.3km" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3zq-NS-HdJ">
+                        <rect key="frame" x="168" y="19" width="70" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="CNh-ls-oZf"/>
+                            <constraint firstAttribute="width" constant="70" id="yW4-19-jh3"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <color key="textColor" red="0.57647058823529407" green="0.80000000000000004" blue="0.99607843137254903" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="碳排放:0.5kg" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K0e-Ik-EZ9">
+                        <rect key="frame" x="246" y="19" width="70" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="5An-I8-53w"/>
+                            <constraint firstAttribute="width" constant="70" id="rYh-sN-dQV"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <color key="textColor" red="0.57647058819999997" green="0.80000000000000004" blue="0.99607843139999996" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="lKl-nO-rXN" firstAttribute="leading" secondItem="KIR-KF-OaR" secondAttribute="trailing" constant="8" id="2rl-xF-eYo"/>
+                    <constraint firstItem="K0e-Ik-EZ9" firstAttribute="leading" secondItem="3zq-NS-HdJ" secondAttribute="trailing" constant="8" id="5ll-Ji-w0D"/>
+                    <constraint firstItem="KIR-KF-OaR" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="7q4-RN-Tew"/>
+                    <constraint firstItem="KIR-KF-OaR" firstAttribute="centerY" secondItem="lKl-nO-rXN" secondAttribute="centerY" constant="-1.5" id="Imr-8T-xmN"/>
+                    <constraint firstItem="z4P-JK-MHq" firstAttribute="top" secondItem="KIR-KF-OaR" secondAttribute="bottom" constant="8" id="Mzv-ch-l2y"/>
+                    <constraint firstItem="lKl-nO-rXN" firstAttribute="width" secondItem="dX6-zI-n8V" secondAttribute="width" id="P7q-gb-Nzh"/>
+                    <constraint firstItem="KIR-KF-OaR" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="Q4k-zo-ute"/>
+                    <constraint firstItem="dX6-zI-n8V" firstAttribute="leading" secondItem="z4P-JK-MHq" secondAttribute="trailing" constant="8" id="RRD-ld-qrS"/>
+                    <constraint firstAttribute="centerY" secondItem="3zq-NS-HdJ" secondAttribute="centerY" id="Tj5-HU-CxM"/>
+                    <constraint firstItem="dX6-zI-n8V" firstAttribute="top" secondItem="z4P-JK-MHq" secondAttribute="top" id="UQ5-V4-MMP"/>
+                    <constraint firstAttribute="centerY" secondItem="K0e-Ik-EZ9" secondAttribute="centerY" id="iVa-Rc-arT"/>
+                    <constraint firstItem="KIR-KF-OaR" firstAttribute="top" secondItem="lKl-nO-rXN" secondAttribute="top" id="kNY-QT-KyU"/>
+                    <constraint firstItem="dX6-zI-n8V" firstAttribute="centerY" secondItem="z4P-JK-MHq" secondAttribute="centerY" constant="1.5" id="kjg-Ew-uV1"/>
+                    <constraint firstItem="3zq-NS-HdJ" firstAttribute="leading" secondItem="dX6-zI-n8V" secondAttribute="trailing" constant="15" id="smW-Sv-mXW"/>
+                    <constraint firstItem="z4P-JK-MHq" firstAttribute="leading" secondItem="KIR-KF-OaR" secondAttribute="leading" id="ySJ-bf-vTL"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="kNY-QT-KyU"/>
+                        <exclude reference="UQ5-V4-MMP"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="carbonLabel" destination="K0e-Ik-EZ9" id="HRu-wJ-N5z"/>
+                <outlet property="destinationLabel" destination="dX6-zI-n8V" id="oVW-f7-Jqp"/>
+                <outlet property="journeyLabel" destination="3zq-NS-HdJ" id="GfX-Xz-p5d"/>
+                <outlet property="originLabel" destination="lKl-nO-rXN" id="f36-9Q-qzh"/>
+            </connections>
+            <point key="canvasLocation" x="288" y="276"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="dingwei1.png" width="42" height="42"/>
+        <image name="dingwei2.png" width="42" height="42"/>
+    </resources>
+</document>

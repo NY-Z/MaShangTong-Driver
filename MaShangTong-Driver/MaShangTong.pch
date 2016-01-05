@@ -1,0 +1,61 @@
+//
+//  MaShangTong.pch
+//  MaShangTong
+//
+//  Created by niliu1h  on 15/10/15.
+//  Copyright (c) 2015年 NY. All rights reserved.
+//
+
+#ifndef MaShangTong_MaShangTong_pch
+#define MaShangTong_MaShangTong_pch
+
+#import "UIView+Extension.h"
+#import "AppDelegate.h"
+#import <AFNetworking.h>
+#import "MBProgressHUD+MJ.h"
+#import <JSONModel.h>
+#import "AppDelegate.h"
+#import <AMapNaviKit/AMapNaviKit.h>
+#import <Masonry.h>
+#import "DownloadManager.h"
+#import "Helper.h"
+#import "ValuationRuleModel.h"
+#import <UIImageView+WebCache.h>
+
+#define USER_DEFAULT [NSUserDefaults standardUserDefaults]
+#define APP_DELEGATE ((AppDelegate *)[UIApplication sharedApplication].delegate
+
+// RGB色彩
+#define RGBColor(a,b,c,t) [UIColor colorWithRed:a/255.f green:b/255.f blue:c/255.f alpha:t]
+// 圆角Btn
+#define BtnRadius 3.f
+
+#define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
+#define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
+#define AMap_ApiKey @"ff72fcb70f09871edbeafee67088097d"
+#define WS(weakSelf)  __weak __typeof(&*self)weakSelf = self;
+
+#define Ali_Pay_App_Id  @"2015110900734616"
+#define Ali_Pay_RSA @"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB"
+#define Ali_Pay_PID @"2088021763249420"
+#define Ali_Pay_Secret @"a59f834f11ed4a4eb6b87736bd7c7e3a"
+
+#define APPID_IFly @"56434575"
+#define NAVIGATIONITEM_TITLE_PROPERTY @{NSFontAttributeName:[UIFont systemFontOfSize:21],NSForegroundColorAttributeName:RGBColor(73, 185, 254, 1.f)}
+
+#define NAVIGATIONITEM_BACKBARBUTTONITEM     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];[leftBtn setImage:[UIImage imageNamed:@"fanhui"] forState:UIControlStateNormal];[leftBtn addTarget:self action:@selector(leftBarButtonItemClicked:) forControlEvents:UIControlEventTouchUpInside];leftBtn.size = CGSizeMake(44, 44);self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:leftBtn];
+#define NAVIGATIONBAR_PROPERTY self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];self.navigationController.navigationBar.translucent = NO;
+#define URL_HEADER @"http://112.124.115.81/m.php?m=%@&a=%@"
+
+// Cache路径
+#define CachePath NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)
+// 友盟分享
+const static NSString *UMSocialAppKey = @"56767deae0f55a201b00a6e3";
+
+#ifdef DEBUG // 处于开发阶段
+#define NYLog(...) NSLog(__VA_ARGS__)
+#else // 处于发布阶段
+#define NYLog(...)
+#endif
+
+#endif

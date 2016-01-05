@@ -1,0 +1,17 @@
+//
+//  NYMyCommentModel.m
+//  MaShangTong-Driver
+//
+//  Created by apple on 15/12/16.
+//  Copyright © 2015年 jeaner. All rights reserved.
+//
+
+#import "NYMyCommentModel.h"
+
+@implementation NYMyCommentInfoModel
+
+@end
+
+@implementation NYMyCommentModel
+
+@end

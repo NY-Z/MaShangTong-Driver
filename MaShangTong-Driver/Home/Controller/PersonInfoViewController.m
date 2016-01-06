@@ -14,6 +14,7 @@
 #import "GSauthenticationVC.h"
 #import "DriverInfoModel.h"
 #import "GSchangePassWordVC.h"
+#import "StarView.h"
 
 #define kPersonInfoTitle @"title"
 #define kPersonInfoSubTitle @"subTitle"
@@ -210,6 +211,33 @@
     return 38;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 65;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if (section == 0) {
+        UIView *tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0, -65, SCREEN_WIDTH, 65)];
+        
+        StarView *starView = [[StarView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2-125/2, 20, 125, 25)];
+        [starView setRating:[_driverInfo.point floatValue]];
+        [tableFooterView addSubview:starView];
+        
+        UILabel *pointLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 45, SCREEN_WIDTH, 20)];
+        pointLabel.text = [NSString stringWithFormat:@"%@分",_driverInfo.point];
+        pointLabel.textAlignment = 1;
+        pointLabel.textColor = RGBColor(109, 188, 209, 1.f);
+        pointLabel.font = [UIFont systemFontOfSize:15];
+        [tableFooterView addSubview:pointLabel];
+        
+        return tableFooterView;
+    } else {
+        return nil;
+    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellId = @"PersonInfoCellId";
@@ -225,7 +253,21 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     if (indexPath.row == 0) {
-        [cell.headerView sd_setImageWithURL:[NSURL URLWithString:_driverInfo.head_image] placeholderImage:[UIImage imageNamed:@"sijitouxiang"]];
+//        [cell.headerView sd_setImageWithURL:[NSURL URLWithString:_driverInfo.head_image] placeholderImage:[UIImage imageNamed:@"sijitouxiang"]];
+        
+        UIImageView *headerView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 35, 65, 65)];
+        headerView.tag = 200;
+        
+        NSData *imageData = [USER_DEFAULT objectForKey:@"header_image"];
+        if (imageData) {
+            cell.headerView.image = [[UIImage alloc] initWithData:imageData];
+        } else {
+            if (_driverInfo.head_image) {
+                [cell.headerView sd_setImageWithURL:[NSURL URLWithString:_driverInfo.head_image] placeholderImage:[UIImage imageNamed:@"sijitouxiang"]];
+            } else {
+                cell.headerView.image = [UIImage imageNamed:@"sijitouxiang"];
+            }
+        }
     }
     cell.titleLabel.text = _dataArr[indexPath.row][kPersonInfoTitle];
     cell.subTitleLabel.text = _dataArr[indexPath.row][kPersonInfoSubTitle];
@@ -295,7 +337,6 @@
         
     }]];
     [actionSheet addAction:[UIAlertAction actionWithTitle:@"打开相机" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        
         UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
         //判断是否有相机
         if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]){
@@ -309,7 +350,6 @@
         }else {
             NSLog(@"该设备无摄像头");  
         }
-        
     }]];
     [self presentViewController:actionSheet animated:YES completion:nil];
 }
@@ -347,7 +387,7 @@
             return ;
         }
         [MBProgressHUD showSuccess:@"上传成功"];
-        [USER_DEFAULT setObject:compressedImageData forKey:@"header_ image"];
+        [USER_DEFAULT setObject:compressedImageData forKey:@"header_image"];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeUserHeaderImage" object:compressedImage];
         [USER_DEFAULT synchronize];
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];

@@ -35,42 +35,46 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    /*    // 极光推送
-     #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
-     if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
-     //categories
-     [APService
-     registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
-     UIUserNotificationTypeSound |
-     UIUserNotificationTypeAlert)
-     categories:nil];
-     } else {
-     //categories nil
-     [APService
-     registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-     UIRemoteNotificationTypeSound |
-     UIRemoteNotificationTypeAlert)
-     #else
-     //categories nil
-     categories:nil];
-     [APService
-     registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-     UIRemoteNotificationTypeSound |
-     UIRemoteNotificationTypeAlert)
-     #endif
-     // Required
-     categories:nil];
-     }
-     [APService setupWithOption:launchOptions];*/
+    // 设备常亮
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
+    // 极光推送
+    // Required
+    #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
+        if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
+            //categories
+            [APService
+             registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
+                                                 UIUserNotificationTypeSound |
+                                                 UIUserNotificationTypeAlert)
+             categories:nil];
+        } else {
+            //categories nil
+            [APService
+             registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                                 
+                                                 
+                                                 UIRemoteNotificationTypeSound |
+                                                 UIRemoteNotificationTypeAlert)
+#else
+             //categories nil
+             categories:nil];
+            [APService
+             registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                                 UIRemoteNotificationTypeSound |
+                                                 UIRemoteNotificationTypeAlert)
+#endif
+             // Required
+             categories:nil];
+        }
+    [APService setupWithOption:launchOptions];
     
     // 友盟分享
     [UMSocialData setAppKey:(NSString *)UMSocialAppKey];
     [UMSocialQQHandler setQQWithAppId:@"1105033522" appKey:@"REaQLYFREilVdVxY" url:@"http://www.umeng.com/social"];
     [UMSocialQQHandler setSupportWebView:YES];
     [UMSocialWechatHandler setWXAppId:@"wx4a394bc7ef225c8a" appSecret:@"fadd64686a32f7acefff137faa0cce3a" url:@"http://www.umeng.com/social"];
-    [UMSocialSinaSSOHandler openNewSinaSSOWithAppKey:@"3461785701" RedirectURL:nil];
+//    [UMSocialSinaSSOHandler openNewSinaSSOWithAppKey:@"3461785701" RedirectURL:nil];
     [UMSocialSinaHandler openSSOWithRedirectURL:@"http://sns.whalecloud.com/sina2/callback"];
-    
     // 高德地图
     [AMapNaviServices sharedServices].apiKey = AMap_ApiKey;
     [MAMapServices sharedServices].apiKey = AMap_ApiKey;
@@ -94,14 +98,14 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
-//    if ([[USER_DEFAULT objectForKey:@"isLogin"] isEqualToString:@"1"]) {
-//        self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[HomeDriverViewController alloc] init]];
-//    } else {
-//        DriverRegisViewController *regisDriver = [[DriverRegisViewController alloc] init];
-//        UINavigationController *regisDriverNavi = [[UINavigationController alloc] initWithRootViewController:regisDriver];
-//        self.window.rootViewController = regisDriverNavi;
-//    }
-    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[ModefiedViewController alloc] init]];
+    if ([[USER_DEFAULT objectForKey:@"isLogin"] isEqualToString:@"1"]) {
+        self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[[HomeDriverViewController alloc] init]];
+    } else {
+        DriverRegisViewController *regisDriver = [[DriverRegisViewController alloc] init];
+        UINavigationController *regisDriverNavi = [[UINavigationController alloc] initWithRootViewController:regisDriver];
+        self.window.rootViewController = regisDriverNavi;
+    }
+//    self.window.rootViewController = [[WaitForPayViewController alloc] init];
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -117,23 +121,24 @@
     return result;
 }
 
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+- (void)application:(UIApplication *)application
+didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     // Required
     [APService registerDeviceToken:deviceToken];
 }
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+- (void)application:(UIApplication *)application
+didReceiveRemoteNotification:(NSDictionary *)userInfo {
     // Required
-    NSLog(@"%@",userInfo);
     [APService handleRemoteNotification:userInfo];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"GetTheOrderList" object:userInfo];
 }
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void
-                                                                                                                               (^)(UIBackgroundFetchResult))completionHandler {
+- (void)application:(UIApplication *)application
+didReceiveRemoteNotification:(NSDictionary *)userInfo
+fetchCompletionHandler:(void
+                        (^)(UIBackgroundFetchResult))completionHandler {
     // IOS 7 Support Required
+    
     [APService handleRemoteNotification:userInfo];
     completionHandler(UIBackgroundFetchResultNewData);
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"GetTheOrderList" object:userInfo];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

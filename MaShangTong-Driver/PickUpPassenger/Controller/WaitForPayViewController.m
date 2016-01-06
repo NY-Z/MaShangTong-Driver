@@ -23,12 +23,8 @@
 @implementation WaitForPayViewController
 - (void)setNavigationBar
 {
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
-    label.text = @"服务中";
-    label.textAlignment = 1;
-    label.textColor = RGBColor(84, 175, 254, 1.f);
-    label.font = [UIFont systemFontOfSize:16];
-    self.navigationItem.titleView = label;
+    self.navigationItem.title = @"服务中";
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:21],NSForegroundColorAttributeName:RGBColor(73, 185, 254, 1.f)}];
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.size = CGSizeMake(66, 44);
@@ -46,7 +42,7 @@
     _topBgView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_topBgView];
     
-    UIImageView *sourceImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+    UIImageView *sourceImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dingwei2"]];
     sourceImageView.frame = CGRectMake(40, 8, 15, 15);
     [_topBgView addSubview:sourceImageView];
     UILabel *sourceLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 0, SCREEN_WIDTH-80-60 , 30)];
@@ -56,7 +52,7 @@
     sourceLabel.font = [UIFont systemFontOfSize:14];
     [_topBgView addSubview:sourceLabel];
     
-    UIImageView *destinationImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+    UIImageView *destinationImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dingwei1"]];
     destinationImageView.frame = CGRectMake(40, 38, 15, 15);
     [_topBgView addSubview:destinationImageView];
     UILabel *destinationLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 30, SCREEN_WIDTH-80-60, 30)];

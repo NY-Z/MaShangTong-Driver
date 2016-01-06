@@ -36,6 +36,9 @@
 		0E6B2CEB1C32339C00703F84 /* GSchangePassWordVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E6B2CE91C32339C00703F84 /* GSchangePassWordVC.xib */; };
 		0E98D02D1C32BA9900E09CEA /* NYChangePriceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E98D02C1C32BA9900E09CEA /* NYChangePriceView.m */; };
 		0EEF3F0A1C3BAC69001D8F30 /* InputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF3F091C3BAC69001D8F30 /* InputViewController.m */; };
+		0EEF3F0C1C3CBB92001D8F30 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0EEF3F0B1C3CBB92001D8F30 /* PushConfig.plist */; };
+		0EEF3F151C3D556D001D8F30 /* NYSuggestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF3F131C3D556D001D8F30 /* NYSuggestionViewController.m */; };
+		0EEF3F161C3D556D001D8F30 /* NYSuggestionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EEF3F141C3D556D001D8F30 /* NYSuggestionViewController.xib */; };
 		18B4E7701C2C104A004E0ACC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4E76F1C2C104A004E0ACC /* main.m */; };
 		18B4E7731C2C104A004E0ACC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4E7721C2C104A004E0ACC /* AppDelegate.m */; };
 		18B4E7761C2C104A004E0ACC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4E7751C2C104A004E0ACC /* ViewController.m */; };
@@ -305,6 +308,10 @@
 		0E98D02C1C32BA9900E09CEA /* NYChangePriceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYChangePriceView.m; sourceTree = "<group>"; };
 		0EEF3F081C3BAC69001D8F30 /* InputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputViewController.h; sourceTree = "<group>"; };
 		0EEF3F091C3BAC69001D8F30 /* InputViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputViewController.m; sourceTree = "<group>"; };
+		0EEF3F0B1C3CBB92001D8F30 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
+		0EEF3F121C3D556D001D8F30 /* NYSuggestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYSuggestionViewController.h; sourceTree = "<group>"; };
+		0EEF3F131C3D556D001D8F30 /* NYSuggestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYSuggestionViewController.m; sourceTree = "<group>"; };
+		0EEF3F141C3D556D001D8F30 /* NYSuggestionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NYSuggestionViewController.xib; sourceTree = "<group>"; };
 		18B4E76B1C2C104A004E0ACC /* 码尚通-司机版.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "码尚通-司机版.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		18B4E76F1C2C104A004E0ACC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		18B4E7711C2C104A004E0ACC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -779,6 +786,9 @@
 				0E5BD0571C2E6D1D00814CD9 /* NYContactUsViewController.m */,
 				0E5BD0581C2E6D1D00814CD9 /* NYAboutUsViewController.h */,
 				0E5BD0591C2E6D1D00814CD9 /* NYAboutUsViewController.m */,
+				0EEF3F121C3D556D001D8F30 /* NYSuggestionViewController.h */,
+				0EEF3F131C3D556D001D8F30 /* NYSuggestionViewController.m */,
+				0EEF3F141C3D556D001D8F30 /* NYSuggestionViewController.xib */,
 			);
 			name = "设置";
 			sourceTree = "<group>";
@@ -875,6 +885,7 @@
 				18B4E7E61C2C1476004E0ACC /* Images */,
 				0E5BD04D1C2E648800814CD9 /* ProvincesAndCities.plist */,
 				18B4E76F1C2C104A004E0ACC /* main.m */,
+				0EEF3F0B1C3CBB92001D8F30 /* PushConfig.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1278,6 +1289,11 @@
 					18B4E76A1C2C104A004E0ACC = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = 824Z9655RS;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -1332,9 +1348,11 @@
 				18B4E88C1C2C1476004E0ACC /* chahao@2x.png in Resources */,
 				18B4E7D01C2C146F004E0ACC /* NYInvitationViewController.xib in Resources */,
 				18B4E9021C2C1476004E0ACC /* xiugaimima@3x.png in Resources */,
+				0EEF3F0C1C3CBB92001D8F30 /* PushConfig.plist in Resources */,
 				18B4E87E1C2C1476004E0ACC /* agreeBtnDeselect@2x.png in Resources */,
 				18B4E9041C2C1476004E0ACC /* yonghu@3x.png in Resources */,
 				18B4E8EA1C2C1476004E0ACC /* wodefenxiang@3x.png in Resources */,
+				0EEF3F161C3D556D001D8F30 /* NYSuggestionViewController.xib in Resources */,
 				18B4E8B81C2C1476004E0ACC /* lukuang@3x.png in Resources */,
 				18B4E8D31C2C1476004E0ACC /* shijian@2x.png in Resources */,
 				18B4E8971C2C1476004E0ACC /* che3Deselect@3x.png in Resources */,
@@ -1590,6 +1608,7 @@
 				18B4E9551C2C153C004E0ACC /* KLSwitch.m in Sources */,
 				18B4E7DB1C2C146F004E0ACC /* NYMyWalletViewController.m in Sources */,
 				18B4E9671C2C1542004E0ACC /* MBProgressHUD+MJ.m in Sources */,
+				0EEF3F151C3D556D001D8F30 /* NYSuggestionViewController.m in Sources */,
 				0E18DFE81C30DF5800D77CEC /* NYCommentDetailViewController.m in Sources */,
 				0E5BD0521C2E677F00814CD9 /* GSauthenticationVC.m in Sources */,
 				18B4E7731C2C104A004E0ACC /* AppDelegate.m in Sources */,

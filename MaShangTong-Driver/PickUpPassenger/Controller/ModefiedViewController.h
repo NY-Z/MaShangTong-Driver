@@ -12,10 +12,10 @@
 
 @interface ModefiedViewController : UIViewController
 
-@property (nonatomic,strong) NSString *driverDistance;
-@property (nonatomic,strong) NSString *price;
-@property (nonatomic,strong) NSString *lowSpeedTime;
-@property (nonatomic,strong) NSString *lowSpeedPrice;
+//@property (nonatomic,strong) NSString *driverDistance;
+//@property (nonatomic,strong) NSString *price;
+//@property (nonatomic,strong) NSString *lowSpeedTime;
+//@property (nonatomic,strong) NSString *lowSpeedPrice;
 
 @property (nonatomic,strong) DataModel *model;
 

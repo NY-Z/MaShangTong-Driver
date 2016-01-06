@@ -9,6 +9,9 @@
 #import "NYShareViewController.h"
 #import "UMSocial.h"
 
+#import <WXApi.h>
+#import <TencentOpenAPI/QQApiInterface.h>
+
 @interface NYShareViewController () <UMSocialDataDelegate,UMSocialUIDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *momentsImageView;
@@ -41,20 +44,31 @@
 
 - (void)handleTheWeidget
 {
-    self.momentsImageView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *momentTap = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                action:@selector(momentsTaped)];
-    [self.momentsImageView addGestureRecognizer:momentTap];
-    
-    self.friendsImageView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *friendTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(friendSTaped)];
-    [self.friendsImageView addGestureRecognizer:friendTap];
-    
-    UITapGestureRecognizer *qqTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(qqTaped)];
-    [self.qqshareImageView addGestureRecognizer:qqTap];
-    
     UITapGestureRecognizer *sinaTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sinaTaped)];
     [self.sinaShareImageView addGestureRecognizer:sinaTap];
+    
+    BOOL isWxInstalled = [WXApi isWXAppInstalled] && [WXApi isWXAppSupportApi];
+    if (!isWxInstalled) {
+        self.momentsImageView.hidden = YES;
+        self.friendsImageView.hidden = YES;
+    } else {
+        self.momentsImageView.userInteractionEnabled = YES;
+        UITapGestureRecognizer *momentTap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                    action:@selector(momentsTaped)];
+        [self.momentsImageView addGestureRecognizer:momentTap];
+        
+        self.friendsImageView.userInteractionEnabled = YES;
+        UITapGestureRecognizer *friendTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(friendSTaped)];
+        [self.friendsImageView addGestureRecognizer:friendTap];
+    }
+    
+    BOOL isQqInstalled = [QQApiInterface isQQInstalled] && [QQApiInterface isQQSupportApi];
+    if (!isQqInstalled) {
+        self.qqshareImageView.hidden = YES;
+    } else {
+        UITapGestureRecognizer *qqTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(qqTaped)];
+        [self.qqshareImageView addGestureRecognizer:qqTap];
+    }
 }
 
 #pragma mark - UMSocialDataDelegate
@@ -112,17 +126,17 @@
 
 - (void)sinaTaped
 {
-//    [UMSocialSnsService presentSnsIconSheetView:self
-//                                         appKey:(NSString *)UMSocialAppKey
-//                                      shareText:@"你要分享的文字"
-//                                     shareImage:nil
-//                                shareToSnsNames:[NSArray arrayWithObjects:UMShareToSina,nil]
-//                                       delegate:self];
-    [[UMSocialDataService defaultDataService]  postSNSWithTypes:@[UMShareToSina] content:@"分享内嵌文字" image:nil location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response){
-        if (response.responseCode == UMSResponseCodeSuccess) {
-            NSLog(@"分享成功！");
-        }
-    }];
+    [UMSocialSnsService presentSnsIconSheetView:self
+                                         appKey:(NSString *)UMSocialAppKey
+                                      shareText:@"友盟社会化分享让您快速实现分享等社会化功能，http://umeng.com/social"
+                                     shareImage:[UIImage imageNamed:@"icon.png"]
+                                shareToSnsNames:@[UMShareToSina]
+                                       delegate:self];
+//    [[UMSocialDataService defaultDataService]  postSNSWithTypes:@[UMShareToSina] content:@"分享内嵌文字" image:nil location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response){
+//        if (response.responseCode == UMSResponseCodeSuccess) {
+//            NSLog(@"分享成功！");
+//        }
+//    }];
 }
 
 @end

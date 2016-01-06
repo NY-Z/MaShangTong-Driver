@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ModefiedViewController">
             <connections>
+                <outlet property="confirmBtn" destination="J2U-gI-ZlZ" id="XWZ-eQ-F9I"/>
                 <outlet property="distanceLabel" destination="VXi-Bc-6Z6" id="iNS-XG-YUG"/>
                 <outlet property="distancePriceLabel" destination="y47-Dk-3xs" id="zpF-Id-aA0"/>
                 <outlet property="longMileagePriceLabel" destination="bTP-Az-j3Q" id="TCE-Bm-glX"/>
@@ -154,10 +155,10 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J2U-gI-ZlZ">
-                    <rect key="frame" x="55" y="528" width="490" height="25"/>
+                    <rect key="frame" x="55" y="523" width="490" height="30"/>
                     <color key="backgroundColor" red="0.31764705882352939" green="0.68627450980392157" blue="0.99607843137254903" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="25" id="iTp-nf-ioP"/>
+                        <constraint firstAttribute="height" constant="30" id="iTp-nf-ioP"/>
                     </constraints>
                     <state key="normal" title="到达收款">
                         <color key="titleColor" red="0.96470588235294119" green="0.99215686274509807" blue="0.99607843137254903" alpha="1" colorSpace="calibratedRGB"/>

@@ -38,6 +38,7 @@
         self.group_id = [aDecoder decodeObjectForKey:@"group_id"];
         self.head_image = [aDecoder decodeObjectForKey:@"head_image"];
         self.sex = [aDecoder decodeObjectForKey:@"sex"];
+        self.point = [aDecoder decodeObjectForKey:@"point"];
     }
     return self;
 }
@@ -56,13 +57,7 @@
     [aCoder encodeObject:self.group_id forKey:@"group_id"];
     [aCoder encodeObject:self.head_image forKey:@"head_image"];
     [aCoder encodeObject:self.sex forKey:@"sex"];
+    [aCoder encodeObject:self.point forKey:@"point"];
 }
 
 @end
-/*
- @property (nonatomic,strong) NSString <Optional> *car_status;
- @property (nonatomic,strong) NSString <Optional> *mobile;
- @property (nonatomic,strong) NSString <Optional> *money;
- @property (nonatomic,strong) NSString <Optional> *user_id;
- @property (nonatomic,strong) NSString <Optional> *user_name;
- */

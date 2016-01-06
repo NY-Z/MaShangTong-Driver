@@ -91,12 +91,8 @@
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleDone target:nil action:nil];
     
-    UILabel *navTitle = [[UILabel alloc] init];
-    navTitle.text = @"去接乘客";
-    navTitle.textAlignment = 1;
-    navTitle.textColor = RGBColor(109, 187, 254, 1.f);
-    navTitle.size = CGSizeMake(100, 44);
-    self.navigationItem.titleView = navTitle;
+    self.navigationItem.title = @"去接乘客";
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:21],NSForegroundColorAttributeName:RGBColor(73, 185, 254, 1.f)}];
 }
 
 - (void)initPassengerView
@@ -446,7 +442,7 @@
     }
     
     CLLocationSpeed speed = _userLocation.location.speed;
-    NYLog(@"%f",speed);
+//    NYLog(@"%f",speed);
     if (speed == -1) {
         speed = 0;
     }
@@ -761,7 +757,8 @@
         NSLog(@"%@",json);
         
     } failure:^(NSError *error) {
-        //        [MBProgressHUD showError:@"网络错误"];
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showError:@"网络错误"];
         NSLog(@"%@",error.localizedDescription);
         
     }];
@@ -817,10 +814,10 @@
         NSString *resultStr = [NSString stringWithFormat:@"%@",json[@"result"]];
         if ([resultStr isEqualToString:@"1"]) {
             ModefiedViewController *modefied = [[ModefiedViewController alloc] init];
-            modefied.driverDistance = distanceLabel.text;
-            modefied.price = price;
+//            modefied.driverDistance = distanceLabel.text;
+//            modefied.price = price;
             modefied.model = self.model;
-            modefied.priceModel = actualPriceModel;
+//            modefied.priceModel = actualPriceModel;
             [_timer setFireDate:[NSDate distantFuture]];
             [self.navigationController pushViewController:modefied animated:YES];
             [MBProgressHUD hideHUD];
@@ -878,9 +875,21 @@
             NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
             if ([dataStr isEqualToString:@"0"]) {
                 [MBProgressHUD showError:json[@"info"]];
+                
+                AMapNaviPoint *startPoint = [AMapNaviPoint locationWithLatitude:[[_model.origin_coordinates componentsSeparatedByString:@","][1] floatValue] longitude:[[_model.origin_coordinates componentsSeparatedByString:@","][0] floatValue]];
+                AMapNaviPoint *endPoint = [AMapNaviPoint locationWithLatitude:p.location.latitude longitude:p.location.longitude];
+                NSArray *startPoints = @[startPoint];
+                NSArray *endPoints   = @[endPoint];
+                
+                [self.naviManager calculateDriveRouteWithStartPoints:startPoints endPoints:endPoints wayPoints:nil drivingStrategy:0];
+                
                 return ;
             } else if ([dataStr isEqualToString:@"1"]) {
                 [MBProgressHUD showSuccess:json[@"info"]];
+                
+                
+                
+                
             } else {
                 [MBProgressHUD showError:@"网络错误"];
             }

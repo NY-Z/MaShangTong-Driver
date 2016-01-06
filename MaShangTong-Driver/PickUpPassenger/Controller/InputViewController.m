@@ -143,7 +143,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [inputTextField resignFirstResponder];
-//    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     AMapTip *p = _poiResultArr[indexPath.row];
     if (self.changeDestination) {
         self.changeDestination(p);

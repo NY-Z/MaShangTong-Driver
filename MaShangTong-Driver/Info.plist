@@ -25,7 +25,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>wb3461785701</string>
+				<string>sina.56767deae0f55a201b00a6e3</string>
 			</array>
 		</dict>
 		<dict>
@@ -91,6 +91,10 @@
 	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>是否允许码尚通开启定位</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

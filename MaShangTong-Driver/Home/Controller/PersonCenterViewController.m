@@ -126,15 +126,18 @@
 //设置广告图片
 - (void)configAD
 {
-    UIImageView *adImageView = [[UIImageView alloc] init];
+    UIImageView *adImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT-92-SCREEN_WIDTH*3/16, SCREEN_WIDTH/3, SCREEN_WIDTH*3/16)];
     adImageView.image = [UIImage imageNamed:@"advertisementImage"];
+    adImageView.userInteractionEnabled = YES;
     [self.view addSubview:adImageView];
+    UITapGestureRecognizer *advertiseTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(advertisementTaped)];
+    [adImageView addGestureRecognizer:advertiseTap];
     
     [adImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view).with.offset(-92);
         make.left.equalTo(_tableView).with.offset(0);
         make.right.equalTo(_tableView).with.offset(0);
-        make.height.equalTo(@((SCREEN_WIDTH*3/16)));
+        make.height.mas_equalTo(SCREEN_WIDTH*3/16);
     }];
 }
 
@@ -272,6 +275,11 @@
     if (self.tableHeaderViewClicked) {
         self.tableHeaderViewClicked();
     }
+}
+
+- (void)advertisementTaped
+{
+    
 }
 
 #pragma mark - Action

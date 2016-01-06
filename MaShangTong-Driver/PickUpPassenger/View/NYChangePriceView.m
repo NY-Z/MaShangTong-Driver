@@ -10,23 +10,23 @@
 
 @implementation NYChangePriceView
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame title:(NSString *)title
 {
     if (self = [super initWithFrame:frame]) {
         self.size = CGSizeMake(SCREEN_WIDTH, 45);
-        [self configSubViews];
+        [self configSubViewsWithTitle:title];
     }
     return self;
 }
 
-- (void)configSubViews
+- (void)configSubViewsWithTitle:(NSString *)title
 {
     UIView *barrierView = [[UIView alloc] initWithFrame:CGRectMake(50, 0, SCREEN_WIDTH-100, 1)];
     barrierView.backgroundColor = RGBColor(201, 201, 201, 201);
     [self addSubview:barrierView];
     
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH/2-30, -8, 60, 16)];
-    nameLabel.text = @"高速费";
+    nameLabel.text = title;
     nameLabel.backgroundColor = [UIColor whiteColor];
     nameLabel.textColor = RGBColor(180, 180, 180, 1.f);
     nameLabel.font = [UIFont systemFontOfSize:12];
@@ -56,6 +56,13 @@
     priceLabel.font = [UIFont systemFontOfSize:18];
     priceLabel.textColor = RGBColor(150, 150, 150, 1.f);
     [self addSubview:priceLabel];
+}
+
+- (void)changePrice:(NSInteger)price
+{
+    UILabel *label = (UILabel *)[self viewWithTag:100];
+    label.text = [NSString stringWithFormat:@"%li元",price];
+    _price = price;
 }
 
 - (void)minusBtnClicked

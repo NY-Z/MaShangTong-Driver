@@ -34,17 +34,19 @@
     [self addSubview:nameLabel];
     
     UIButton *minusBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [minusBtn setImage:[UIImage imageNamed:@"minus"] forState:UIControlStateNormal];
     minusBtn.x = 50;
     minusBtn.y = 11;
-    minusBtn.backgroundColor = [UIColor cyanColor];
+//    minusBtn.backgroundColor = [UIColor cyanColor];
     minusBtn.size = CGSizeMake(25, 25);
     [minusBtn addTarget:self action:@selector(minusBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:minusBtn];
     
     UIButton *plusBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [plusBtn setImage:[UIImage imageNamed:@"plus"] forState:UIControlStateNormal];
     plusBtn.x = SCREEN_WIDTH-50-25;
     plusBtn.y = 11;
-    plusBtn.backgroundColor = [UIColor cyanColor];
+//    plusBtn.backgroundColor = [UIColor cyanColor];
     plusBtn.size = CGSizeMake(25, 25);
     [plusBtn addTarget:self action:@selector(plusBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:plusBtn];
@@ -61,7 +63,7 @@
 - (void)changePrice:(NSInteger)price
 {
     UILabel *label = (UILabel *)[self viewWithTag:100];
-    label.text = [NSString stringWithFormat:@"%li元",price];
+    label.text = [NSString stringWithFormat:@"%li元",(long)price];
     _price = price;
 }
 

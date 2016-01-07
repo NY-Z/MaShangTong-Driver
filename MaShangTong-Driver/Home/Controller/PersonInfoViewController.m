@@ -36,7 +36,7 @@
 
 - (void)configTableView
 {
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, SCREEN_WIDTH/4, SCREEN_WIDTH, SCREEN_HEIGHT-SCREEN_WIDTH/4-64) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, SCREEN_WIDTH/4, SCREEN_WIDTH, SCREEN_HEIGHT-SCREEN_WIDTH/4-80) style:UITableViewStylePlain];
     _tableView.tableFooterView = [[UIView alloc] init];
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -45,15 +45,36 @@
 
 - (void)configAdImageView
 {
-    UIImageView *adImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"advertisementImage@2x"]];
+    UIImageView *adImageView = [[UIImageView alloc] init];
     adImageView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_WIDTH/4);
     [self.view addSubview:adImageView];
+    
+    [DownloadManager get:@"http://112.124.115.81/m.php?m=OrderApi&a=adv&adv_id=5" params:nil success:^(id json) {
+        @try {
+            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+            if ([dataStr isEqualToString:@"1"]) {
+                [adImageView sd_setImageWithURL:json[@"info"]];
+            } else {
+                adImageView.backgroundColor = [UIColor whiteColor];
+                return ;
+            }
+        }
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+    
 }
 
 - (void)configNavigationItem
 {
     self.navigationItem.title = @"个人信息";
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:19],NSForegroundColorAttributeName:RGBColor(99, 193, 255, 1.f)}];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:21],NSForegroundColorAttributeName:RGBColor(73, 185, 254, 1.f)}];
     
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [backBtn setImage:[UIImage imageNamed:@"fanhui"] forState:UIControlStateNormal];
@@ -158,6 +179,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
     [self configDriverInfo];
     [self configNavigationItem];
     [self configAdImageView];

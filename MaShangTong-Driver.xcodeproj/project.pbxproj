@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E05EBCE1C3E97A5008010AC /* SettingContractUs@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E05EBCC1C3E97A5008010AC /* SettingContractUs@2x.png */; };
+		0E05EBCF1C3E97A5008010AC /* SettingContractUs@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E05EBCD1C3E97A5008010AC /* SettingContractUs@3x.png */; };
+		0E11E76E1C3E416A00B7F624 /* minus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E11E76A1C3E416A00B7F624 /* minus@2x.png */; };
+		0E11E76F1C3E416A00B7F624 /* minus@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E11E76B1C3E416A00B7F624 /* minus@3x.png */; };
+		0E11E7701C3E416A00B7F624 /* plus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E11E76C1C3E416A00B7F624 /* plus@2x.png */; };
+		0E11E7711C3E416A00B7F624 /* plus@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E11E76D1C3E416A00B7F624 /* plus@3x.png */; };
 		0E18DFE31C30DA3C00D77CEC /* detailOrderVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E18DFE11C30DA3C00D77CEC /* detailOrderVC.m */; };
 		0E18DFE41C30DA3C00D77CEC /* detailOrderVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E18DFE21C30DA3C00D77CEC /* detailOrderVC.xib */; };
 		0E18DFE81C30DF5800D77CEC /* NYCommentDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E18DFE61C30DF5800D77CEC /* NYCommentDetailViewController.m */; };
@@ -260,6 +266,12 @@
 /* Begin PBXFileReference section */
 		04C43F681658D4C984CE3847 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		0ACF07D92DFB0EFA44468AFE /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		0E05EBCC1C3E97A5008010AC /* SettingContractUs@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SettingContractUs@2x.png"; sourceTree = "<group>"; };
+		0E05EBCD1C3E97A5008010AC /* SettingContractUs@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "SettingContractUs@3x.png"; sourceTree = "<group>"; };
+		0E11E76A1C3E416A00B7F624 /* minus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "minus@2x.png"; sourceTree = "<group>"; };
+		0E11E76B1C3E416A00B7F624 /* minus@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "minus@3x.png"; sourceTree = "<group>"; };
+		0E11E76C1C3E416A00B7F624 /* plus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus@2x.png"; sourceTree = "<group>"; };
+		0E11E76D1C3E416A00B7F624 /* plus@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plus@3x.png"; sourceTree = "<group>"; };
 		0E18DFE01C30DA3C00D77CEC /* detailOrderVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = detailOrderVC.h; sourceTree = "<group>"; };
 		0E18DFE11C30DA3C00D77CEC /* detailOrderVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = detailOrderVC.m; sourceTree = "<group>"; };
 		0E18DFE21C30DA3C00D77CEC /* detailOrderVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = detailOrderVC.xib; sourceTree = "<group>"; };
@@ -956,6 +968,12 @@
 		18B4E7E61C2C1476004E0ACC /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				0E05EBCC1C3E97A5008010AC /* SettingContractUs@2x.png */,
+				0E05EBCD1C3E97A5008010AC /* SettingContractUs@3x.png */,
+				0E11E76A1C3E416A00B7F624 /* minus@2x.png */,
+				0E11E76B1C3E416A00B7F624 /* minus@3x.png */,
+				0E11E76C1C3E416A00B7F624 /* plus@2x.png */,
+				0E11E76D1C3E416A00B7F624 /* plus@3x.png */,
 				0E18E00B1C315F6E00D77CEC /* TaxiGuideImageView@2x.png */,
 				0E18E0011C31298D00D77CEC /* StarsBackground@2x.png */,
 				0E18E0021C31298D00D77CEC /* StarsBackground@3x.png */,
@@ -1321,6 +1339,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				18B4E8C31C2C1476004E0ACC /* qichenew@2x.png in Resources */,
+				0E05EBCE1C3E97A5008010AC /* SettingContractUs@2x.png in Resources */,
 				18B4E8E91C2C1476004E0ACC /* wodefenxiang@2x.png in Resources */,
 				0E5BD0531C2E677F00814CD9 /* GSauthenticationVC.xib in Resources */,
 				18B4E8D21C2C1476004E0ACC /* shezhi@3x.png in Resources */,
@@ -1350,11 +1369,13 @@
 				18B4E9021C2C1476004E0ACC /* xiugaimima@3x.png in Resources */,
 				0EEF3F0C1C3CBB92001D8F30 /* PushConfig.plist in Resources */,
 				18B4E87E1C2C1476004E0ACC /* agreeBtnDeselect@2x.png in Resources */,
+				0E11E7701C3E416A00B7F624 /* plus@2x.png in Resources */,
 				18B4E9041C2C1476004E0ACC /* yonghu@3x.png in Resources */,
 				18B4E8EA1C2C1476004E0ACC /* wodefenxiang@3x.png in Resources */,
 				0EEF3F161C3D556D001D8F30 /* NYSuggestionViewController.xib in Resources */,
 				18B4E8B81C2C1476004E0ACC /* lukuang@3x.png in Resources */,
 				18B4E8D31C2C1476004E0ACC /* shijian@2x.png in Resources */,
+				0E11E7711C3E416A00B7F624 /* plus@3x.png in Resources */,
 				18B4E8971C2C1476004E0ACC /* che3Deselect@3x.png in Resources */,
 				18B4E8EB1C2C1476004E0ACC /* wodepinglun@2x.png in Resources */,
 				18B4E8D91C2C1476004E0ACC /* sijizhaomu@2x.png in Resources */,
@@ -1373,6 +1394,7 @@
 				18B4E8811C2C1476004E0ACC /* agreeBtnSelect@3x.png in Resources */,
 				18B4E89A1C2C1476004E0ACC /* daijinquan@2x.png in Resources */,
 				18B4E8DE1C2C1476004E0ACC /* tianjiayuangong@3x.png in Resources */,
+				0E11E76E1C3E416A00B7F624 /* minus@2x.png in Resources */,
 				18B4E8E51C2C1476004E0ACC /* tuijianyoujiang@2x.png in Resources */,
 				18B4E8E11C2C1476004E0ACC /* tuangoushangcheng@2x.png in Resources */,
 				18B4E8A51C2C1476004E0ACC /* dingweizhongxin@3x.png in Resources */,
@@ -1437,6 +1459,7 @@
 				18B4E9061C2C1476004E0ACC /* yuangongxinxi@3x.png in Resources */,
 				18B4E8FC1C2C1476004E0ACC /* xiasanjiao@3x.png in Resources */,
 				18B4E8B71C2C1476004E0ACC /* lukuang@2x.png in Resources */,
+				0E05EBCF1C3E97A5008010AC /* SettingContractUs@3x.png in Resources */,
 				18B4E8EE1C2C1476004E0ACC /* wodeqianbao@3x.png in Resources */,
 				18B4E8C01C2C1476004E0ACC /* pengyouquanfenxiang@3x.png in Resources */,
 				18B4E8AD1C2C1476004E0ACC /* gengduo@3x.png in Resources */,
@@ -1466,6 +1489,7 @@
 				18B4E8831C2C1476004E0ACC /* appointment@3x.png in Resources */,
 				18B4E8891C2C1476004E0ACC /* baoxiaoguize@3x.png in Resources */,
 				18B4E8D71C2C1476004E0ACC /* sijitouxiang@2x.png in Resources */,
+				0E11E76F1C3E416A00B7F624 /* minus@3x.png in Resources */,
 				18B4E8D81C2C1476004E0ACC /* sijitouxiang@3x.png in Resources */,
 				18B4E8FB1C2C1476004E0ACC /* xiasanjiao@2x.png in Resources */,
 				18B4E8851C2C1476004E0ACC /* backBtn@3x.png in Resources */,

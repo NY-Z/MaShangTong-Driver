@@ -78,7 +78,7 @@
     _confirmBgView.backgroundColor = [UIColor whiteColor];
     _confirmBgView.size = CGSizeMake(220, 170);
     _confirmBgView.center = CGPointMake(SCREEN_WIDTH/2, self.view.centerY-64);
-    _confirmBgView.layer.cornerRadius = 10;
+    _confirmBgView.layer.cornerRadius = 10.f;
     [self.view addSubview:_confirmBgView];
     
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"appointment"]];

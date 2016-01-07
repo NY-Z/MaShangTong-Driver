@@ -162,9 +162,29 @@
         [topView addSubview:label];
     }
     
-    UIImageView *topMidImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"advertisementImage.png"]];
+    UIImageView *topMidImageView = [[UIImageView alloc] init];
     topMidImageView.frame = CGRectMake(0, 24, SCREEN_WIDTH, 74);
     [topView addSubview:topMidImageView];
+    
+    [DownloadManager get:@"http://112.124.115.81/m.php?m=OrderApi&a=adv&adv_id=6" params:nil success:^(id json) {
+        @try {
+            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+            if ([dataStr isEqualToString:@"1"]) {
+                [topMidImageView sd_setImageWithURL:json[@"info"]];
+            } else {
+                topMidImageView.backgroundColor = [UIColor whiteColor];
+                return ;
+            }
+        }
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+        }
+    } failure:^(NSError *error) {
+        
+    }];
     
     topBottomView = [[UIView alloc] initWithFrame:CGRectMake(0, 24, SCREEN_WIDTH, 24)];
     topBottomView.backgroundColor = [UIColor whiteColor];

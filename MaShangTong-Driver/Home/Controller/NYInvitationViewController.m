@@ -19,7 +19,7 @@
 - (void)configNavigationBar
 {
     self.navigationItem.title = @"邀请加盟";
-    [self.navigationController.navigationBar setTitleTextAttributes:NAVIGATIONITEM_TITLE_PROPERTY];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:21],NSForegroundColorAttributeName:RGBColor(73, 185, 254, 1.f)}];
     NAVIGATIONITEM_BACKBARBUTTONITEM;
 }
 

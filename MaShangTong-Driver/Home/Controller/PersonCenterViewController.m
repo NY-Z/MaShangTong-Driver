@@ -39,7 +39,6 @@
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH*3/4, SCREEN_HEIGHT-138) style:UITableViewStylePlain];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView.showsVerticalScrollIndicator = NO;
-    _tableView.bounces = NO;
     _tableView.delegate = self;
     _tableView.dataSource = self;
     [self.view addSubview:_tableView];
@@ -127,7 +126,7 @@
 - (void)configAD
 {
     UIImageView *adImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT-92-SCREEN_WIDTH*3/16, SCREEN_WIDTH/3, SCREEN_WIDTH*3/16)];
-    adImageView.image = [UIImage imageNamed:@"advertisementImage"];
+//    adImageView.image = [UIImage imageNamed:@"advertisementImage"];
     adImageView.userInteractionEnabled = YES;
     [self.view addSubview:adImageView];
     UITapGestureRecognizer *advertiseTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(advertisementTaped)];
@@ -138,6 +137,26 @@
         make.left.equalTo(_tableView).with.offset(0);
         make.right.equalTo(_tableView).with.offset(0);
         make.height.mas_equalTo(SCREEN_WIDTH*3/16);
+    }];
+
+    [DownloadManager get:@"http://112.124.115.81/m.php?m=OrderApi&a=adv&adv_id=4" params:nil success:^(id json) {
+        @try {
+            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+            if ([dataStr isEqualToString:@"1"]) {
+                [adImageView sd_setImageWithURL:json[@"info"]];
+            } else {
+                adImageView.backgroundColor = [UIColor whiteColor];
+                return ;
+            }
+        }
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+        }
+    } failure:^(NSError *error) {
+        
     }];
 }
 

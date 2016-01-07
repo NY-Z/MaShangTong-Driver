@@ -25,7 +25,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>sina.56767deae0f55a201b00a6e3</string>
+				<string>wb3461785701</string>
 			</array>
 		</dict>
 		<dict>
@@ -42,6 +42,14 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>QQ41DD7932</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>sina.56767deae0f55a201b00a6e3</string>
 			</array>
 		</dict>
 	</array>

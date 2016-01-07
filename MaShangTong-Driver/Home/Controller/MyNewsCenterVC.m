@@ -73,12 +73,8 @@
 #pragma mark - 设置NavicatonItens
 -(void)dealNavicatonItens
 {
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 44)];
-    label.text = @"消息中心";
-    label.textAlignment = 1;
-    label.font = [UIFont systemFontOfSize:19];
-    label.textColor = RGBColor(99, 193, 255, 1.f);
-    self.navigationItem.titleView = label;
+    self.navigationItem.title = @"消息中心";
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:21],NSForegroundColorAttributeName:RGBColor(73, 185, 254, 1.f)}];
     
     
     UIButton *leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];

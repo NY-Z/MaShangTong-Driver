@@ -73,8 +73,10 @@
     [UMSocialQQHandler setQQWithAppId:@"1105033522" appKey:@"REaQLYFREilVdVxY" url:@"http://www.umeng.com/social"];
     [UMSocialQQHandler setSupportWebView:YES];
     [UMSocialWechatHandler setWXAppId:@"wx4a394bc7ef225c8a" appSecret:@"fadd64686a32f7acefff137faa0cce3a" url:@"http://www.umeng.com/social"];
-//    [UMSocialSinaSSOHandler openNewSinaSSOWithAppKey:@"3461785701" RedirectURL:nil];
     [UMSocialSinaHandler openSSOWithRedirectURL:@"http://sns.whalecloud.com/sina2/callback"];
+    [UMSocialSinaSSOHandler openNewSinaSSOWithAppKey:@"3461785701" RedirectURL:@"http://sns.whalecloud.com/sina2/callback"];
+    
+    
     // 高德地图
     [AMapNaviServices sharedServices].apiKey = AMap_ApiKey;
     [MAMapServices sharedServices].apiKey = AMap_ApiKey;
@@ -105,7 +107,7 @@
         UINavigationController *regisDriverNavi = [[UINavigationController alloc] initWithRootViewController:regisDriver];
         self.window.rootViewController = regisDriverNavi;
     }
-//    self.window.rootViewController = [[WaitForPayViewController alloc] init];
+//    self.window.rootViewController = [[ModefiedViewController alloc] init];
     [self.window makeKeyAndVisible];
     return YES;
 }

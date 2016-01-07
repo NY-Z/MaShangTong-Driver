@@ -48,12 +48,8 @@
 
 - (void)configNavigationItem
 {
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 150, 44)];
-    titleLabel.textAlignment = 1;
-    titleLabel.font = [UIFont systemFontOfSize:19];
-    titleLabel.text = @"我的行程";
-    titleLabel.textColor = RGBColor(99, 193, 255, 1.f);
-    self.navigationItem.titleView = titleLabel;
+    self.navigationItem.title = @"我的行程";
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:21],NSForegroundColorAttributeName:RGBColor(73, 185, 254, 1.f)}];
     
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [backBtn setImage:[UIImage imageNamed:@"fanhui"] forState:UIControlStateNormal];

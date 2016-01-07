@@ -11,6 +11,7 @@
 
 #import <WXApi.h>
 #import <TencentOpenAPI/QQApiInterface.h>
+#import <WeiboSDK.h>
 
 @interface NYShareViewController () <UMSocialDataDelegate,UMSocialUIDelegate>
 
@@ -25,8 +26,8 @@
 
 - (void)configNavigationBar
 {
-    self.navigationItem.title = @"分享";
-    [self.navigationController.navigationBar setTitleTextAttributes:NAVIGATIONITEM_TITLE_PROPERTY];
+    self.navigationItem.title = @"我的分享";
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:21],NSForegroundColorAttributeName:RGBColor(73, 185, 254, 1.f)}];
     NAVIGATIONITEM_BACKBARBUTTONITEM;
 }
 
@@ -82,7 +83,7 @@
     //根据`responseCode`得到发送结果,如果分享成功
     if(response.responseCode == UMSResponseCodeSuccess)
     {
-//        [AppLanguageProcess getLanguageWithKey:@"TEXT_CANCEL"]
+        //        [AppLanguageProcess getLanguageWithKey:@"TEXT_CANCEL"]
         //得到分享到的微博平台名
         NSLog(@"share to sns name is %@",[[response.data allKeys] objectAtIndex:0]);
     }
@@ -126,17 +127,21 @@
 
 - (void)sinaTaped
 {
-    [UMSocialSnsService presentSnsIconSheetView:self
-                                         appKey:(NSString *)UMSocialAppKey
-                                      shareText:@"友盟社会化分享让您快速实现分享等社会化功能，http://umeng.com/social"
-                                     shareImage:[UIImage imageNamed:@"icon.png"]
-                                shareToSnsNames:@[UMShareToSina]
-                                       delegate:self];
-//    [[UMSocialDataService defaultDataService]  postSNSWithTypes:@[UMShareToSina] content:@"分享内嵌文字" image:nil location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response){
-//        if (response.responseCode == UMSResponseCodeSuccess) {
-//            NSLog(@"分享成功！");
-//        }
-//    }];
+    
+    if ([WeiboSDK isWeiboAppInstalled] && [WeiboSDK isCanShareInWeiboAPP] && [WeiboSDK isCanSSOInWeiboApp] && [WeiboSDK openWeiboApp]) {
+        [[UMSocialDataService defaultDataService]  postSNSWithTypes:@[UMShareToSina] content:@"分享内嵌文字" image:nil location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response){
+            if (response.responseCode == UMSResponseCodeSuccess) {
+                NSLog(@"分享成功！");
+            }
+        }];
+    } else {
+        [UMSocialSnsService presentSnsIconSheetView:self
+                                             appKey:(NSString *)UMSocialAppKey
+                                          shareText:@"友盟社会化分享让您快速实现分享等社会化功能，http://umeng.com/social"
+                                         shareImage:[UIImage imageNamed:@"icon.png"]
+                                    shareToSnsNames:@[UMShareToSina]
+                                           delegate:self];
+    }
 }
 
 @end

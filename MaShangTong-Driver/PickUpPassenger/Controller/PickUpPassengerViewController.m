@@ -99,9 +99,10 @@
 {
     UIView *passengerBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 60)];
     passengerBgView.backgroundColor = [UIColor whiteColor];
+    passengerBgView.tag = 2000;
     [self.view addSubview:passengerBgView];
     
-    UIImageView *sourceImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+    UIImageView *sourceImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dingwei2"]];
     sourceImageView.frame = CGRectMake(40, 8, 15, 15);
     [passengerBgView addSubview:sourceImageView];
     UILabel *sourceLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 0, SCREEN_WIDTH-80-60 , 30)];
@@ -111,7 +112,7 @@
     sourceLabel.font = [UIFont systemFontOfSize:14];
     [passengerBgView addSubview:sourceLabel];
     
-    UIImageView *destinationImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@""]];
+    UIImageView *destinationImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dingwei1"]];
     destinationImageView.frame = CGRectMake(40, 38, 15, 15);
     [passengerBgView addSubview:destinationImageView];
     UILabel *destinationLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 30, SCREEN_WIDTH-80-60, 30)];
@@ -119,6 +120,7 @@
     destinationLabel.textAlignment = 0;
     destinationLabel.textColor = RGBColor(149, 149, 149, 1.f);
     destinationLabel.font = [UIFont systemFontOfSize:14];
+    destinationLabel.tag = 2001;
     [passengerBgView addSubview:destinationLabel];
     
     UIImageView *telImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dail"]];
@@ -186,6 +188,7 @@
     _appointBgView.backgroundColor = [UIColor whiteColor];
     _appointBgView.size = CGSizeMake(220, 180);
     _appointBgView.center = CGPointMake(self.view.centerX, self.view.centerY-64);
+    _appointBgView.layer.cornerRadius = 10.f;
     [self.view addSubview:_appointBgView];
     
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"appointment"]];
@@ -217,6 +220,7 @@
     leftBtn.frame = CGRectMake(22, CGRectGetMaxY(label2.frame)+32, 80, 22);
     [leftBtn addTarget:self action:@selector(appointmentLeftBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [_appointBgView addSubview:leftBtn];
+    leftBtn.layer.cornerRadius = 5.f;
     
     UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [rightBtn setTitle:@"确定" forState:UIControlStateNormal];
@@ -226,6 +230,7 @@
     rightBtn.frame = CGRectMake(120, CGRectGetMaxY(label2.frame)+32, 80, 22);
     [rightBtn addTarget:self action:@selector(appointmentRightBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [_appointBgView addSubview:rightBtn];
+    rightBtn.layer.cornerRadius = 5.f;
     
     _appointBgView.hidden = YES;
 }
@@ -236,6 +241,7 @@
     _billingBgView.backgroundColor = [UIColor whiteColor];
     _billingBgView.size = CGSizeMake(220, 160);
     _billingBgView.center = CGPointMake(SCREEN_WIDTH/2, self.view.centerY-64);
+    _billingBgView.layer.cornerRadius = 10.f;
     [self.view addSubview:_billingBgView];
     
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"appointment"]];
@@ -259,6 +265,7 @@
     leftBtn.layer.borderWidth = 1.f;
     leftBtn.frame = CGRectMake(22, CGRectGetMaxY(label.frame)+32, 80, 22);
     leftBtn.tag = 300;
+    leftBtn.layer.cornerRadius = 5.f;
     [leftBtn addTarget:self action:@selector(billingLeftBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [_billingBgView addSubview:leftBtn];
     
@@ -271,6 +278,7 @@
     rightBtn.frame = CGRectMake(120, CGRectGetMaxY(label.frame)+32, 80, 22);
     [rightBtn addTarget:self action:@selector(billingRightBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [_billingBgView addSubview:rightBtn];
+    rightBtn.layer.cornerRadius = 5.f;
     
     _billingBgView.hidden = YES;
 }
@@ -312,7 +320,7 @@
     chargingBtn.center = CGPointMake(_chargingBgView.centerX, 65);
     [chargingBtn addTarget:self action:@selector(chargingBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     [_chargingBgView addSubview:chargingBtn];
-    chargingBtn.layer.cornerRadius = 3.f;
+    chargingBtn.layer.cornerRadius = 5.f;
     
     _chargingBgView.hidden = YES;
 }
@@ -442,7 +450,6 @@
     }
     
     CLLocationSpeed speed = _userLocation.location.speed;
-//    NYLog(@"%f",speed);
     if (speed == -1) {
         speed = 0;
     }
@@ -479,6 +486,27 @@
             }
         } failure:^(NSError *error) {
             //                NYLog(@"%@",error.localizedDescription);
+        }];
+    } else {
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setValue:_model.route_id forKey:@"route_id"];
+        [DownloadManager post:@"http://112.124.115.81/m.php?m=OrderApi&a=near_cars" params:params success:^(id json) {
+            
+            NYLog(@"%@",json);
+            NSString *routeStatus = [NSString stringWithFormat:@"%@",json[@"data"][@"route_status"]];
+            if ([routeStatus isEqualToString:@"-1"]) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"乘客已取消订单" message:nil preferredStyle:UIAlertControllerStyleAlert];
+                [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [_timer setFireDate:[NSDate distantFuture]];
+                    [_timer invalidate];
+                    _timer = nil;
+                    [self.navigationController popViewControllerAnimated:YES];
+                }]];
+                [self presentViewController:alert animated:YES completion:nil];
+                return;
+            }
+        } failure:^(NSError *error) {
+            [MBProgressHUD showError:@"网络错误"];
         }];
     }
 }
@@ -873,7 +901,7 @@
         [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"orderApi",@"destination"] params:@{@"route_id":_model.route_id,@"end_name":p.name,@"end_coordinates":endCoordinates} success:^(id json) {
             [MBProgressHUD hideHUD];
             NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-            if ([dataStr isEqualToString:@"0"]) {
+            if ([dataStr isEqualToString:@"1"]) {
                 [MBProgressHUD showError:json[@"info"]];
                 
                 AMapNaviPoint *startPoint = [AMapNaviPoint locationWithLatitude:[[_model.origin_coordinates componentsSeparatedByString:@","][1] floatValue] longitude:[[_model.origin_coordinates componentsSeparatedByString:@","][0] floatValue]];
@@ -883,13 +911,12 @@
                 
                 [self.naviManager calculateDriveRouteWithStartPoints:startPoints endPoints:endPoints wayPoints:nil drivingStrategy:0];
                 
+                UIView *bgView = [self.view viewWithTag:2000];
+                UILabel *destinationLabel = (UILabel *)[bgView viewWithTag:2001];
+                destinationLabel.text = p.name;
                 return ;
-            } else if ([dataStr isEqualToString:@"1"]) {
+            } else if ([dataStr isEqualToString:@"0"]) {
                 [MBProgressHUD showSuccess:json[@"info"]];
-                
-                
-                
-                
             } else {
                 [MBProgressHUD showError:@"网络错误"];
             }

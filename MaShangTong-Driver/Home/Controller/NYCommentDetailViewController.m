@@ -58,8 +58,9 @@
         [_rateImageView setRating:[dic[@"stars"] floatValue]];
         
     } failure:^(NSError *error) {
-        
+        [MBProgressHUD showError:@"网络错误"];
     }];
+    
 }
 
 #pragma mark - Action

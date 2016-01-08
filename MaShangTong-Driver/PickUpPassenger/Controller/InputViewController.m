@@ -198,7 +198,7 @@
 {
     NSMutableArray *tempArray = [NSMutableArray new];
     if (response.tips.count == 0) {
-        NSLog(@"没有请求到数据");
+        NYLog(@"没有请求到数据");
         return;
     }
     //对请求到的数据进行处理

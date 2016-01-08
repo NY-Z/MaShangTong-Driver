@@ -47,7 +47,7 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:[USER_DEFAULT objectForKey:@"user_id"] forKey:@"driver_id"];
     [MBProgressHUD showMessage:@"正在加载"];
-    [DownloadManager post:@"http://112.124.115.81/m.php?m=UserApi&a=comment" params:params success:^(id json) {
+    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"comment"] params:params success:^(id json) {
         
         NYLog(@"%@",json);
         [MBProgressHUD hideHUD];

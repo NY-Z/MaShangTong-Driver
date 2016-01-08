@@ -106,7 +106,7 @@
                 <outlet property="journeyLabel" destination="3zq-NS-HdJ" id="GfX-Xz-p5d"/>
                 <outlet property="originLabel" destination="lKl-nO-rXN" id="f36-9Q-qzh"/>
             </connections>
-            <point key="canvasLocation" x="288" y="276"/>
+            <point key="canvasLocation" x="777" y="337"/>
         </tableViewCell>
     </objects>
     <resources>

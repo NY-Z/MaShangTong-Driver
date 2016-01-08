@@ -53,7 +53,7 @@ static NSInteger cityNum;
 }
 -(void)pickerRightBtnClicked:(UIButton *)sender
 {
-    NSLog(@"%@",_cityAry[cityNum]);
+    NYLog(@"%@",_cityAry[cityNum]);
     if (self.chooseCity) {
         self.chooseCity(_cityAry[cityNum]);
     }
@@ -119,7 +119,7 @@ static NSInteger cityNum;
         [_cityAry removeAllObjects];
         NSString *pathStr = [[NSBundle mainBundle]pathForResource:@"ProvincesAndCities" ofType:@"plist"];
         NSArray *plistArray = [NSArray arrayWithContentsOfFile:pathStr];
-        NSLog(@"plistArray:%ld",plistArray.count);
+        NYLog(@"plistArray:%ld",plistArray.count);
         NSDictionary *subDic = plistArray[row];
         NSArray *subAry = subDic[@"Cities"];
         for (NSDictionary *subDict in subAry) {
@@ -131,7 +131,7 @@ static NSInteger cityNum;
     }
     if (component == 1) {
         cityNum = row;
-        NSLog(@"%ld",cityNum);
+        NYLog(@"%ld",cityNum);
     }
 }
 /*

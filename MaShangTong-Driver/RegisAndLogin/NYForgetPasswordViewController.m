@@ -157,7 +157,7 @@
     [params setValue:@"3" forKey:@"group_id"];
     [params setValue:_confirmTextField.text forKey:@"password"];
     [MBProgressHUD showMessage:@"正在修改"];
-    [DownloadManager post:@"http://112.124.115.81/m.php?m=UserApi&a=forget_password" params:params success:^(id json) {
+    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"forget_password"] params:params success:^(id json) {
         
         @try {
             NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];

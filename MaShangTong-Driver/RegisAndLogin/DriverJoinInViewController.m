@@ -94,9 +94,9 @@
     CGRect rect = [textField convertRect:textField.frame toView:nil];
     
     CGFloat offSet = SCREEN_HEIGHT-(CGRectGetMaxY(rect)+216);
-    NSLog(@"%f",SCREEN_HEIGHT);
-    NSLog(@"%f",CGRectGetMaxY(rect)+216);
-    NSLog(@"%f",offSet);
+    NYLog(@"%f",SCREEN_HEIGHT);
+    NYLog(@"%f",CGRectGetMaxY(rect)+216);
+    NYLog(@"%f",offSet);
     if (offSet <= -50) {
         [UIView animateWithDuration:0.3 animations:^{
             self.view.y = offSet+216;
@@ -162,13 +162,13 @@
         [self initTimer];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        NSLog(@"%@",error.localizedDescription);
+        NYLog(@"%@",error.localizedDescription);
     }];
 }
 
 - (IBAction)quickJoinInBTnClicked:(UIButton *)sender {
     
-    NSLog(@"%@",_verification);
+    NYLog(@"%@",_verification);
     
     if (![_returnSmsTextField.text isEqualToString:_verification]) {
         [MBProgressHUD showError:@"短信验证码错误"];
@@ -187,9 +187,9 @@
     }
     [params setValue:_codeTextField.text forKey:@"pwd"];
     [params setValue:@"3" forKey:@"group_id"];
-    [DownloadManager post:@"http://112.124.115.81/m.php?m=UserApi&a=register" params:params success:^(id json) {
+    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"register"] params:params success:^(id json) {
         
-        NSLog(@"%@",json);
+        NYLog(@"%@",json);
         NSString *resultStr = json[@"result"];
         if ([resultStr isEqualToString:@"1"]) {
             
@@ -212,7 +212,7 @@
         
     } failure:^(NSError *error) {
         
-        NSLog(@"%@",error.localizedDescription);
+        NYLog(@"%@",error.localizedDescription);
         [MBProgressHUD showError:@"网络错误"];
     }];
     

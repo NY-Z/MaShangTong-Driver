@@ -133,27 +133,27 @@
 
 - (void)naviManager:(AMapNaviManager *)naviManager error:(NSError *)error
 {
-    NSLog(@"error:{%@}",error.localizedDescription);
+    NYLog(@"error:{%@}",error.localizedDescription);
 }
 
 - (void)naviManager:(AMapNaviManager *)naviManager didPresentNaviViewController:(UIViewController *)naviViewController
 {
-    NSLog(@"didPresentNaviViewController");
+    NYLog(@"didPresentNaviViewController");
 }
 
 - (void)naviManager:(AMapNaviManager *)naviManager didDismissNaviViewController:(UIViewController *)naviViewController
 {
-    NSLog(@"didDismissNaviViewController");
+    NYLog(@"didDismissNaviViewController");
 }
 
 - (void)naviManagerOnCalculateRouteSuccess:(AMapNaviManager *)naviManager
 {
-    NSLog(@"OnCalculateRouteSuccess");
+    NYLog(@"OnCalculateRouteSuccess");
 }
 
 - (void)naviManager:(AMapNaviManager *)naviManager onCalculateRouteFailure:(NSError *)error
 {
-    NSLog(@"onCalculateRouteFailure");
+    NYLog(@"onCalculateRouteFailure");
     
     [self.view makeToast:@"算路失败"
                 duration:2.0
@@ -162,27 +162,27 @@
 
 - (void)naviManagerNeedRecalculateRouteForYaw:(AMapNaviManager *)naviManager
 {
-    NSLog(@"NeedReCalculateRouteForYaw");
+    NYLog(@"NeedReCalculateRouteForYaw");
 }
 
 - (void)naviManager:(AMapNaviManager *)naviManager didStartNavi:(AMapNaviMode)naviMode
 {
-    NSLog(@"didStartNavi");
+    NYLog(@"didStartNavi");
 }
 
 - (void)naviManagerDidEndEmulatorNavi:(AMapNaviManager *)naviManager
 {
-    NSLog(@"DidEndEmulatorNavi");
+    NYLog(@"DidEndEmulatorNavi");
 }
 
 - (void)naviManagerOnArrivedDestination:(AMapNaviManager *)naviManager
 {
-    NSLog(@"OnArrivedDestination");
+    NYLog(@"OnArrivedDestination");
 }
 
 - (void)naviManager:(AMapNaviManager *)naviManager onArrivedWayPoint:(int)wayPointIndex
 {
-    NSLog(@"onArrivedWayPoint");
+    NYLog(@"onArrivedWayPoint");
 }
 
 - (void)naviManager:(AMapNaviManager *)naviManager didUpdateNaviLocation:(AMapNaviLocation *)naviLocation
@@ -204,7 +204,7 @@
 
 - (void)naviManager:(AMapNaviManager *)naviManager playNaviSoundString:(NSString *)soundString soundStringType:(AMapNaviSoundType)soundStringType
 {
-    NSLog(@"playNaviSoundString:{%ld:%@}", (long)soundStringType, soundString);
+    NYLog(@"playNaviSoundString:{%ld:%@}", (long)soundStringType, soundString);
     
     if (soundStringType == AMapNaviSoundTypePassedReminder)
     {
@@ -221,14 +221,14 @@
 
 - (void)naviManagerDidUpdateTrafficStatuses:(AMapNaviManager *)naviManager
 {
-    NSLog(@"DidUpdateTrafficStatuses");
+    NYLog(@"DidUpdateTrafficStatuses");
 }
 
 #pragma mark - iFlySpeechSynthesizer Delegate
 
 - (void)onCompleted:(IFlySpeechError *)error
 {
-    NSLog(@"Speak Error:{%d:%@}", error.errorCode, error.errorDesc);
+    NYLog(@"Speak Error:{%d:%@}", error.errorCode, error.errorDesc);
 }
 
 @end

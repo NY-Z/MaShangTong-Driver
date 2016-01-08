@@ -100,6 +100,7 @@
     UIView *passengerBgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 60)];
     passengerBgView.backgroundColor = [UIColor whiteColor];
     passengerBgView.tag = 2000;
+    passengerBgView.clipsToBounds = YES;
     [self.view addSubview:passengerBgView];
     
     UIImageView *sourceImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dingwei2"]];
@@ -129,6 +130,28 @@
     UITapGestureRecognizer *telGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(telGesture:)];
     telImageView.userInteractionEnabled = YES;
     [telImageView addGestureRecognizer:telGesture];
+    
+    if (![_model.leave_message isEqualToString:@"请输入备注"]) {
+        UIImageView *pullDownImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gengduo"]];
+        pullDownImageView.frame = CGRectMake(SCREEN_WIDTH/2-18, 60, 18, 18);
+        [passengerBgView addSubview:pullDownImageView];
+        pullDownImageView.userInteractionEnabled = YES;
+        UITapGestureRecognizer *pullDownTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pullDownTaped:)];
+        [pullDownImageView addGestureRecognizer:pullDownTap];
+        passengerBgView.height += 18;
+        
+        NSString *leaveMessage = [NSString stringWithFormat:@"乘客备注：%@",_model.leave_message];
+        NSInteger height = [Helper heightOfString:leaveMessage font:[UIFont systemFontOfSize:16] width:SCREEN_WIDTH-100];
+//        passengerBgView.height += (height+6);
+        UILabel *leaveMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, CGRectGetMaxY(telImageView.frame)+12, SCREEN_WIDTH-60, height)];
+        pullDownImageView.tag = height;
+        leaveMessageLabel.numberOfLines = 0;
+        leaveMessageLabel.text = leaveMessage;
+        leaveMessageLabel.textAlignment = 0;
+        leaveMessageLabel.textColor = RGBColor(128, 128, 128, 1.f);
+        leaveMessageLabel.font = [UIFont systemFontOfSize:16];
+        [passengerBgView addSubview:leaveMessageLabel];
+    }
 }
 
 - (void)initPassengerLocation
@@ -490,7 +513,7 @@
     } else {
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
         [params setValue:_model.route_id forKey:@"route_id"];
-        [DownloadManager post:@"http://112.124.115.81/m.php?m=OrderApi&a=near_cars" params:params success:^(id json) {
+        [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"near_cars"] params:params success:^(id json) {
             
             NYLog(@"%@",json);
             NSString *routeStatus = [NSString stringWithFormat:@"%@",json[@"data"][@"route_status"]];
@@ -503,10 +526,9 @@
                     [self.navigationController popViewControllerAnimated:YES];
                 }]];
                 [self presentViewController:alert animated:YES completion:nil];
-                return;
             }
         } failure:^(NSError *error) {
-            [MBProgressHUD showError:@"网络错误"];
+//            [MBProgressHUD showError:@"网络错误"];
         }];
     }
 }
@@ -525,7 +547,7 @@
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     delegate.driverCoordinate = userLocation.coordinate;
     _userLocation = userLocation;
-    
+    [mapView setSelectedAnnotations:@[userLocation]];
     if(updatingLocation) {
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
@@ -551,7 +573,7 @@
 
 - (MAAnnotationView *)mapView:(MAMapView *)mapView viewForAnnotation:(id<MAAnnotation>)annotation
 {
-    NSLog(@"%@",[annotation class]);
+    NYLog(@"%@",[annotation class]);
     if ([annotation isKindOfClass:[MAUserLocation class]]) {
         static NSString *anIde = @"PointAnnotation";
         MAAnnotationView *view = (MAAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:anIde];
@@ -782,12 +804,12 @@
             [MBProgressHUD showError:@"请重新确认您已到达预约地点"];
             return;
         }
-        NSLog(@"%@",json);
+        NYLog(@"%@",json);
         
     } failure:^(NSError *error) {
         [MBProgressHUD hideHUD];
         [MBProgressHUD showError:@"网络错误"];
-        NSLog(@"%@",error.localizedDescription);
+        NYLog(@"%@",error.localizedDescription);
         
     }];
 }
@@ -896,9 +918,9 @@
 {
     InputViewController *input = [[InputViewController alloc] init];
     input.changeDestination = ^(AMapTip *p){
-        [MBProgressHUD showMessage:@"重点修改中，请稍候"];
+        [MBProgressHUD showMessage:@"终点修改中，请稍候"];
         NSString *endCoordinates = [NSString stringWithFormat:@"%f,%f",p.location.latitude,p.location.longitude];
-        [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"orderApi",@"destination"] params:@{@"route_id":_model.route_id,@"end_name":p.name,@"end_coordinates":endCoordinates} success:^(id json) {
+        [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"orderApi",@"change_destination"] params:@{@"route_id":_model.route_id,@"end_name":p.name,@"end_coordinates":endCoordinates} success:^(id json) {
             [MBProgressHUD hideHUD];
             NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
             if ([dataStr isEqualToString:@"1"]) {
@@ -924,7 +946,7 @@
         } failure:^(NSError *error) {
             [MBProgressHUD hideHUD];
             [MBProgressHUD showError:@"网络错误"];
-            NSLog(@"%@",error.localizedDescription);
+            NYLog(@"%@",error.localizedDescription);
         }];
     };
     [self presentViewController:input animated:YES completion:nil];
@@ -939,6 +961,23 @@
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)pullDownTaped:(UITapGestureRecognizer *)tap
+{
+    UIView *bgView = [tap.view superview];
+    if (bgView.height == 78) {
+        [UIView animateWithDuration:.3f animations:^{
+            bgView.height += tap.view.tag+1;
+            tap.view.y += tap.view.tag+1;
+        }];
+    } else {
+        [UIView animateWithDuration:.3f animations:^{
+            bgView.height = 78;
+            tap.view.y = 60;
+        }];
+    }
+
 }
 
 @end

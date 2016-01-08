@@ -80,8 +80,7 @@
     [params setValue:@"3" forKey:@"group_id"];
     [MBProgressHUD showMessage:@"正在登陆"];
 
-    [DownloadManager post:@"http://112.124.115.81/m.php?m=UserApi&a=login" params:params success:^(id json) {
-        
+    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"login"] params:params success:^(id json) {
         NYLog(@"%@",json);
         [MBProgressHUD hideHUD];
         

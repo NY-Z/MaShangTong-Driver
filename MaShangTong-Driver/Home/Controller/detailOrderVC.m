@@ -47,7 +47,7 @@
 //返回Btn的点击事件
 -(void)backBtnClick
 {
-    NSLog(@"返回");
+    NYLog(@"返回");
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -60,7 +60,7 @@
 #pragma mark - 网络请求，发单
 -(void)sendOrder
 {
-    NSLog(@"%@",_route_id);
+    NYLog(@"%@",_route_id);
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"userTrips_detail"] params:@{@"route_id":_route_id} success:^(id json) {
         NYLog(@"%@",json);
         _dataDic = json[@"info"];

@@ -65,7 +65,7 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    NSLog(@"%@",request.URL.absoluteString);
+    NYLog(@"%@",request.URL.absoluteString);
     if ([request.URL.absoluteString hasPrefix:@"http://www."]) {
         
         [self.navigationController popToRootViewControllerAnimated:YES];

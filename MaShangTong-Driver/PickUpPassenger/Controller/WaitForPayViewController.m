@@ -127,7 +127,7 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:_model.route_id forKey:@"route_id"];
     
-    [DownloadManager post:@"http://112.124.115.81/m.php?m=OrderApi&a=near_cars" params:params success:^(id json) {
+    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"near_cars"] params:params success:^(id json) {
         
         NYLog(@"%@",json);
         NSString *routeStatus = [NSString stringWithFormat:@"%@",json[@"data"][@"route_status"]];
@@ -181,6 +181,6 @@
 
 - (void)dealloc
 {
-    NSLog(@"%s",__FUNCTION__);
+    NYLog(@"%s",__FUNCTION__);
 }
 @end

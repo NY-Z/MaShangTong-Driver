@@ -85,7 +85,7 @@
     {
         //        [AppLanguageProcess getLanguageWithKey:@"TEXT_CANCEL"]
         //得到分享到的微博平台名
-        NSLog(@"share to sns name is %@",[[response.data allKeys] objectAtIndex:0]);
+        NYLog(@"share to sns name is %@",[[response.data allKeys] objectAtIndex:0]);
     }
 }
 
@@ -100,7 +100,7 @@
 {
     [[UMSocialDataService defaultDataService]  postSNSWithTypes:@[UMShareToWechatSession] content:@"分享内嵌文字" image:nil location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response){
         if (response.responseCode == UMSResponseCodeSuccess) {
-            NSLog(@"分享成功！");
+            NYLog(@"分享成功！");
         }
     }];
 }
@@ -109,7 +109,7 @@
 {
     [[UMSocialDataService defaultDataService]  postSNSWithTypes:@[UMShareToWechatTimeline] content:@"分享内嵌文字" image:nil location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response){
         if (response.responseCode == UMSResponseCodeSuccess) {
-            NSLog(@"分享成功！");
+            NYLog(@"分享成功！");
         }
     }];
 }
@@ -120,7 +120,7 @@
     
     [[UMSocialDataService defaultDataService]  postSNSWithTypes:@[UMShareToQQ] content:@"分享内嵌文字" image:nil location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response){
         if (response.responseCode == UMSResponseCodeSuccess) {
-            NSLog(@"分享成功！");
+            NYLog(@"分享成功！");
         }
     }];
 }
@@ -131,7 +131,7 @@
     if ([WeiboSDK isWeiboAppInstalled] && [WeiboSDK isCanShareInWeiboAPP] && [WeiboSDK isCanSSOInWeiboApp] && [WeiboSDK openWeiboApp]) {
         [[UMSocialDataService defaultDataService]  postSNSWithTypes:@[UMShareToSina] content:@"分享内嵌文字" image:nil location:nil urlResource:nil presentedController:self completion:^(UMSocialResponseEntity *response){
             if (response.responseCode == UMSResponseCodeSuccess) {
-                NSLog(@"分享成功！");
+                NYLog(@"分享成功！");
             }
         }];
     } else {

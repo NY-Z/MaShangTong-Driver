@@ -156,7 +156,7 @@
         }
     } failure:^(NSError *error) {
         [MBProgressHUD hideHUD];
-        NSLog(@"%@",error.localizedDescription);
+        NYLog(@"%@",error.localizedDescription);
     }];
 }
 
@@ -181,10 +181,10 @@
         }
         [tempArr addObject:[NSString stringWithFormat:@"%li",change.price]];
     }
-    NSLog(@"%@",tempArr);
+    NYLog(@"%@",tempArr);
     
     if (tempArr.count == 0) {
-        [DownloadManager post:@"http://112.124.115.81/m.php?m=OrderApi&a=boarding" params:@{@"route_id":_model.route_id,@"route_status":@"5"} success:^(id json) {
+        [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"boarding"] params:@{@"route_id":_model.route_id,@"route_status":@"5"} success:^(id json) {
             NSString *resultStr = [NSString stringWithFormat:@"%@",json[@"result"]];
             [MBProgressHUD hideHUD];
             if ([resultStr isEqualToString:@"1"]) {
@@ -206,7 +206,7 @@
     }
     
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"update_bill"] params:@{@"highway_fee":tempArr[0],@"road_roll":tempArr[1],@"parking_fee":tempArr[2],@"other_fee":tempArr[3],@"route_id":_model.route_id,@"route_status":@"5"} success:^(id json) {
-        NSLog(@"%@",json);
+        NYLog(@"%@",json);
         [MBProgressHUD hideHUD];
         NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
         if ([dataStr isEqualToString:@"0"]) {
@@ -220,7 +220,7 @@
         }
     } failure:^(NSError *error) {
         [MBProgressHUD hideHUD];
-        NSLog(@"%@",error.localizedDescription);
+        NYLog(@"%@",error.localizedDescription);
     }];
 }
 

@@ -432,7 +432,7 @@
     [params setObject:userId forKey:@"user_id"];
     [params setObject:_reservation_type forKey:@"reservation_type"];
     
-    [DownloadManager post:@"http://112.124.115.81/m.php?m=OrderApi&a=sendorder" params:params success:^(id json) {
+    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"sendorder"] params:params success:^(id json) {
         if ([json[@"data"] isKindOfClass:[NSArray class]]) {
             NSArray *result = (NSArray *)json[@"data"];
             listenBtn.enabled = YES;
@@ -487,7 +487,7 @@
     NSString *driverID = [[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"];
     [params setValue:driverID forKey:@"driver_id"];
     [params setValue:_routeId forKey:@"route_id"];
-    [DownloadManager post:@"http://112.124.115.81/m.php?m=OrderApi&a=graporder" params:params success:^(id json) {
+    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"graporder"] params:params success:^(id json) {
         
         if ([json[@"result"] isEqualToString:@"0"]) {
             [MBProgressHUD hideHUD];
@@ -498,9 +498,7 @@
             listenBtn.enabled = YES;
             offRunningBtn.selected = YES;
             return ;
-        }
-        
-        else if ([json[@"result"] isEqualToString:@"-1"]) {
+        }    else if ([json[@"result"] isEqualToString:@"-1"]) {
             [MBProgressHUD hideHUD];
             [MBProgressHUD showError:@"此单已被抢"];
             listenBtn.enabled = NO;

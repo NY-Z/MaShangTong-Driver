@@ -63,6 +63,7 @@
             [MBProgressHUD showError:@"反馈失败，请重试"];
             return ;
         } else if ([dataStr isEqualToString:@"1"]) {
+            [self.navigationController popViewControllerAnimated:YES];
             [MBProgressHUD showSuccess:@"感谢您的反馈信息"];
         }
         

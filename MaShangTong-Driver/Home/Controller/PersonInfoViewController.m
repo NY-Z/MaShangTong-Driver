@@ -370,7 +370,8 @@
             picker.sourceType = sourceType;
             [self presentModalViewController:picker animated:YES];
         }else {
-            NSLog(@"该设备无摄像头");  
+            NYLog(@"该设备无摄像头");
+            [MBProgressHUD showError:@"该设备的摄像头已损坏"];
         }
     }]];
     [self presentViewController:actionSheet animated:YES completion:nil];
@@ -400,7 +401,7 @@
     if (!compressedImageData) {
         compressedImageData = UIImageJPEGRepresentation(compressedImage, 1.f);
     }
-    NSLog(@"%@",[compressedImageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]);
+    NYLog(@"%@",[compressedImageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]);
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"update_img"] params:@{@"user_id":[USER_DEFAULT objectForKey:@"user_id"],@"img":[compressedImageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]} success:^(id json) {
         
         NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];

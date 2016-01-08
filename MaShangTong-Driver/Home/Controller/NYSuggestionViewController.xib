@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
@@ -17,7 +18,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="TxA-IZ-2af">
-                    <rect key="frame" x="40" y="100" width="520" height="200"/>
+                    <rect key="frame" x="40" y="30" width="520" height="200"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="200" id="vmU-34-1rZ"/>
@@ -26,7 +27,7 @@
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fKg-fS-6yX">
-                    <rect key="frame" x="250" y="380" width="100" height="30"/>
+                    <rect key="frame" x="250" y="310" width="100" height="30"/>
                     <color key="backgroundColor" red="0.3684933864702013" green="0.7342112801669759" blue="0.98422245534339392" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="100" id="LRg-bK-cRL"/>
@@ -43,7 +44,7 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="fKg-fS-6yX" firstAttribute="top" secondItem="TxA-IZ-2af" secondAttribute="bottom" constant="80" id="Knt-1i-XoJ"/>
-                <constraint firstItem="TxA-IZ-2af" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="100" id="c6E-Gs-BQw"/>
+                <constraint firstItem="TxA-IZ-2af" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="30" id="c6E-Gs-BQw"/>
                 <constraint firstItem="fKg-fS-6yX" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="i0i-Yi-lYv"/>
                 <constraint firstItem="TxA-IZ-2af" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="40" id="m2c-AI-Rem"/>
                 <constraint firstAttribute="trailing" secondItem="TxA-IZ-2af" secondAttribute="trailing" constant="40" id="xJh-JY-gUY"/>

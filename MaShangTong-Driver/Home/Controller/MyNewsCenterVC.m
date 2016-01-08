@@ -86,7 +86,7 @@
 //返回Btn的点击事件
 -(void)backBtnClick
 {
-    NSLog(@"返回");
+    NYLog(@"返回");
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -123,7 +123,7 @@
     if (!cell) {
         cell = [[[NSBundle mainBundle]loadNibNamed:@"MyNewsTableViewCell" owner:nil options:nil]lastObject];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        NSLog(@"%@",indexPath);
+        NYLog(@"%@",indexPath);
     }
     cell.detailsLabel.text = [NSString stringWithFormat:@"【%@】%@",_newsDataAry[indexPath.row][@"title"],_newsDataAry[indexPath.row][@"content"]];
     cell.timeLabel.text = [NSString stringWithFormat:@"码尚通播报%@",_newsDataAry[indexPath.row][@"time"]];

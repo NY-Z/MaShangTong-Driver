@@ -74,7 +74,7 @@
     if(string.length >0){
         BOOL isSure = [self validateABC123:string];
         if (!isSure) {
-            NSLog(@"格式不符合");
+            NYLog(@"格式不符合");
             UIAlertView *alertV = [[UIAlertView alloc]initWithTitle:@"" message:@"只能包含数字、英文字母和符号" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             [alertV show];
             textField.text = nil;
@@ -140,27 +140,8 @@
 
 -(void)sendOrder
 {
-    
-//    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-//    
-//    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-//    manager.requestSerializer = [AFJSONRequestSerializer serializer];
-//    
-//    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
-//    
-    NSDictionary *param = [NSDictionary dictionaryWithObjects:@[[USER_DEFAULT objectForKey:@"user_id"],@"1",_lastPassWordText.text,_nowPassWordText1.text] forKeys:@[@"id",@"group_id",@"user_pwd",@"new_pwd"]];
-//
-    NSString *url = @"http://112.124.115.81/m.php?m=UserApi&a=modify_password";
-//
-//    [manager POST:url parameters:param success:^(AFHTTPRequestOperation *operation,id responseObject){
-//        NSLog(@"=================%@",responseObject);
-//        _resultsStr = [NSString stringWithFormat:@"%@",responseObject[@"info"]];
-//        UIAlertView *alertV = [[UIAlertView alloc]initWithTitle:@"" message:_resultsStr delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-//        [alertV show];
-//     }failure:^(AFHTTPRequestOperation *operation,NSError *error){
-//        NSLog(@"-----------------%@",error);
-//        
-//    }];
+    NSDictionary *param = [NSDictionary dictionaryWithObjects:@[[USER_DEFAULT objectForKey:@"user_id"],@"3",_lastPassWordText.text,_nowPassWordText1.text] forKeys:@[@"id",@"group_id",@"user_pwd",@"new_pwd"]];
+    NSString *url = [NSString stringWithFormat:URL_HEADER,@"UserApi",@"modify_password"];
     
     if (![Helper justPassword:_lastPassWordText.text]) {
         [MBProgressHUD showError:@"原密码输入错误"];
@@ -174,11 +155,17 @@
         [MBProgressHUD showError:@"两次密码不一致"];
         return;
     }
-    
+    [MBProgressHUD showMessage:@"修改中"];
     [DownloadManager post:url params:param success:^(id json) {
-        _resultsStr = [NSString stringWithFormat:@"%@",json[@"info"]];
-        UIAlertView *alertV = [[UIAlertView alloc]initWithTitle:@"" message:_resultsStr delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alertV show];
+        [MBProgressHUD hideHUD];
+        NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+        if ([dataStr isEqualToString:@"1"]) {
+            [MBProgressHUD showSuccess:@"密码修改成功"];
+            [self.navigationController popViewControllerAnimated:YES];
+            return ;
+        } else {
+            [MBProgressHUD showSuccess:json[@"info"]];
+        }
     } failure:^(NSError *error) {
         
     }];

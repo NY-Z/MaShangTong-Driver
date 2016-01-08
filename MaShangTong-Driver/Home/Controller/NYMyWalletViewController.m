@@ -11,6 +11,7 @@
 #import "NYMyBalanceTableViewCell.h"
 #import "NYMyVoucherModel.h"
 #import "NYMyBalanceModel.h"
+#import "NYWithdrawViewController.h"
 
 @interface NYMyWalletViewController () <UITableViewDataSource,UITableViewDelegate>
 {
@@ -175,6 +176,7 @@
     [balanceBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [balanceBtn setBackgroundColor:RGBColor(112, 191, 253, 1.f)];
     [balanceTableHeaderView addSubview:balanceBtn];
+    [balanceBtn addTarget:self action:@selector(balanceBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     [balanceBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(balanceLabel.mas_right).offset(10);
         make.centerY.equalTo(balanceLabel);
@@ -227,7 +229,7 @@
     [params setValue:@"4" forKey:@"type"];
     [params setValue:@"3" forKey:@"group_id"];
     [MBProgressHUD showMessage:@"正在加载"];
-    [DownloadManager post:@"http://112.124.115.81/m.php?m=UserApi&a=recharge" params:params success:^(id json) {
+    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"recharge"] params:params success:^(id json) {
         
         @try {
             NYLog(@"%@",json);
@@ -392,12 +394,12 @@
         _balanceTableView.hidden = YES;
         _voucherTableView.hidden = NO;
         
-//        [DownloadManager post:@"" params:param success:^(id json) {
-//            
-//        } failure:^(NSError *error) {
-//            
-//        }];
     }
+}
+// 提现
+- (void)balanceBtnClicked
+{
+    [self.navigationController pushViewController:[[NYWithdrawViewController alloc] init] animated:YES];
 }
 
 @end

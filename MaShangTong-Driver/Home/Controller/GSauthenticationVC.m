@@ -53,7 +53,7 @@
     [_nameTextFiled resignFirstResponder];
     [_numTextFiled resignFirstResponder];
     
-    NSLog(@"实名认证");
+    NYLog(@"实名认证");
     if (_numTextFiled.text.length != 18) {
         [MBProgressHUD showError:@"省份证号有误，请重新输入"];
         return;

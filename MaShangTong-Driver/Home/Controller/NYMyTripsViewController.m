@@ -113,7 +113,7 @@
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:[USER_DEFAULT objectForKey:@"user_id"] forKey:@"driver_id"];
     [MBProgressHUD showMessage:@"正在加载"];
-    [DownloadManager post:@"http://112.124.115.81/m.php?m=UserApi&a=myTrips" params:params success:^(id json) {
+    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"myTrips"] params:params success:^(id json) {
         [MBProgressHUD hideHUD];
         @try {
             _myTripModel = [[NYMyTripModel alloc] initWithDictionary:json error:nil];
@@ -178,7 +178,7 @@
         NYMYTripInfoModel *infoModel = _myTripModel.info;
         NYMyTripDetaileModel *detailModel = infoModel.detaile[indexPath.row];
         [MBProgressHUD showMessage:@"正在删除"];
-        [DownloadManager post:@"http://112.124.115.81/m.php?m=UserApi&a=order_delete" params:@{@"route_id":detailModel.route_id} success:^(id json) {
+        [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"order_delete"] params:@{@"route_id":detailModel.route_id} success:^(id json) {
             NYLog(@"%@",json);
             [MBProgressHUD hideHUD];
             NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];

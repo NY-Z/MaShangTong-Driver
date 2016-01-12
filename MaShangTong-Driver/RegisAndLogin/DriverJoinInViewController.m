@@ -54,19 +54,12 @@
 
 - (void)setNavigationBar
 {
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 44)];
-    titleLabel.text = @"司机加盟";
-    titleLabel.textAlignment = 1;
-    titleLabel.textColor = RGBColor(112, 187, 254, 1.f);
-    titleLabel.font = [UIFont systemFontOfSize:16];
-    self.navigationItem.titleView = titleLabel;
+    self.navigationItem.title = @"司机加盟";
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:21],NSForegroundColorAttributeName:RGBColor(73, 185, 254, 1.f)}];
     
     UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backBtn setTitle:@"返回" forState:UIControlStateNormal];
-    [backBtn setTitleColor:RGBColor(199, 199, 199, 1.f) forState:UIControlStateNormal];
-    backBtn.titleLabel.font = [UIFont systemFontOfSize:13];
-    [backBtn setImage:[UIImage imageNamed:@"backBtn"] forState:UIControlStateNormal];
-    backBtn.size = CGSizeMake(54, 44);
+    [backBtn setImage:[UIImage imageNamed:@"fanhui"] forState:UIControlStateNormal];
+    backBtn.size = CGSizeMake(22, 22);
     [backBtn addTarget:self action:@selector(backBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backBtn];
 }
@@ -86,6 +79,25 @@
     _verification = @"";
     [self setXibViews];
     [self setNavigationBar];
+    
+    [self requestDriversCount];
+}
+
+- (void)requestDriversCount
+{
+    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"driver_first"] params:nil success:^(id json) {
+        @try {
+            self.accountLabel.text = json[@"num"];
+        }
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+        }
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -189,25 +201,33 @@
     [params setValue:@"3" forKey:@"group_id"];
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"register"] params:params success:^(id json) {
         
-        NYLog(@"%@",json);
-        NSString *resultStr = json[@"result"];
-        if ([resultStr isEqualToString:@"1"]) {
+        @try {
+            NYLog(@"%@",json);
+            NSString *resultStr = json[@"result"];
+            if ([resultStr isEqualToString:@"1"]) {
+                
+                [MBProgressHUD showSuccess:@"注册成功 请继续填写您的详细信息"];
+                DetailInfoViewController *detailInfo = [[DetailInfoViewController alloc] init];
+                detailInfo.userId = json[@"user_id"];
+                [self.navigationController pushViewController:detailInfo animated:YES];
+                
+                
+            } else if ([resultStr isEqualToString:@"0"]) {
+                
+                [MBProgressHUD showError:@"注册失败，请重新注册"];
+                return ;
+                
+            } else if ([resultStr isEqualToString:@"-1"]) {
+                
+                [MBProgressHUD showError:@"该手机号码已注册"];
+                return;
+            }
+        }
+        @catch (NSException *exception) {
             
-            [MBProgressHUD showSuccess:@"注册成功 请继续填写您的详细信息"];
-            DetailInfoViewController *detailInfo = [[DetailInfoViewController alloc] init];
-            detailInfo.userId = json[@"user_id"];
-            [self.navigationController pushViewController:detailInfo animated:YES];
+        }
+        @finally {
             
-            
-        } else if ([resultStr isEqualToString:@"0"]) {
-            
-            [MBProgressHUD showError:@"注册失败，请重新注册"];
-            return ;
-            
-        } else if ([resultStr isEqualToString:@"-1"]) {
-            
-            [MBProgressHUD showError:@"该手机号码已注册"];
-            return;
         }
         
     } failure:^(NSError *error) {

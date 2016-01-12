@@ -18,6 +18,7 @@
 
 #import "ModefiedViewController.h"
 #import "WaitForPayViewController.h"
+#import "NYDiscoverViewController.h"
 
 #import <APService.h>
 
@@ -107,6 +108,9 @@
         UINavigationController *regisDriverNavi = [[UINavigationController alloc] initWithRootViewController:regisDriver];
         self.window.rootViewController = regisDriverNavi;
     }
+
+//    self.window.rootViewController = [[NYDiscoverViewController alloc] init];
+    
     [self.window makeKeyAndVisible];
     return YES;
 }

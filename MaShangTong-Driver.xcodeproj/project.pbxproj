@@ -25,6 +25,12 @@
 		0E18E0071C31298D00D77CEC /* StarsForeground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E18E0031C31298D00D77CEC /* StarsForeground@2x.png */; };
 		0E18E0081C31298D00D77CEC /* StarsForeground@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E18E0041C31298D00D77CEC /* StarsForeground@3x.png */; };
 		0E18E00C1C315F6E00D77CEC /* TaxiGuideImageView@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E18E00B1C315F6E00D77CEC /* TaxiGuideImageView@2x.png */; };
+		0E20D3DA1C44A10200BF6177 /* NYDiscoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E20D3D81C44A10200BF6177 /* NYDiscoverViewController.m */; };
+		0E20D3DB1C44A10200BF6177 /* NYDiscoverViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E20D3D91C44A10200BF6177 /* NYDiscoverViewController.xib */; };
+		0E20D3DE1C44A76800BF6177 /* discover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E20D3DC1C44A76800BF6177 /* discover@2x.png */; };
+		0E20D3DF1C44A76800BF6177 /* discover@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E20D3DD1C44A76800BF6177 /* discover@3x.png */; };
+		0E20D4091C44BED400BF6177 /* NYDriverDelegateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E20D4071C44BED400BF6177 /* NYDriverDelegateViewController.m */; };
+		0E20D40A1C44BED400BF6177 /* NYDriverDelegateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E20D4081C44BED400BF6177 /* NYDriverDelegateViewController.xib */; };
 		0E5A15281C3B661F001380C6 /* NYForgetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5A15261C3B661F001380C6 /* NYForgetPasswordViewController.m */; };
 		0E5A15291C3B661F001380C6 /* NYForgetPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E5A15271C3B661F001380C6 /* NYForgetPasswordViewController.xib */; };
 		0E5BD0461C2E5BC200814CD9 /* GSsexView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5BD0451C2E5BC200814CD9 /* GSsexView.m */; };
@@ -292,6 +298,14 @@
 		0E18E0031C31298D00D77CEC /* StarsForeground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "StarsForeground@2x.png"; sourceTree = "<group>"; };
 		0E18E0041C31298D00D77CEC /* StarsForeground@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "StarsForeground@3x.png"; sourceTree = "<group>"; };
 		0E18E00B1C315F6E00D77CEC /* TaxiGuideImageView@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TaxiGuideImageView@2x.png"; sourceTree = "<group>"; };
+		0E20D3D71C44A10200BF6177 /* NYDiscoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYDiscoverViewController.h; sourceTree = "<group>"; };
+		0E20D3D81C44A10200BF6177 /* NYDiscoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYDiscoverViewController.m; sourceTree = "<group>"; };
+		0E20D3D91C44A10200BF6177 /* NYDiscoverViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NYDiscoverViewController.xib; sourceTree = "<group>"; };
+		0E20D3DC1C44A76800BF6177 /* discover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "discover@2x.png"; sourceTree = "<group>"; };
+		0E20D3DD1C44A76800BF6177 /* discover@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "discover@3x.png"; sourceTree = "<group>"; };
+		0E20D4061C44BED400BF6177 /* NYDriverDelegateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYDriverDelegateViewController.h; sourceTree = "<group>"; };
+		0E20D4071C44BED400BF6177 /* NYDriverDelegateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYDriverDelegateViewController.m; sourceTree = "<group>"; };
+		0E20D4081C44BED400BF6177 /* NYDriverDelegateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NYDriverDelegateViewController.xib; sourceTree = "<group>"; };
 		0E2497B41C2D0ACE00D225C4 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		0E2497B51C2D0ACE00D225C4 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		0E5A15251C3B661F001380C6 /* NYForgetPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYForgetPasswordViewController.h; sourceTree = "<group>"; };
@@ -794,6 +808,9 @@
 		0EABC3CA1C2D4595000A7DED /* 发现 */ = {
 			isa = PBXGroup;
 			children = (
+				0E20D3D71C44A10200BF6177 /* NYDiscoverViewController.h */,
+				0E20D3D81C44A10200BF6177 /* NYDiscoverViewController.m */,
+				0E20D3D91C44A10200BF6177 /* NYDiscoverViewController.xib */,
 			);
 			name = "发现";
 			sourceTree = "<group>";
@@ -979,6 +996,8 @@
 		18B4E7E61C2C1476004E0ACC /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				0E20D3DC1C44A76800BF6177 /* discover@2x.png */,
+				0E20D3DD1C44A76800BF6177 /* discover@3x.png */,
 				0E05EBCC1C3E97A5008010AC /* SettingContractUs@2x.png */,
 				0E05EBCD1C3E97A5008010AC /* SettingContractUs@3x.png */,
 				0E11E76A1C3E416A00B7F624 /* minus@2x.png */,
@@ -1207,8 +1226,7 @@
 		18B4E93D1C2C1535004E0ACC /* RegisAndLogin */ = {
 			isa = PBXGroup;
 			children = (
-				18B4E93E1C2C1535004E0ACC /* DetailInfoViewController.h */,
-				18B4E93F1C2C1535004E0ACC /* DetailInfoViewController.m */,
+				18B4E9461C2C1535004E0ACC /* ValuationRule */,
 				18B4E9401C2C1535004E0ACC /* DriverJoinInViewController.h */,
 				18B4E9411C2C1535004E0ACC /* DriverJoinInViewController.m */,
 				18B4E9421C2C1535004E0ACC /* DriverJoinInViewController.xib */,
@@ -1218,7 +1236,11 @@
 				0E5A15251C3B661F001380C6 /* NYForgetPasswordViewController.h */,
 				0E5A15261C3B661F001380C6 /* NYForgetPasswordViewController.m */,
 				0E5A15271C3B661F001380C6 /* NYForgetPasswordViewController.xib */,
-				18B4E9461C2C1535004E0ACC /* ValuationRule */,
+				0E20D4061C44BED400BF6177 /* NYDriverDelegateViewController.h */,
+				0E20D4071C44BED400BF6177 /* NYDriverDelegateViewController.m */,
+				0E20D4081C44BED400BF6177 /* NYDriverDelegateViewController.xib */,
+				18B4E93E1C2C1535004E0ACC /* DetailInfoViewController.h */,
+				18B4E93F1C2C1535004E0ACC /* DetailInfoViewController.m */,
 			);
 			path = RegisAndLogin;
 			sourceTree = "<group>";
@@ -1385,6 +1407,7 @@
 				0E11E7701C3E416A00B7F624 /* plus@2x.png in Resources */,
 				18B4E9041C2C1476004E0ACC /* yonghu@3x.png in Resources */,
 				18B4E8EA1C2C1476004E0ACC /* wodefenxiang@3x.png in Resources */,
+				0E20D3DE1C44A76800BF6177 /* discover@2x.png in Resources */,
 				0EEF3F161C3D556D001D8F30 /* NYSuggestionViewController.xib in Resources */,
 				18B4E8B81C2C1476004E0ACC /* lukuang@3x.png in Resources */,
 				18B4E8D31C2C1476004E0ACC /* shijian@2x.png in Resources */,
@@ -1448,6 +1471,7 @@
 				18B4E8B01C2C1476004E0ACC /* icon.png in Resources */,
 				18B4E8E81C2C1476004E0ACC /* weixinpengyoufenxiang@3x.png in Resources */,
 				18B4E89E1C2C1476004E0ACC /* dingwei1@2x.png in Resources */,
+				0E20D3DF1C44A76800BF6177 /* discover@3x.png in Resources */,
 				18B4E8AE1C2C1476004E0ACC /* gerenzhongxin@2x.png in Resources */,
 				18B4E9051C2C1476004E0ACC /* yuangongxinxi@2x.png in Resources */,
 				18B4E8FD1C2C1476004E0ACC /* xiazai@2x.png in Resources */,
@@ -1500,6 +1524,7 @@
 				18B4E8BD1C2C1476004E0ACC /* payBtnSelect@2x.png in Resources */,
 				18B4E8981C2C1476004E0ACC /* che3Select@2x.png in Resources */,
 				18B4E8831C2C1476004E0ACC /* appointment@3x.png in Resources */,
+				0E20D40A1C44BED400BF6177 /* NYDriverDelegateViewController.xib in Resources */,
 				18B4E8891C2C1476004E0ACC /* baoxiaoguize@3x.png in Resources */,
 				18B4E8D71C2C1476004E0ACC /* sijitouxiang@2x.png in Resources */,
 				0E11E76F1C3E416A00B7F624 /* minus@3x.png in Resources */,
@@ -1509,6 +1534,7 @@
 				18B4E8AA1C2C1476004E0ACC /* faxian@2x.png in Resources */,
 				18B4E8CA1C2C1476004E0ACC /* renminbi@3x.png in Resources */,
 				18B4E8D01C2C1476004E0ACC /* shanchu@3x.png in Resources */,
+				0E20D3DB1C44A10200BF6177 /* NYDiscoverViewController.xib in Resources */,
 				18B4E8931C2C1476004E0ACC /* che2Deselect@3x.png in Resources */,
 				18B4E8B61C2C1476004E0ACC /* LOGO@3x.png in Resources */,
 				18B4E8EC1C2C1476004E0ACC /* wodepinglun@3x.png in Resources */,
@@ -1623,6 +1649,7 @@
 				18B4E93C1C2C1507004E0ACC /* NavPointAnnotation.m in Sources */,
 				0EEF3F0A1C3BAC69001D8F30 /* InputViewController.m in Sources */,
 				0E5BD05A1C2E6D1D00814CD9 /* NYTaxiGuideViewController.m in Sources */,
+				0E20D4091C44BED400BF6177 /* NYDriverDelegateViewController.m in Sources */,
 				18B4E7761C2C104A004E0ACC /* ViewController.m in Sources */,
 				0E18DFED1C30E99E00D77CEC /* NYMyCenterModel.m in Sources */,
 				18B4E7E51C2C146F004E0ACC /* PassengerModel.m in Sources */,
@@ -1648,6 +1675,7 @@
 				18B4E9671C2C1542004E0ACC /* MBProgressHUD+MJ.m in Sources */,
 				0EEF3F151C3D556D001D8F30 /* NYSuggestionViewController.m in Sources */,
 				0E18DFE81C30DF5800D77CEC /* NYCommentDetailViewController.m in Sources */,
+				0E20D3DA1C44A10200BF6177 /* NYDiscoverViewController.m in Sources */,
 				0E5BD0521C2E677F00814CD9 /* GSauthenticationVC.m in Sources */,
 				18B4E7731C2C104A004E0ACC /* AppDelegate.m in Sources */,
 				18B4E7881C2C143C004E0ACC /* SharedMapView.m in Sources */,

@@ -72,13 +72,21 @@
     [MBProgressHUD showMessage:@"提现中"];
     NSDictionary *params = @{@"user_id":[USER_DEFAULT objectForKey:@"user_id"],@"money":_priceLabel.text,@"bank_name":_nameLabel.text,@"bank_account":_accountLabel.text,@"bank_user":_cardholderTextField.text};
     [DownloadManager post:@"http://112.124.115.81/m.php?m=OrderApi&a=withDraw" params:params success:^(id json) {
-        NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-        if ([dataStr isEqualToString:@"0"]) {
-            [MBProgressHUD showError:@"提现失败，请重试"];
-            return ;
+        @try {
+            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+            if ([dataStr isEqualToString:@"0"]) {
+                [MBProgressHUD showError:@"提现失败，请重试"];
+                return ;
+            }
+            [MBProgressHUD showSuccess:@"提现成功"];
+            [self.navigationController popViewControllerAnimated:YES];
         }
-        [MBProgressHUD showSuccess:@"提现成功"];
-        [self.navigationController popViewControllerAnimated:YES];
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+        }
     } failure:^(NSError *error) {
         [MBProgressHUD showError:@"提现失败，请重试"];
     }];

@@ -12,6 +12,7 @@
 
 - (IBAction)confirmBtnClicked:(id)sender;
 @property (weak, nonatomic) IBOutlet UITextField *mobileTextField;
+@property (weak, nonatomic) IBOutlet UITextField *nameTextField;
 @end
 
 @implementation NYInvitationViewController
@@ -54,17 +55,29 @@
         [MBProgressHUD showError:@"请输入正确的手机号"];
         return;
     }
+    if (![Helper justNickname:_nameTextField.text]) {
+        [MBProgressHUD showError:@"请输入正确的姓名"];
+        return;
+    }
     [MBProgressHUD showMessage:@"请稍候"];
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"user_recomment"] params:@{@"mobile":_mobileTextField.text,@"group_id":@"3"} success:^(id json) {
-        [MBProgressHUD hideHUD];
-        NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-        if ([dataStr isEqualToString:@"0"]) {
-            [MBProgressHUD showError:json[@"info"]];
-            return ;
-        } else if ([dataStr isEqualToString:@"1"]) {
-            [MBProgressHUD showSuccess:json[@"info"]];
-        } else {
-            [MBProgressHUD showError:@"网络错误"];
+        @try {
+            [MBProgressHUD hideHUD];
+            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+            if ([dataStr isEqualToString:@"0"]) {
+                [MBProgressHUD showError:json[@"info"]];
+                return ;
+            } else if ([dataStr isEqualToString:@"1"]) {
+                [MBProgressHUD showSuccess:json[@"info"]];
+            } else {
+                [MBProgressHUD showError:@"网络错误"];
+            }
+        }
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
         }
     } failure:^(NSError *error) {
         [MBProgressHUD hideHUD];
@@ -79,7 +92,7 @@
     [params setValue:@"码尚通" forKey:@"name"];
     [params setValue:@"码尚通" forKey:@"sign"];
     [params setValue:@"6C572C72EE1CA257886E65C7E5F3" forKey:@"pwd"];
-    [params setValue:@"（邀请人姓名）邀请您加入码尚通司机，让我们低碳出行，绿色生活！赶快点击加入吧，（）退订回复TD" forKey:@"content"];
+    [params setValue:[NSString stringWithFormat:@"（%@）邀请您加入码尚通司机，让我们低碳出行，绿色生活！赶快点击加入吧，（）退订回复TD",_nameTextField.text] forKey:@"content"];
     [params setValue:@"18752008629" forKey:@"mobile"];
     [params setValue:@"pt" forKey:@"type"];
     

@@ -139,21 +139,30 @@
     [MBProgressHUD showMessage:@"请稍候"];
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"check_bill"] params:@{@"route_id":_model.route_id} success:^(id json) {
 
-        [MBProgressHUD hideHUD];
-        NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-        if ([dataStr isEqualToString:@"1"]) {
-            self.priceModel = [[ActualPriceModel alloc] initWithDictionary:json[@"info"] error:nil];
-            _priceLabel.text = [NSString stringWithFormat:@"%.2f元",[self.priceModel.total_price floatValue]];
-            _stepLabel.text = [NSString stringWithFormat:@"%.2f元",[self.priceModel.start_price floatValue]];
-            _distanceLabel.text = [NSString stringWithFormat:@"里程%.2fkm",[self.priceModel.mileage floatValue]];
-            _distancePriceLabel.text = [NSString stringWithFormat:@"%.2f元",[self.priceModel.mileage_price floatValue]*1.5];
-            _lowSpeedTimeLabel.text = [NSString stringWithFormat:@"低速%.2f分钟",[self.priceModel.low_time floatValue]];
-            _lowSpeedPriceLabel.text = [NSString stringWithFormat:@"%.2f元",[self.priceModel.low_price floatValue]];
-            _longMileagePriceLabel.text = [NSString stringWithFormat:@"%.2f元",[self.priceModel.far_price floatValue]];
-            _nightDrivePriceLabel.text = [NSString stringWithFormat:@"%.2f元",[self.priceModel.night_price floatValue]];
-        } else {
-            [self configPrice];
+        @try {
+            [MBProgressHUD hideHUD];
+            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+            if ([dataStr isEqualToString:@"1"]) {
+                self.priceModel = [[ActualPriceModel alloc] initWithDictionary:json[@"info"] error:nil];
+                _priceLabel.text = [NSString stringWithFormat:@"%.2f元",[self.priceModel.total_price floatValue]];
+                _stepLabel.text = [NSString stringWithFormat:@"%.2f元",[self.priceModel.start_price floatValue]];
+                _distanceLabel.text = [NSString stringWithFormat:@"里程%.2fkm",[self.priceModel.mileage floatValue]];
+                _distancePriceLabel.text = [NSString stringWithFormat:@"%.2f元",[self.priceModel.mileage_price floatValue]*1.5];
+                _lowSpeedTimeLabel.text = [NSString stringWithFormat:@"低速%.2f分钟",[self.priceModel.low_time floatValue]];
+                _lowSpeedPriceLabel.text = [NSString stringWithFormat:@"%.2f元",[self.priceModel.low_price floatValue]];
+                _longMileagePriceLabel.text = [NSString stringWithFormat:@"%.2f元",[self.priceModel.far_price floatValue]];
+                _nightDrivePriceLabel.text = [NSString stringWithFormat:@"%.2f元",[self.priceModel.night_price floatValue]];
+            } else {
+                [self configPrice];
+            }
         }
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+        }
+        
     } failure:^(NSError *error) {
         [MBProgressHUD hideHUD];
         NYLog(@"%@",error.localizedDescription);
@@ -185,18 +194,26 @@
     
     if (tempArr.count == 0) {
         [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"boarding"] params:@{@"route_id":_model.route_id,@"route_status":@"5"} success:^(id json) {
-            NSString *resultStr = [NSString stringWithFormat:@"%@",json[@"result"]];
-            [MBProgressHUD hideHUD];
-            if ([resultStr isEqualToString:@"1"]) {
-                [MBProgressHUD showSuccess:@"确认成功"];
-                
-                WaitForPayViewController *waitForPay = [[WaitForPayViewController alloc] init];
-                waitForPay.model = self.model;
-                waitForPay.price = [_priceLabel.text substringToIndex:_priceLabel.text.length-1];
-                [self.navigationController pushViewController:waitForPay animated:YES];
-            } else {
+            @try {
+                NSString *resultStr = [NSString stringWithFormat:@"%@",json[@"result"]];
                 [MBProgressHUD hideHUD];
-                [MBProgressHUD showError:@"请重新确认价格"];
+                if ([resultStr isEqualToString:@"1"]) {
+                    [MBProgressHUD showSuccess:@"确认成功"];
+                    
+                    WaitForPayViewController *waitForPay = [[WaitForPayViewController alloc] init];
+                    waitForPay.model = self.model;
+                    waitForPay.price = [_priceLabel.text substringToIndex:_priceLabel.text.length-1];
+                    [self.navigationController pushViewController:waitForPay animated:YES];
+                } else {
+                    [MBProgressHUD hideHUD];
+                    [MBProgressHUD showError:@"请重新确认价格"];
+                }
+            }
+            @catch (NSException *exception) {
+                
+            }
+            @finally {
+                
             }
         } failure:^(NSError *error) {
             [MBProgressHUD hideHUD];
@@ -206,17 +223,25 @@
     }
     
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"update_bill"] params:@{@"highway_fee":tempArr[0],@"road_roll":tempArr[1],@"parking_fee":tempArr[2],@"other_fee":tempArr[3],@"route_id":_model.route_id,@"route_status":@"5"} success:^(id json) {
-        NYLog(@"%@",json);
-        [MBProgressHUD hideHUD];
-        NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-        if ([dataStr isEqualToString:@"0"]) {
-            [MBProgressHUD showError:json[@"info"]];
-            return ;
-        } else {
-            WaitForPayViewController *waitForPay = [[WaitForPayViewController alloc] init];
-            waitForPay.model = self.model;
-            waitForPay.price = [NSString stringWithFormat:@"%@",json[@"info"]];
-            [self.navigationController pushViewController:waitForPay animated:YES];
+        @try {
+            NYLog(@"%@",json);
+            [MBProgressHUD hideHUD];
+            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+            if ([dataStr isEqualToString:@"0"]) {
+                [MBProgressHUD showError:json[@"info"]];
+                return ;
+            } else {
+                WaitForPayViewController *waitForPay = [[WaitForPayViewController alloc] init];
+                waitForPay.model = self.model;
+                waitForPay.price = [NSString stringWithFormat:@"%@",json[@"info"]];
+                [self.navigationController pushViewController:waitForPay animated:YES];
+            }
+        }
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
         }
     } failure:^(NSError *error) {
         [MBProgressHUD hideHUD];

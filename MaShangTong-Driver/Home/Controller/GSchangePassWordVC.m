@@ -157,14 +157,22 @@
     }
     [MBProgressHUD showMessage:@"修改中"];
     [DownloadManager post:url params:param success:^(id json) {
-        [MBProgressHUD hideHUD];
-        NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-        if ([dataStr isEqualToString:@"1"]) {
-            [MBProgressHUD showSuccess:@"密码修改成功"];
-            [self.navigationController popViewControllerAnimated:YES];
-            return ;
-        } else {
-            [MBProgressHUD showSuccess:json[@"info"]];
+        @try {
+            [MBProgressHUD hideHUD];
+            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+            if ([dataStr isEqualToString:@"1"]) {
+                [MBProgressHUD showSuccess:@"密码修改成功"];
+                [self.navigationController popViewControllerAnimated:YES];
+                return ;
+            } else {
+                [MBProgressHUD showSuccess:json[@"info"]];
+            }
+        }
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
         }
     } failure:^(NSError *error) {
         

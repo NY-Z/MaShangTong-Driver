@@ -13,7 +13,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *passengerHeaderView;
 @property (weak, nonatomic) IBOutlet UILabel *passengerNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *passengerMobileLabel;
-@property (weak, nonatomic) IBOutlet UILabel *passengerPriceLabel;
 @property (weak, nonatomic) IBOutlet StarView *rateImageView;
 @property (weak, nonatomic) IBOutlet UILabel *commentLabel;
 
@@ -43,19 +42,28 @@
 - (void)configDetail
 {
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"comment_detail"] params:@{@"route_id":_param[@"route_id"],@"user_id":_param[@"user_id"],@"driver_id":_param[@"driver_id"]} success:^(id json) {
-        NYLog(@"%@",json);
-        NSString *price = [NSString stringWithFormat:@"%.2f",[json[@"info"][@"price"][@"total_price"] floatValue]];
-        NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@元",price]];
-        [attri addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:42]} range:NSMakeRange(0, price.length)];
-        _passengerPriceLabel.attributedText = attri;
-        NSArray *arr = json[@"info"][@"res"];
-        NSDictionary *dic = arr[0];
-        _passengerNameLabel.text = dic[@"user_name"];
-        NSMutableString *mulStr = [dic[@"mobile"] mutableCopy];
-        [mulStr replaceCharactersInRange:NSMakeRange(3, 4) withString:@"****"];
-        _passengerMobileLabel.text = mulStr;
-        _commentLabel.text = dic[@"content"];
-        [_rateImageView setRating:[dic[@"stars"] floatValue]];
+        
+        @try {
+            NYLog(@"%@",json);
+//            NSString *price = [NSString stringWithFormat:@"%.2f",[json[@"info"][@"price"][@"total_price"] floatValue]];
+//            NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@元",price]];
+//            [attri addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:42]} range:NSMakeRange(0, price.length)];
+//            _passengerPriceLabel.attributedText = attri;
+            NSArray *arr = json[@"info"][@"res"];
+            NSDictionary *dic = arr[0];
+            _passengerNameLabel.text = dic[@"user_name"];
+            NSMutableString *mulStr = [dic[@"mobile"] mutableCopy];
+            [mulStr replaceCharactersInRange:NSMakeRange(3, 4) withString:@"****"];
+            _passengerMobileLabel.text = mulStr;
+            _commentLabel.text = dic[@"content"];
+            [_rateImageView setRating:[dic[@"stars"] floatValue]];
+        }
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+        }
         
     } failure:^(NSError *error) {
         [MBProgressHUD showError:@"网络错误"];

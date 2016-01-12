@@ -23,6 +23,7 @@
 #import "NYMyCommentViewController.h"
 #import "NYMyWalletViewController.h"
 #import "NYInvitationViewController.h"
+#import "NYDiscoverViewController.h"
 #import "MyNewsCenterVC.h"
 #import "NYShareViewController.h"
 #import "SettingViewController.h"
@@ -292,7 +293,8 @@
                 break;
                 
             case 6:
-                
+                vc = [[NYDiscoverViewController alloc] init];
+                [weakSelf.navigationController pushViewController:vc animated:YES];
                 break;
             case 7:
                 vc = [[SettingViewController alloc] init];
@@ -404,13 +406,13 @@
     return nil;
 }
 
-- (void)mapView:(MAMapView *)mapView regionDidChangeAnimated:(BOOL)animated
-{
-    @autoreleasepool {
-        [self.mapView removeFromSuperview];
-        [self.view addSubview:mapView];
-    }
-}
+//- (void)mapView:(MAMapView *)mapView regionDidChangeAnimated:(BOOL)animated
+//{
+//    @autoreleasepool {
+//        [self.mapView removeFromSuperview];
+//        [self.view addSubview:mapView];
+//    }
+//}
 
 #pragma mark - IFlySpeechSynthesizerDelegate
 - (void) onCompleted:(IFlySpeechError *) error {
@@ -442,17 +444,25 @@
     [params setObject:_reservation_type forKey:@"reservation_type"];
     
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"sendorder"] params:params success:^(id json) {
-        if ([json[@"data"] isKindOfClass:[NSArray class]]) {
-            NSArray *result = (NSArray *)json[@"data"];
-            listenBtn.enabled = YES;
-            _routeId = result[0][@"route_id"];
-            _speakingArr = [NSArray array];
-            _speakingArr = [result copy];
-            _currentSpeakIndex = 0;
-            [self.iFlySpeechSynthesizer startSpeaking:_speakingArr[0][@"mess"]];
+        @try {
+            if ([json[@"data"] isKindOfClass:[NSArray class]]) {
+                NSArray *result = (NSArray *)json[@"data"];
+                listenBtn.enabled = YES;
+                _routeId = result[0][@"route_id"];
+                _speakingArr = [NSArray array];
+                _speakingArr = [result copy];
+                _currentSpeakIndex = 0;
+                [self.iFlySpeechSynthesizer startSpeaking:_speakingArr[0][@"mess"]];
+            }
+            else if ([json[@"data"] isKindOfClass:[NSString class]] && _isRequest){
+                [_timer setFireDate:[NSDate distantPast]];
+            }
         }
-        else if ([json[@"data"] isKindOfClass:[NSString class]] && _isRequest){
-            [_timer setFireDate:[NSDate distantPast]];
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
         }
     } failure:^(NSError *error) {
         [_timer setFireDate:[NSDate distantPast]];
@@ -498,35 +508,43 @@
     [params setValue:_routeId forKey:@"route_id"];
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"graporder"] params:params success:^(id json) {
         
-        if ([json[@"result"] isEqualToString:@"0"]) {
+        @try {
+            if ([json[@"result"] isEqualToString:@"0"]) {
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showError:@"抢单失败"];
+                _isRequest = YES;
+                _isAllowSpeaking = YES;
+                [_timer setFireDate:[NSDate distantPast]];
+                listenBtn.enabled = YES;
+                offRunningBtn.selected = YES;
+                return ;
+            }    else if ([json[@"result"] isEqualToString:@"-1"]) {
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showError:@"此单已被抢"];
+                listenBtn.enabled = NO;
+                _isRequest = YES;
+                _isAllowSpeaking = YES;
+                [_timer setFireDate:[NSDate distantPast]];
+                
+                listenBtn.enabled = YES;
+                offRunningBtn.selected = YES;
+                return ;
+            }
+            PassengerModel *model = [[PassengerModel alloc] initWithDictionary:json error:nil];
+            DataModel *dataModel = model.data[0];
             [MBProgressHUD hideHUD];
-            [MBProgressHUD showError:@"抢单失败"];
-            _isRequest = YES;
-            _isAllowSpeaking = YES;
-            [_timer setFireDate:[NSDate distantPast]];
-            listenBtn.enabled = YES;
-            offRunningBtn.selected = YES;
-            return ;
-        }    else if ([json[@"result"] isEqualToString:@"-1"]) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showError:@"此单已被抢"];
-            listenBtn.enabled = NO;
-            _isRequest = YES;
-            _isAllowSpeaking = YES;
-            [_timer setFireDate:[NSDate distantPast]];
             
-            listenBtn.enabled = YES;
-            offRunningBtn.selected = YES;
-            return ;
+            PickUpPassengerViewController *passengerVc = [[PickUpPassengerViewController alloc] init];
+            passengerVc.model = dataModel;
+            [self.navigationController pushViewController:passengerVc animated:YES];
+            
         }
-        PassengerModel *model = [[PassengerModel alloc] initWithDictionary:json error:nil];
-        DataModel *dataModel = model.data[0];
-        [MBProgressHUD hideHUD];
-        
-        PickUpPassengerViewController *passengerVc = [[PickUpPassengerViewController alloc] init];
-        passengerVc.model = dataModel;
-        [self.navigationController pushViewController:passengerVc animated:YES];
-        
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+        }
     } failure:^(NSError *error) {
         [MBProgressHUD hideHUD];
         [self.iFlySpeechSynthesizer stopSpeaking];

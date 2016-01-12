@@ -10,6 +10,7 @@
 #import "Masonry.h"
 #import "MyCenterCell.h"
 #import "DriverInfoModel.h"
+#import "NYDiscoverViewController.h"
 
 #define kMyCenterImage @"image"
 #define kMyCenterTitle @"title"

@@ -99,18 +99,26 @@
         }
 
         [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"update_personalData"] params:@{@"user_id":[USER_DEFAULT objectForKey:@"user_id"],@"sex":sexStr} success:^(id json) {
-            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-            if ([dataStr isEqualToString:@"0"]) {
-                [MBProgressHUD showError:@"个人资料修改失败"];
-                return ;
-            } else if ([dataStr isEqualToString:@"1"]) {
-                [MBProgressHUD showSuccess:@"个人资料修改成功"];
-                cell.subTitleLabel.text = sexStr;
+            @try {
+                NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+                if ([dataStr isEqualToString:@"0"]) {
+                    [MBProgressHUD showError:@"个人资料修改失败"];
+                    return ;
+                } else if ([dataStr isEqualToString:@"1"]) {
+                    [MBProgressHUD showSuccess:@"个人资料修改成功"];
+                    cell.subTitleLabel.text = sexStr;
+                    
+                    DriverInfoModel *driverInfo = [NSKeyedUnarchiver unarchiveObjectWithData:[USER_DEFAULT objectForKey:@"user_info"]];
+                    driverInfo.sex = sexStr;
+                    [USER_DEFAULT setObject:[NSKeyedArchiver archivedDataWithRootObject:driverInfo] forKey:@"user_info"];
+                    [USER_DEFAULT synchronize];
+                }
+            }
+            @catch (NSException *exception) {
                 
-                DriverInfoModel *driverInfo = [NSKeyedUnarchiver unarchiveObjectWithData:[USER_DEFAULT objectForKey:@"user_info"]];
-                driverInfo.sex = sexStr;
-                [USER_DEFAULT setObject:[NSKeyedArchiver archivedDataWithRootObject:driverInfo] forKey:@"user_info"];
-                [USER_DEFAULT synchronize];
+            }
+            @finally {
+                
             }
         } failure:^(NSError *error) {
             [MBProgressHUD showError:@"个人资料修改失败"];
@@ -128,18 +136,26 @@
         }
         
         [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"update_personalData"] params:@{@"user_id":[USER_DEFAULT objectForKey:@"user_id"],@"age":ageStr} success:^(id json) {
-            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-            if ([dataStr isEqualToString:@"0"]) {
-                [MBProgressHUD showError:@"个人资料修改失败"];
-                return ;
-            } else if ([dataStr isEqualToString:@"1"]) {
-                [MBProgressHUD showSuccess:@"个人资料修改成功"];
-                cell.subTitleLabel.text = ageStr;
+            @try {
+                NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+                if ([dataStr isEqualToString:@"0"]) {
+                    [MBProgressHUD showError:@"个人资料修改失败"];
+                    return ;
+                } else if ([dataStr isEqualToString:@"1"]) {
+                    [MBProgressHUD showSuccess:@"个人资料修改成功"];
+                    cell.subTitleLabel.text = ageStr;
+                    
+                    DriverInfoModel *driverInfo = [NSKeyedUnarchiver unarchiveObjectWithData:[USER_DEFAULT objectForKey:@"user_info"]];
+                    driverInfo.snum = [ageStr substringWithRange:NSMakeRange(0, 2)];
+                    [USER_DEFAULT setObject:[NSKeyedArchiver archivedDataWithRootObject:driverInfo] forKey:@"user_info"];
+                    [USER_DEFAULT synchronize];
+                }
+            }
+            @catch (NSException *exception) {
                 
-                DriverInfoModel *driverInfo = [NSKeyedUnarchiver unarchiveObjectWithData:[USER_DEFAULT objectForKey:@"user_info"]];
-                driverInfo.snum = [ageStr substringWithRange:NSMakeRange(0, 2)];
-                [USER_DEFAULT setObject:[NSKeyedArchiver archivedDataWithRootObject:driverInfo] forKey:@"user_info"];
-                [USER_DEFAULT synchronize];
+            }
+            @finally {
+                
             }
         } failure:^(NSError *error) {
             [MBProgressHUD showError:@"个人资料修改失败"];
@@ -157,17 +173,25 @@
         }
         
         [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"update_personalData"] params:@{@"user_id":[USER_DEFAULT objectForKey:@"user_id"],@"city":cityName} success:^(id json) {
-            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-            if ([dataStr isEqualToString:@"0"]) {
-                [MBProgressHUD showError:@"个人资料修改失败"];
-                return ;
-            } else if ([dataStr isEqualToString:@"1"]) {
-                [MBProgressHUD showSuccess:@"个人资料修改成功"];
-                cell.subTitleLabel.text = cityName;
-                DriverInfoModel *driverInfo = [NSKeyedUnarchiver unarchiveObjectWithData:[USER_DEFAULT objectForKey:@"user_info"]];
-                driverInfo.city = cityName;
-                [USER_DEFAULT setObject:[NSKeyedArchiver archivedDataWithRootObject:driverInfo] forKey:@"user_info"];
-                [USER_DEFAULT synchronize];
+            @try {
+                NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+                if ([dataStr isEqualToString:@"0"]) {
+                    [MBProgressHUD showError:@"个人资料修改失败"];
+                    return ;
+                } else if ([dataStr isEqualToString:@"1"]) {
+                    [MBProgressHUD showSuccess:@"个人资料修改成功"];
+                    cell.subTitleLabel.text = cityName;
+                    DriverInfoModel *driverInfo = [NSKeyedUnarchiver unarchiveObjectWithData:[USER_DEFAULT objectForKey:@"user_info"]];
+                    driverInfo.city = cityName;
+                    [USER_DEFAULT setObject:[NSKeyedArchiver archivedDataWithRootObject:driverInfo] forKey:@"user_info"];
+                    [USER_DEFAULT synchronize];
+                }
+            }
+            @catch (NSException *exception) {
+                
+            }
+            @finally {
+                
             }
         } failure:^(NSError *error) {
             [MBProgressHUD showError:@"个人资料修改失败"];
@@ -404,19 +428,26 @@
     NYLog(@"%@",[compressedImageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]);
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"update_img"] params:@{@"user_id":[USER_DEFAULT objectForKey:@"user_id"],@"img":[compressedImageData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]} success:^(id json) {
         
-        NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-        if ([dataStr isEqualToString:@"0"]) {
-            [MBProgressHUD showError:@"上传失败"];
-            return ;
+        @try {
+            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+            if ([dataStr isEqualToString:@"0"]) {
+                [MBProgressHUD showError:@"上传失败"];
+                return ;
+            }
+            [MBProgressHUD showSuccess:@"上传成功"];
+            [USER_DEFAULT setObject:compressedImageData forKey:@"header_image"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeUserHeaderImage" object:compressedImage];
+            [USER_DEFAULT synchronize];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+            PersonInfoCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+            cell.headerView.image = compressedImage;
         }
-        [MBProgressHUD showSuccess:@"上传成功"];
-        [USER_DEFAULT setObject:compressedImageData forKey:@"header_image"];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeUserHeaderImage" object:compressedImage];
-        [USER_DEFAULT synchronize];
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-        PersonInfoCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
-        cell.headerView.image = compressedImage;
-        
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+        }
         
     } failure:^(NSError *error) {
         [MBProgressHUD showError:@"图片上传失败"];
@@ -458,19 +489,27 @@
             return;
         }
         [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"update_personalData"] params:@{@"user_id":[USER_DEFAULT objectForKey:@"user_id"],@"user_name":textFiled.text} success:^(id json) {
-            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-            if ([dataStr isEqualToString:@"0"]) {
-                [MBProgressHUD showError:@"昵称修改失败"];
-            } else {
-                [MBProgressHUD showSuccess:@"昵称修改成功"];
-                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
-                PersonInfoCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
-                cell.subTitleLabel.text = textFiled.text;
-                DriverInfoModel *driverInfo = [NSKeyedUnarchiver unarchiveObjectWithData:[USER_DEFAULT objectForKey:@"user_info"]];
-                driverInfo.user_name = textFiled.text;
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeUserInfo" object:textFiled.text];
-                [USER_DEFAULT setObject:[NSKeyedArchiver archivedDataWithRootObject:driverInfo] forKey:@"user_info"];
-                [USER_DEFAULT synchronize];
+            @try {
+                NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+                if ([dataStr isEqualToString:@"0"]) {
+                    [MBProgressHUD showError:@"昵称修改失败"];
+                } else {
+                    [MBProgressHUD showSuccess:@"昵称修改成功"];
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+                    PersonInfoCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+                    cell.subTitleLabel.text = textFiled.text;
+                    DriverInfoModel *driverInfo = [NSKeyedUnarchiver unarchiveObjectWithData:[USER_DEFAULT objectForKey:@"user_info"]];
+                    driverInfo.user_name = textFiled.text;
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"ChangeUserInfo" object:textFiled.text];
+                    [USER_DEFAULT setObject:[NSKeyedArchiver archivedDataWithRootObject:driverInfo] forKey:@"user_info"];
+                    [USER_DEFAULT synchronize];
+                }
+            }
+            @catch (NSException *exception) {
+                
+            }
+            @finally {
+                
             }
         } failure:^(NSError *error) {
             [MBProgressHUD showError:@"昵称修改失败"];

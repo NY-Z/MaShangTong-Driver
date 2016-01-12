@@ -518,18 +518,27 @@
         [params setValue:_model.route_id forKey:@"route_id"];
         [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"near_cars"] params:params success:^(id json) {
             
-            NYLog(@"%@",json);
-            NSString *routeStatus = [NSString stringWithFormat:@"%@",json[@"data"][@"route_status"]];
-            if ([routeStatus isEqualToString:@"-1"]) {
-                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"乘客已取消订单" message:nil preferredStyle:UIAlertControllerStyleAlert];
-                [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    [_timer setFireDate:[NSDate distantFuture]];
-                    [_timer invalidate];
-                    _timer = nil;
-                    [self.navigationController popViewControllerAnimated:YES];
-                }]];
-                [self presentViewController:alert animated:YES completion:nil];
+            @try {
+                NYLog(@"%@",json);
+                NSString *routeStatus = [NSString stringWithFormat:@"%@",json[@"data"][@"route_status"]];
+                if ([routeStatus isEqualToString:@"-1"]) {
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"乘客已取消订单" message:nil preferredStyle:UIAlertControllerStyleAlert];
+                    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        [_timer setFireDate:[NSDate distantFuture]];
+                        [_timer invalidate];
+                        _timer = nil;
+                        [self.navigationController popViewControllerAnimated:YES];
+                    }]];
+                    [self presentViewController:alert animated:YES completion:nil];
+                }
             }
+            @catch (NSException *exception) {
+                
+            }
+            @finally {
+                
+            }
+            
         } failure:^(NSError *error) {
 //            [MBProgressHUD showError:@"网络错误"];
         }];
@@ -792,21 +801,30 @@
     [params setValue:@"2" forKey:@"route_status"];
     
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"boarding"] params:params success:^(id json) {
-        NSString *resultStr = [NSString stringWithFormat:@"%@",json[@"result"]];
-        if ([resultStr isEqualToString:@"1"]) {
-            [_confirmBtn setTitle:@"开始计费" forState:UIControlStateNormal];
-            _appointBgView.hidden = YES;
-            _coverView.hidden = YES;
-            _buttonState = 1;
-            [MBProgressHUD hideHUD];
-            _isCalculateStart = 1;
-            return ;
-        } else if ([resultStr isEqualToString:@"0"]) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showError:@"请重新确认您已到达预约地点"];
-            return;
+       
+        @try {
+            NSString *resultStr = [NSString stringWithFormat:@"%@",json[@"result"]];
+            if ([resultStr isEqualToString:@"1"]) {
+                [_confirmBtn setTitle:@"开始计费" forState:UIControlStateNormal];
+                _appointBgView.hidden = YES;
+                _coverView.hidden = YES;
+                _buttonState = 1;
+                [MBProgressHUD hideHUD];
+                _isCalculateStart = 1;
+                return ;
+            } else if ([resultStr isEqualToString:@"0"]) {
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showError:@"请重新确认您已到达预约地点"];
+                return;
+            }
+            NYLog(@"%@",json);
         }
-        NYLog(@"%@",json);
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+        }
         
     } failure:^(NSError *error) {
         [MBProgressHUD hideHUD];
@@ -833,20 +851,28 @@
     [params setValue:@"3" forKey:@"route_status"];
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"boarding"] params:params success:^(id json) {
         
-        NSString *resultStr = [NSString stringWithFormat:@"%@",json[@"result"]];
-        if ([resultStr isEqualToString:@"1"]) {
-            _billingBgView.hidden = YES;
-            _coverView.hidden = YES;
-            _chargingBgView.hidden = NO;
-            _bottomBgView.hidden = YES;
-            _buttonState = 2;
-            _isCalculateStart = 0;
-            [MBProgressHUD hideHUD];
-            return ;
-        } else if ([resultStr isEqualToString:@"0"]) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showError:@"请重新确认开始计费"];
-            return ;
+        @try {
+            NSString *resultStr = [NSString stringWithFormat:@"%@",json[@"result"]];
+            if ([resultStr isEqualToString:@"1"]) {
+                _billingBgView.hidden = YES;
+                _coverView.hidden = YES;
+                _chargingBgView.hidden = NO;
+                _bottomBgView.hidden = YES;
+                _buttonState = 2;
+                _isCalculateStart = 0;
+                [MBProgressHUD hideHUD];
+                return ;
+            } else if ([resultStr isEqualToString:@"0"]) {
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showError:@"请重新确认开始计费"];
+                return ;
+            }
+        }
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
         }
         
     } failure:^(NSError *error) {
@@ -863,22 +889,31 @@
     [params setValue:@"4" forKey:@"route_status"];
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"boarding"] params:params success:^(id json) {
         
-        NSString *resultStr = [NSString stringWithFormat:@"%@",json[@"result"]];
-        if ([resultStr isEqualToString:@"1"]) {
-            ModefiedViewController *modefied = [[ModefiedViewController alloc] init];
-//            modefied.driverDistance = distanceLabel.text;
-//            modefied.price = price;
-            modefied.model = self.model;
-//            modefied.priceModel = actualPriceModel;
-            [_timer setFireDate:[NSDate distantFuture]];
-            [self.navigationController pushViewController:modefied animated:YES];
-            [MBProgressHUD hideHUD];
-            return ;
-        } else if ([resultStr isEqualToString:@"0"]) {
-            [MBProgressHUD hideHUD];
-            [MBProgressHUD showError:@"请重新确认结束计费"];
-            return;
+        @try {
+            NSString *resultStr = [NSString stringWithFormat:@"%@",json[@"result"]];
+            if ([resultStr isEqualToString:@"1"]) {
+                ModefiedViewController *modefied = [[ModefiedViewController alloc] init];
+                //            modefied.driverDistance = distanceLabel.text;
+                //            modefied.price = price;
+                modefied.model = self.model;
+                //            modefied.priceModel = actualPriceModel;
+                [_timer setFireDate:[NSDate distantFuture]];
+                [self.navigationController pushViewController:modefied animated:YES];
+                [MBProgressHUD hideHUD];
+                return ;
+            } else if ([resultStr isEqualToString:@"0"]) {
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showError:@"请重新确认结束计费"];
+                return;
+            }
         }
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+        }
+        
     } failure:^(NSError *error) {
         [MBProgressHUD hideHUD];
         [MBProgressHUD showError:@"网络错误"];
@@ -923,26 +958,35 @@
         [MBProgressHUD showMessage:@"终点修改中，请稍候"];
         NSString *endCoordinates = [NSString stringWithFormat:@"%f,%f",p.location.latitude,p.location.longitude];
         [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"orderApi",@"change_destination"] params:@{@"route_id":_model.route_id,@"end_name":p.name,@"end_coordinates":endCoordinates} success:^(id json) {
-            [MBProgressHUD hideHUD];
-            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-            if ([dataStr isEqualToString:@"1"]) {
-                [MBProgressHUD showError:json[@"info"]];
+            
+            @try {
+                [MBProgressHUD hideHUD];
+                NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+                if ([dataStr isEqualToString:@"1"]) {
+                    [MBProgressHUD showError:json[@"info"]];
+                    
+                    AMapNaviPoint *startPoint = [AMapNaviPoint locationWithLatitude:[[_model.origin_coordinates componentsSeparatedByString:@","][1] floatValue] longitude:[[_model.origin_coordinates componentsSeparatedByString:@","][0] floatValue]];
+                    AMapNaviPoint *endPoint = [AMapNaviPoint locationWithLatitude:p.location.latitude longitude:p.location.longitude];
+                    NSArray *startPoints = @[startPoint];
+                    NSArray *endPoints   = @[endPoint];
+                    
+                    [self.naviManager calculateDriveRouteWithStartPoints:startPoints endPoints:endPoints wayPoints:nil drivingStrategy:0];
+                    
+                    UIView *bgView = [self.view viewWithTag:2000];
+                    UILabel *destinationLabel = (UILabel *)[bgView viewWithTag:2001];
+                    destinationLabel.text = p.name;
+                    return ;
+                } else if ([dataStr isEqualToString:@"0"]) {
+                    [MBProgressHUD showSuccess:json[@"info"]];
+                } else {
+                    [MBProgressHUD showError:@"网络错误"];
+                }
+            }
+            @catch (NSException *exception) {
                 
-                AMapNaviPoint *startPoint = [AMapNaviPoint locationWithLatitude:[[_model.origin_coordinates componentsSeparatedByString:@","][1] floatValue] longitude:[[_model.origin_coordinates componentsSeparatedByString:@","][0] floatValue]];
-                AMapNaviPoint *endPoint = [AMapNaviPoint locationWithLatitude:p.location.latitude longitude:p.location.longitude];
-                NSArray *startPoints = @[startPoint];
-                NSArray *endPoints   = @[endPoint];
+            }
+            @finally {
                 
-                [self.naviManager calculateDriveRouteWithStartPoints:startPoints endPoints:endPoints wayPoints:nil drivingStrategy:0];
-                
-                UIView *bgView = [self.view viewWithTag:2000];
-                UILabel *destinationLabel = (UILabel *)[bgView viewWithTag:2001];
-                destinationLabel.text = p.name;
-                return ;
-            } else if ([dataStr isEqualToString:@"0"]) {
-                [MBProgressHUD showSuccess:json[@"info"]];
-            } else {
-                [MBProgressHUD showError:@"网络错误"];
             }
             
         } failure:^(NSError *error) {

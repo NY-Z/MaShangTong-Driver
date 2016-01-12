@@ -180,15 +180,24 @@
         NYMyTripDetaileModel *detailModel = infoModel.detaile[indexPath.row];
         [MBProgressHUD showMessage:@"正在删除"];
         [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"order_delete"] params:@{@"route_id":detailModel.route_id} success:^(id json) {
-            NYLog(@"%@",json);
-            [MBProgressHUD hideHUD];
-            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-            if ([dataStr isEqualToString:@"1"]) {
-                [infoModel.detaile removeObjectAtIndex:indexPath.row];
-                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-                [MBProgressHUD showSuccess:@"删除成功"];
-            } else {
-                [MBProgressHUD showError:@"删除失败"];
+            
+            @try {
+                NYLog(@"%@",json);
+                [MBProgressHUD hideHUD];
+                NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+                if ([dataStr isEqualToString:@"1"]) {
+                    [infoModel.detaile removeObjectAtIndex:indexPath.row];
+                    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    [MBProgressHUD showSuccess:@"删除成功"];
+                } else {
+                    [MBProgressHUD showError:@"删除失败"];
+                }
+            }
+            @catch (NSException *exception) {
+                
+            }
+            @finally {
+                
             }
             
         } failure:^(NSError *error) {

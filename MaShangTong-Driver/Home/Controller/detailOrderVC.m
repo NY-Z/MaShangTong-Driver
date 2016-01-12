@@ -62,10 +62,18 @@
 {
     NYLog(@"%@",_route_id);
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"userTrips_detail"] params:@{@"route_id":_route_id} success:^(id json) {
-        NYLog(@"%@",json);
-        _dataDic = json[@"info"];
-        [self creatMoneyLabelStr];
-        [self displayData];
+        @try {
+            NYLog(@"%@",json);
+            _dataDic = json[@"info"];
+            [self creatMoneyLabelStr];
+            [self displayData];
+        }
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+        }
     } failure:^(NSError *error) {
         
     }];

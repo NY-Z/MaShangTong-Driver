@@ -16,14 +16,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wodeyouhuiquan.png" translatesAutoresizingMaskIntoConstraints="NO" id="qt5-RT-ddh">
-                        <rect key="frame" x="18" y="0.0" width="100" height="80"/>
+                        <rect key="frame" x="18" y="0.0" width="80" height="80"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="100" id="HYh-dv-OQp"/>
+                            <constraint firstAttribute="width" constant="80" id="HYh-dv-OQp"/>
                             <constraint firstAttribute="height" constant="80" id="Y2o-4N-VeQ"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N2i-aI-6Ll">
-                        <rect key="frame" x="78" y="29" width="30" height="21"/>
+                        <rect key="frame" x="63" y="29" width="30" height="21"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="2yX-1b-fYP"/>
                             <constraint firstAttribute="width" constant="30" id="TYS-0C-7Jp"/>
@@ -57,7 +57,7 @@
                     <constraint firstAttribute="trailingMargin" secondItem="TQH-aw-f2U" secondAttribute="trailing" id="8eV-Xl-HES"/>
                     <constraint firstItem="TQH-aw-f2U" firstAttribute="top" secondItem="E9h-wY-rDf" secondAttribute="bottom" id="H2J-CZ-2Ck"/>
                     <constraint firstAttribute="trailingMargin" secondItem="E9h-wY-rDf" secondAttribute="trailing" id="Rc6-4K-pyS"/>
-                    <constraint firstItem="N2i-aI-6Ll" firstAttribute="trailing" secondItem="qt5-RT-ddh" secondAttribute="trailing" constant="-10" id="Uin-CF-RED"/>
+                    <constraint firstItem="N2i-aI-6Ll" firstAttribute="trailing" secondItem="qt5-RT-ddh" secondAttribute="trailing" constant="-5" id="Uin-CF-RED"/>
                     <constraint firstItem="N2i-aI-6Ll" firstAttribute="centerY" secondItem="qt5-RT-ddh" secondAttribute="centerY" id="brb-Ji-0sA"/>
                     <constraint firstItem="qt5-RT-ddh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="10" id="gdS-Ic-qui"/>
                     <constraint firstItem="E9h-wY-rDf" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="yiw-xj-9wm"/>

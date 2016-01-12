@@ -11,12 +11,14 @@
 #import "HomeDriverViewController.h"
 #import "DriverInfoModel.h"
 #import "NYForgetPasswordViewController.h"
+#import "NYDriverDelegateViewController.h"
 
 @interface DriverRegisViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *numberTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UIButton *loginBtn;
 @property (weak, nonatomic) IBOutlet UIButton *dealBtn;
+- (IBAction)delegateBtnClicked:(id)sender;
 
 @end
 
@@ -25,17 +27,23 @@
 - (void)setNavigationBar
 {
     self.navigationItem.title = @"欢迎";
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:RGBColor(112, 187, 254, 1.f),NSFontAttributeName:[UIFont systemFontOfSize:17]}];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:21],NSForegroundColorAttributeName:RGBColor(73, 185, 254, 1.f)}];
     
     self.passwordTextField.secureTextEntry = YES;
+    self.passwordTextField.layer.borderColor = RGBColor(84, 175, 255, 1.f).CGColor;
+    self.passwordTextField.layer.borderWidth = 1.f;
+    self.passwordTextField.layer.cornerRadius = 3.f;
     self.numberTextField.keyboardType = UIKeyboardTypePhonePad;
+    self.numberTextField.layer.borderColor = RGBColor(84, 175, 255, 1.f).CGColor;
+    self.numberTextField.layer.cornerRadius = 3.f;
+    self.numberTextField.layer.borderWidth = 1.f;
+    self.loginBtn.layer.cornerRadius = 5.f;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     [self setNavigationBar];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -81,37 +89,45 @@
     [MBProgressHUD showMessage:@"正在登陆"];
 
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"login"] params:params success:^(id json) {
-        NYLog(@"%@",json);
-        [MBProgressHUD hideHUD];
-        
-        NSString *dataStr = json[@"data"];
-        
-        if ([dataStr isEqualToString:@"1"]) {
-            [MBProgressHUD showSuccess:@"登陆成功"];
-            dispatch_async(dispatch_get_global_queue(0, 0), ^{
-                [USER_DEFAULT setValue:json[@"user_id"] forKey:@"user_id"];
-                [USER_DEFAULT setValue:@"1" forKey:@"isLogin"];
-                DriverInfoModel *driverInfo = [[DriverInfoModel alloc] initWithDictionary:json[@"info"][@"user_info"] error:nil];
-                driverInfo.license_plate = json[@"info"][@"license_plate"];
-                driverInfo.snum = json[@"info"][@"snum"];
-                driverInfo.point = json[@"info"][@"point"];
-                [USER_DEFAULT setObject:[NSKeyedArchiver archivedDataWithRootObject:driverInfo] forKey:@"user_info"];
-                [USER_DEFAULT synchronize];
-            });
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.navigationController pushViewController:[[HomeDriverViewController alloc] init] animated:YES];
-            });
-        } else if ([dataStr isEqualToString:@"0"]){
-            [MBProgressHUD showError:@"密码错误,请重新输入密码"];
-            return ;
-        } else if ([dataStr isEqualToString:@"-1"]) {
-            [MBProgressHUD showError:@"该用户不存在"];
-            return;
-        } else if ([dataStr isEqualToString:@"2"]) {
-            [MBProgressHUD showError:@"该用户已注册其他客户端"];
-            return;
+        @try {
+            NYLog(@"%@",json);
+            [MBProgressHUD hideHUD];
+            
+            NSString *dataStr = json[@"data"];
+            
+            if ([dataStr isEqualToString:@"1"]) {
+                [MBProgressHUD showSuccess:@"登陆成功"];
+                dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                    [USER_DEFAULT setValue:json[@"user_id"] forKey:@"user_id"];
+                    [USER_DEFAULT setValue:@"1" forKey:@"isLogin"];
+                    DriverInfoModel *driverInfo = [[DriverInfoModel alloc] initWithDictionary:json[@"info"][@"user_info"] error:nil];
+                    driverInfo.license_plate = json[@"info"][@"license_plate"];
+                    driverInfo.snum = json[@"info"][@"snum"];
+                    driverInfo.point = json[@"info"][@"point"];
+                    [USER_DEFAULT setObject:[NSKeyedArchiver archivedDataWithRootObject:driverInfo] forKey:@"user_info"];
+                    [USER_DEFAULT synchronize];
+                });
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.navigationController pushViewController:[[HomeDriverViewController alloc] init] animated:YES];
+                });
+            } else if ([dataStr isEqualToString:@"0"]){
+                [MBProgressHUD showError:@"密码错误,请重新输入密码"];
+                return ;
+            } else if ([dataStr isEqualToString:@"-1"]) {
+                [MBProgressHUD showError:@"该用户不存在"];
+                return;
+            } else if ([dataStr isEqualToString:@"2"]) {
+                [MBProgressHUD showError:@"该用户已注册其他客户端"];
+                return;
+            }
+
         }
-        
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+        }
     } failure:^(NSError *error) {
         [MBProgressHUD hideHUD];
         [MBProgressHUD showError:@"网络错误"];
@@ -135,4 +151,9 @@
     [_passwordTextField resignFirstResponder];
 }
 
+- (IBAction)delegateBtnClicked:(id)sender {
+    
+    NYDriverDelegateViewController *delegate = [[NYDriverDelegateViewController alloc] init];
+    [self.navigationController pushViewController:delegate animated:YES];
+}
 @end

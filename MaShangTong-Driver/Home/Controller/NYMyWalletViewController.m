@@ -231,7 +231,6 @@
     [params setValue:@"3" forKey:@"group_id"];
     [MBProgressHUD showMessage:@"正在加载"];
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"recharge"] params:params success:^(id json) {
-        
         @try {
             NYLog(@"%@",json);
             NSString *money = json[@"money"];
@@ -283,26 +282,34 @@
     }];
     
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"user_show_ticket"] params:@{@"user_id":[USER_DEFAULT objectForKey:@"user_id"]} success:^(id json) {
-        NYLog(@"%@",json);
-        
-        NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-        if ([dataStr isEqualToString:@"0"]) {
-            [MBProgressHUD showError:@"您暂时没有代金券"];
-        } else {
-            _voucherDataArr = json[@"info"];
+        @try {
+            NYLog(@"%@",json);
             
-            CGFloat value = 0;
-            for (NSDictionary *dic in _voucherDataArr) {
-                value += [dic[@"price"] floatValue];
+            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+            if ([dataStr isEqualToString:@"0"]) {
+                [MBProgressHUD showError:@"您暂时没有代金券"];
+            } else {
+                _voucherDataArr = json[@"info"];
+                
+                CGFloat value = 0;
+                for (NSDictionary *dic in _voucherDataArr) {
+                    value += [dic[@"price"] floatValue];
+                }
+                NSString *valueStr = [NSString stringWithFormat:@"%.2f",value];
+                UIView *voucherHeaderView = _voucherTableView.tableHeaderView;
+                UILabel *priceLabel = (UILabel *)[voucherHeaderView viewWithTag:400];
+                NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@元",valueStr]];
+                [attri addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:30]} range:NSMakeRange(0, valueStr.length)];
+                priceLabel.attributedText = attri;
+                
+                [_voucherTableView reloadData];
             }
-            NSString *valueStr = [NSString stringWithFormat:@"%.2f",value];
-            UIView *voucherHeaderView = _voucherTableView.tableHeaderView;
-            UILabel *priceLabel = (UILabel *)[voucherHeaderView viewWithTag:400];
-            NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@元",valueStr]];
-            [attri addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:30]} range:NSMakeRange(0, valueStr.length)];
-            priceLabel.attributedText = attri;
+        }
+        @catch (NSException *exception) {
             
-            [_voucherTableView reloadData];
+        }
+        @finally {
+            
         }
     } failure:^(NSError *error) {
         [MBProgressHUD hideHUD];
@@ -409,12 +416,21 @@
     [MBProgressHUD showMessage:@"兑换中"];
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"exchange"] params:@{@"user_id":[USER_DEFAULT objectForKey:@"user_id"]} success:^(id json) {
         
-        NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-        if ([dataStr isEqualToString:@"0"]) {
-            [MBProgressHUD showError:@"兑换失败，请重试"];
-            return ;
+        @try {
+            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+            if ([dataStr isEqualToString:@"0"]) {
+                [MBProgressHUD showError:@"兑换失败，请重试"];
+                return ;
+            }
+            [MBProgressHUD showSuccess:@"兑换成功"];
         }
-        [MBProgressHUD showSuccess:@"兑换成功"];
+        @catch (NSException *exception) {
+            
+        }
+        @finally {
+            
+        }
+        
     } failure:^(NSError *error) {
         [MBProgressHUD showError:@"兑换失败，请重试"];
     }];

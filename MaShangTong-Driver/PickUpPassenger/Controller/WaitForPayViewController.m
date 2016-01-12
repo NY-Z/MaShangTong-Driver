@@ -130,20 +130,29 @@
     
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"near_cars"] params:params success:^(id json) {
         
-        NYLog(@"%@",json);
-        NSString *routeStatus = [NSString stringWithFormat:@"%@",json[@"data"][@"route_status"]];
-        if ([routeStatus isEqualToString:@"6"]) {
-            _waitForPayLabel.text = @"支付完成";
-            _waitForPayLabel.textColor = [UIColor blackColor];
-            [restBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            restBtn.enabled = YES;
-            [getPayBtn setBackgroundColor:RGBColor(99, 190, 255, 1.f)];
-            getPayBtn.enabled = YES;
-            return;
+        @try {
+            NYLog(@"%@",json);
+            NSString *routeStatus = [NSString stringWithFormat:@"%@",json[@"data"][@"route_status"]];
+            if ([routeStatus isEqualToString:@"6"]) {
+                _waitForPayLabel.text = @"支付完成";
+                _waitForPayLabel.textColor = [UIColor blackColor];
+                [restBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                restBtn.enabled = YES;
+                [getPayBtn setBackgroundColor:RGBColor(99, 190, 255, 1.f)];
+                getPayBtn.enabled = YES;
+                return;
+            }
+            else {
+                [self deductMoney];
+            }
         }
-        else {
-            [self deductMoney];
+        @catch (NSException *exception) {
+            
         }
+        @finally {
+            
+        }
+        
     } failure:^(NSError *error) {
         [MBProgressHUD showError:@"网络错误"];
     }];

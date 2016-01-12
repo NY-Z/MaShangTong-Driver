@@ -131,7 +131,7 @@
     telImageView.userInteractionEnabled = YES;
     [telImageView addGestureRecognizer:telGesture];
     
-    if (![_model.leave_message isEqualToString:@"请输入备注"]) {
+    if (![_model.leave_message isEqualToString:@"请输入备注"] || [_model.leave_message isEqualToString:@""]) {
         UIImageView *pullDownImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"gengduo"]];
         pullDownImageView.frame = CGRectMake(SCREEN_WIDTH/2-18, 60, 18, 18);
         [passengerBgView addSubview:pullDownImageView];
@@ -422,29 +422,32 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _isLocationSuccess = NO;
-    _buttonState = 0;
-    _isShowNavigation = 0;
-    _isCalculateStart = 0;
-    [self configNavBar];
-    [self initNaviRoute];
-    [self initPassengerLocation];
-    [self initDriveringTime];
-    [self initNaviViewController];
-    [self initPassengerView];
-    [self initBottomView];
-    [self initChargingBgView];
-    [self initScatteredView];
-    [self initCoverView];
-    [self initBillingBgView];
-    [self initAppointmenetBgView];
+    
+    @autoreleasepool {
+        _isLocationSuccess = NO;
+        _buttonState = 0;
+        _isShowNavigation = 0;
+        _isCalculateStart = 0;
+        [self configNavBar];
+        [self initNaviRoute];
+        [self initPassengerLocation];
+        [self initDriveringTime];
+        [self initNaviViewController];
+        [self initPassengerView];
+        [self initBottomView];
+        [self initChargingBgView];
+        [self initScatteredView];
+        [self initCoverView];
+        [self initBillingBgView];
+        [self initAppointmenetBgView];
+    }
 }
 
 - (void)initDriveringTime
 {
     if (!_timer) {
         _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(calculateTimeAndDistance) userInfo:nil repeats:YES];
-        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:UITrackingRunLoopMode];
+        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSDefaultRunLoopMode];
         _driveringTime = 0;
     }
 }
@@ -786,7 +789,6 @@
     [MBProgressHUD showMessage:@"请稍候"];
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     [params setValue:_model.route_id forKey:@"route_id"];
-    
     [params setValue:@"2" forKey:@"route_status"];
     
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"boarding"] params:params success:^(id json) {

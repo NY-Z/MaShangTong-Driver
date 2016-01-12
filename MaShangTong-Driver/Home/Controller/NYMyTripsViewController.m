@@ -139,6 +139,7 @@
             [MBProgressHUD showError:@"网络错误"];
         }
     } failure:^(NSError *error) {
+        [MBProgressHUD hideHUD];
         [MBProgressHUD showError:@"网络错误"];
     }];
 }

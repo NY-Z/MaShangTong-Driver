@@ -102,7 +102,7 @@
 //昵称
 + (BOOL) justNickname:(NSString *)nickname
 {
-    NSString *nicknameRegex = @"^[\u4e00-\u9fa5]{4,8}$";
+    NSString *nicknameRegex = @"^[\u4E00-\u9FA5A-Za-z0-9_]+$";//^[\u4e00-\u9fa5]{4,8}$
     NSPredicate *passWordPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",nicknameRegex];
     return [passWordPredicate evaluateWithObject:nickname];
 }
@@ -120,4 +120,29 @@
     NSPredicate *identityCardPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex2];
     return [identityCardPredicate evaluateWithObject:identityCard];
 }
+
++ (BOOL)isValidCardNumber:(NSString *)cardNumber
+{
+    NSString *digitsOnly = cardNumber;
+    int sum = 0;
+    int digit = 0;
+    int addend = 0;
+    BOOL timesTwo = false;
+    for (NSInteger i = digitsOnly.length - 1; i >= 0; i--) {
+        digit = [digitsOnly characterAtIndex:i] - '0';
+        if (timesTwo) {
+            addend = digit * 2;
+            if (addend > 9) {
+                addend -= 9;
+            }
+        } else {
+            addend = digit;
+        }
+        sum += addend;
+        timesTwo = !timesTwo;
+    }
+    int modulus = sum % 10;
+    return modulus == 0;
+}
+
 @end

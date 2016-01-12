@@ -345,21 +345,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    [self.view addSubview:self.mapView];
-    _isRequest = NO;
-    _isAllowSpeaking = YES;
-    _isLocationSuccess = NO;
-    _isChangeMode = NO;
-    _isFirstSetCenter = 0;
-    _reservation_type = @"1";
-    [self configTimer];
-    [self configSwitchMode];
-    [self configBottom];
-    [self configTop];
-    [self configLeftViewController];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(listenTheOrder:) name:@"GetTheOrderList" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(continueListenTheOrder:) name:@"ContinueListenTheOrders" object:nil];
+    @autoreleasepool {
+        [self.view addSubview:self.mapView];
+        _isRequest = NO;
+        _isAllowSpeaking = YES;
+        _isLocationSuccess = NO;
+        _isChangeMode = NO;
+        _isFirstSetCenter = 0;
+        _reservation_type = @"1";
+        [self configTimer];
+        [self configSwitchMode];
+        [self configBottom];
+        [self configTop];
+        [self configLeftViewController];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(listenTheOrder:) name:@"GetTheOrderList" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(continueListenTheOrder:) name:@"ContinueListenTheOrders" object:nil];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -401,6 +402,14 @@
         return view;
     }
     return nil;
+}
+
+- (void)mapView:(MAMapView *)mapView regionDidChangeAnimated:(BOOL)animated
+{
+    @autoreleasepool {
+        [self.mapView removeFromSuperview];
+        [self.view addSubview:mapView];
+    }
 }
 
 #pragma mark - IFlySpeechSynthesizerDelegate

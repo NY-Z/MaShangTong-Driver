@@ -99,6 +99,7 @@
     [voucherBtn setTitle:@"兑换" forState:UIControlStateNormal];
     [voucherBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [voucherBtn setBackgroundColor:RGBColor(112, 191, 253, 1.f)];
+    [voucherBtn addTarget:self action:@selector(exchangeBtnClicked) forControlEvents:UIControlEventTouchUpInside];
     [voucherTableHeaderView addSubview:voucherBtn];
     [voucherBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(voucherLabel.mas_right).offset(10);
@@ -400,6 +401,23 @@
 - (void)balanceBtnClicked
 {
     [self.navigationController pushViewController:[[NYWithdrawViewController alloc] init] animated:YES];
+}
+
+// 兑换
+- (void)exchangeBtnClicked
+{
+    [MBProgressHUD showMessage:@"兑换中"];
+    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"exchange"] params:@{@"user_id":[USER_DEFAULT objectForKey:@"user_id"]} success:^(id json) {
+        
+        NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+        if ([dataStr isEqualToString:@"0"]) {
+            [MBProgressHUD showError:@"兑换失败，请重试"];
+            return ;
+        }
+        [MBProgressHUD showSuccess:@"兑换成功"];
+    } failure:^(NSError *error) {
+        [MBProgressHUD showError:@"兑换失败，请重试"];
+    }];
 }
 
 @end

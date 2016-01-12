@@ -39,34 +39,34 @@
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     // 极光推送
     // Required
-    #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
-        if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
-            //categories
-            [APService
-             registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
-                                                 UIUserNotificationTypeSound |
-                                                 UIUserNotificationTypeAlert)
-             categories:nil];
-        } else {
-            //categories nil
-            [APService
-             registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-                                                 
-                                                 
-                                                 UIRemoteNotificationTypeSound |
-                                                 UIRemoteNotificationTypeAlert)
-#else
-             //categories nil
-             categories:nil];
-            [APService
-             registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-                                                 UIRemoteNotificationTypeSound |
-                                                 UIRemoteNotificationTypeAlert)
-#endif
-             // Required
-             categories:nil];
-        }
-    [APService setupWithOption:launchOptions];
+//    #if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_7_1
+//        if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
+//            //categories
+//            [APService
+//             registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge |
+//                                                 UIUserNotificationTypeSound |
+//                                                 UIUserNotificationTypeAlert)
+//             categories:nil];
+//        } else {
+//            //categories nil
+//            [APService
+//             registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+//                                                 
+//                                                 
+//                                                 UIRemoteNotificationTypeSound |
+//                                                 UIRemoteNotificationTypeAlert)
+//#else
+//             //categories nil
+//             categories:nil];
+//            [APService
+//             registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+//                                                 UIRemoteNotificationTypeSound |
+//                                                 UIRemoteNotificationTypeAlert)
+//#endif
+//             // Required
+//             categories:nil];
+//        }
+//    [APService setupWithOption:launchOptions];
     
     // 友盟分享
     [UMSocialData setAppKey:(NSString *)UMSocialAppKey];
@@ -107,7 +107,6 @@
         UINavigationController *regisDriverNavi = [[UINavigationController alloc] initWithRootViewController:regisDriver];
         self.window.rootViewController = regisDriverNavi;
     }
-//    self.window.rootViewController = [[ModefiedViewController alloc] init];
     [self.window makeKeyAndVisible];
     return YES;
 }

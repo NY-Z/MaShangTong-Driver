@@ -40,6 +40,8 @@
 //身份证号
 + (BOOL) justIdentityCard: (NSString *)identityCard;
 
+// 银行卡号
++(BOOL) isValidCardNumber:(NSString *)cardNumber;
 
 @end
 

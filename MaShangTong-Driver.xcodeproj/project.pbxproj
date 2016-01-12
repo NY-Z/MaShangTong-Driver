@@ -41,6 +41,7 @@
 		0E6B2CEA1C32339C00703F84 /* GSchangePassWordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E6B2CE81C32339C00703F84 /* GSchangePassWordVC.m */; };
 		0E6B2CEB1C32339C00703F84 /* GSchangePassWordVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E6B2CE91C32339C00703F84 /* GSchangePassWordVC.xib */; };
 		0E98D02D1C32BA9900E09CEA /* NYChangePriceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E98D02C1C32BA9900E09CEA /* NYChangePriceView.m */; };
+		0EA245521C434DE800ADACAA /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EA245511C434DE800ADACAA /* ImageIO.framework */; };
 		0EE997A41C3F95ED004DA07B /* NYWithdrawViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE997A21C3F95ED004DA07B /* NYWithdrawViewController.m */; };
 		0EE997A51C3F95ED004DA07B /* NYWithdrawViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EE997A31C3F95ED004DA07B /* NYWithdrawViewController.xib */; };
 		0EEF3F0A1C3BAC69001D8F30 /* InputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF3F091C3BAC69001D8F30 /* InputViewController.m */; };
@@ -320,6 +321,7 @@
 		0E6B2CE91C32339C00703F84 /* GSchangePassWordVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GSchangePassWordVC.xib; sourceTree = "<group>"; };
 		0E98D02B1C32BA9900E09CEA /* NYChangePriceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYChangePriceView.h; sourceTree = "<group>"; };
 		0E98D02C1C32BA9900E09CEA /* NYChangePriceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYChangePriceView.m; sourceTree = "<group>"; };
+		0EA245511C434DE800ADACAA /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		0EE997A11C3F95ED004DA07B /* NYWithdrawViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYWithdrawViewController.h; sourceTree = "<group>"; };
 		0EE997A21C3F95ED004DA07B /* NYWithdrawViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYWithdrawViewController.m; sourceTree = "<group>"; };
 		0EE997A31C3F95ED004DA07B /* NYWithdrawViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NYWithdrawViewController.xib; sourceTree = "<group>"; };
@@ -606,6 +608,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EA245521C434DE800ADACAA /* ImageIO.framework in Frameworks */,
 				18B4E96C1C2C1650004E0ACC /* AddressBook.framework in Frameworks */,
 				18B4E96A1C2C1619004E0ACC /* iflyMSC.framework in Frameworks */,
 				E2D640DF84C2038E099F7BEA /* libPods.a in Frameworks */,
@@ -1273,6 +1276,7 @@
 		EEEFA49BB61B2FD478937403 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0EA245511C434DE800ADACAA /* ImageIO.framework */,
 				18B4E96B1C2C164F004E0ACC /* AddressBook.framework */,
 				18B4E9691C2C1619004E0ACC /* iflyMSC.framework */,
 				0ACF07D92DFB0EFA44468AFE /* libPods.a */,

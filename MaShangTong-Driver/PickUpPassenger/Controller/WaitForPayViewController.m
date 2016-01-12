@@ -98,9 +98,10 @@
     restBtn.enabled = NO;
     restBtn.frame = CGRectMake(30, SCREEN_HEIGHT-27-30-64, 93, 30);
     [self.view addSubview:restBtn];
-    restBtn.layer.borderColor = [UIColor blackColor].CGColor;
+    restBtn.layer.borderColor = RGBColor(123, 123, 123, 1.f).CGColor;
     [restBtn addTarget:self action:@selector(restBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     restBtn.layer.borderWidth = 1.f;
+    restBtn.layer.cornerRadius = 3.f;
     
     getPayBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [getPayBtn setTitle:@"完成，继续接单" forState:UIControlStateNormal];
@@ -110,7 +111,7 @@
     getPayBtn.frame = CGRectMake(CGRectGetMaxX(restBtn.frame)+10, SCREEN_HEIGHT-27-30-64, SCREEN_WIDTH-133-30, 32);
     [getPayBtn addTarget:self action:@selector(completeBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:getPayBtn];
-    getPayBtn.layer.cornerRadius = 3.f;
+    getPayBtn.layer.cornerRadius = 5.f;
 }
 
 - (void)viewDidLoad {

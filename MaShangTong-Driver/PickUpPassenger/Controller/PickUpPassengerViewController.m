@@ -852,6 +852,7 @@
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"boarding"] params:params success:^(id json) {
         
         @try {
+            [MBProgressHUD hideHUD];
             NSString *resultStr = [NSString stringWithFormat:@"%@",json[@"result"]];
             if ([resultStr isEqualToString:@"1"]) {
                 _billingBgView.hidden = YES;
@@ -860,10 +861,8 @@
                 _bottomBgView.hidden = YES;
                 _buttonState = 2;
                 _isCalculateStart = 0;
-                [MBProgressHUD hideHUD];
                 return ;
             } else if ([resultStr isEqualToString:@"0"]) {
-                [MBProgressHUD hideHUD];
                 [MBProgressHUD showError:@"请重新确认开始计费"];
                 return ;
             }

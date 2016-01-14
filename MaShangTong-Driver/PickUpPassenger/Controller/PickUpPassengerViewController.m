@@ -18,6 +18,7 @@
 #import "iflyMSC/IFlySpeechSynthesizerDelegate.h"
 #import "ModefiedViewController.h"
 #import "ActualPriceModel.h"
+#import "NYCalculateSpecialCarPrice.h"
 #import "InputViewController.h"
 
 @interface PickUpPassengerViewController () <MAMapViewDelegate,AMapNaviManagerDelegate,AMapSearchDelegate,AMapNaviViewControllerDelegate>
@@ -56,10 +57,22 @@
 @property (nonatomic,assign) NSInteger driverDistance;
 // 用户定位
 @property (nonatomic,strong) MAUserLocation *userLocation;
+// 专车 计价
+@property (nonatomic,strong) NYCalculateSpecialCarPrice *calculateSpecialCar;
 
 @end
 
 @implementation PickUpPassengerViewController
+
+- (NYCalculateSpecialCarPrice *)calculateSpecialCar
+{
+    if (_calculateSpecialCar == nil) {
+        _calculateSpecialCar = [NYCalculateSpecialCarPrice sharedPrice];
+#warning 专车的计价规则
+        _calculateSpecialCar.model = _ruleInfoModel;
+    }
+    return _calculateSpecialCar;
+}
 
 - (void)initNaviRoute
 {
@@ -142,7 +155,7 @@
         
         NSString *leaveMessage = [NSString stringWithFormat:@"乘客备注：%@",_model.leave_message];
         NSInteger height = [Helper heightOfString:leaveMessage font:[UIFont systemFontOfSize:16] width:SCREEN_WIDTH-100];
-//        passengerBgView.height += (height+6);
+        //        passengerBgView.height += (height+6);
         UILabel *leaveMessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, CGRectGetMaxY(telImageView.frame)+12, SCREEN_WIDTH-60, height)];
         pullDownImageView.tag = height;
         leaveMessageLabel.numberOfLines = 0;
@@ -490,58 +503,94 @@
         [params setValue:@"3" forKey:@"route_status"];
         [params setValue:isLowSpeed forKey:@"time"];
         
-        [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"speed_price"] params:params success:^(id json) {
-            @try {
-                NYLog(@"%@",json);
-                if (!json) {
-                    return ;
-                }
-                actualPriceModel = [[ActualPriceModel alloc] initWithDictionary:json[@"info"] error:nil];
-                distanceLabel.text = [NSString stringWithFormat:@"里程%.2f公里",[actualPriceModel.mileage floatValue]];
-                speedLabel.text = [NSString stringWithFormat:@"低速%li分钟",(long)[actualPriceModel.low_time integerValue]];
-                price = [NSString stringWithFormat:@"%.2f",[actualPriceModel.total_price floatValue]];
+        switch (self.ruleInfoModel.rule_type.integerValue) {
+            case 1:
+            {
+                NSMutableDictionary *priceDic = [[self.calculateSpecialCar calculatePriceWithParams:params] mutableCopy];
+                distanceLabel.text = [NSString stringWithFormat:@"里程%.2f公里",[priceDic[@"mileage"] floatValue]];
+                speedLabel.text = [NSString stringWithFormat:@"低速%li分钟",[priceDic[@"low_time"] integerValue]/60];
+                price = [NSString stringWithFormat:@"%.2f元",[priceDic[@"total_price"] floatValue]];
                 NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:price];
                 [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length)];
                 priceLabel.attributedText = attri;
-            }
-            @catch (NSException *exception) {
                 
+                [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:priceDic success:^(id json) {
+                    
+                } failure:^(NSError *error) {
+                    
+                }];
+                break;
             }
-            @finally {
-                
+            case 2:
+            {
+                break;
             }
-        } failure:^(NSError *error) {
-            //                NYLog(@"%@",error.localizedDescription);
-        }];
+            case 3:
+            {
+                break;
+            }
+            case 4:
+            {
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+        
+        //        [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"speed_price"] params:params success:^(id json) {
+        //            @try {
+        //                NYLog(@"%@",json);
+        //                if (!json) {
+        //                    return ;
+        //                }
+        //                actualPriceModel = [[ActualPriceModel alloc] initWithDictionary:json[@"info"] error:nil];
+        //                distanceLabel.text = [NSString stringWithFormat:@"里程%.2f公里",[actualPriceModel.mileage floatValue]];
+        //                speedLabel.text = [NSString stringWithFormat:@"低速%li分钟",(long)[actualPriceModel.low_time integerValue]];
+        //                price = [NSString stringWithFormat:@"%.2f",[actualPriceModel.total_price floatValue]];
+        //                NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:price];
+        //                [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length)];
+        //                priceLabel.attributedText = attri;
+        //            }
+        //            @catch (NSException *exception) {
+        //
+        //            }
+        //            @finally {
+        //
+        //            }
+        //        } failure:^(NSError *error) {
+        //
+        //        }];
     } else {
-        NSMutableDictionary *params = [NSMutableDictionary dictionary];
-        [params setValue:_model.route_id forKey:@"route_id"];
-        [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"near_cars"] params:params success:^(id json) {
-            
-            @try {
-                NYLog(@"%@",json);
-                NSString *routeStatus = [NSString stringWithFormat:@"%@",json[@"data"][@"route_status"]];
-                if ([routeStatus isEqualToString:@"-1"]) {
-                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"乘客已取消订单" message:nil preferredStyle:UIAlertControllerStyleAlert];
-                    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                        [_timer setFireDate:[NSDate distantFuture]];
-                        [_timer invalidate];
-                        _timer = nil;
-                        [self.navigationController popViewControllerAnimated:YES];
-                    }]];
-                    [self presentViewController:alert animated:YES completion:nil];
-                }
-            }
-            @catch (NSException *exception) {
-                
-            }
-            @finally {
-                
-            }
-            
-        } failure:^(NSError *error) {
-//            [MBProgressHUD showError:@"网络错误"];
-        }];
+//        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+//        [params setValue:_model.route_id forKey:@"route_id"];
+//        [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"near_cars"] params:params success:^(id json) {
+//            
+//            @try {
+//                NYLog(@"%@",json);
+//                NSString *routeStatus = [NSString stringWithFormat:@"%@",json[@"data"][@"route_status"]];
+//                if ([routeStatus isEqualToString:@"-1"]) {
+//                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"乘客已取消订单" message:nil preferredStyle:UIAlertControllerStyleAlert];
+//                    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//                        [_timer setFireDate:[NSDate distantFuture]];
+//                        [_timer invalidate];
+//                        _timer = nil;
+//                        [self.navigationController popViewControllerAnimated:YES];
+//                    }]];
+//                    [self presentViewController:alert animated:YES completion:nil];
+//                }
+//            }
+//            @catch (NSException *exception) {
+//                
+//            }
+//            @finally {
+//                
+//            }
+//            
+//        } failure:^(NSError *error) {
+//            
+//        }];
     }
 }
 
@@ -801,7 +850,7 @@
     [params setValue:@"2" forKey:@"route_status"];
     
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"boarding"] params:params success:^(id json) {
-       
+        
         @try {
             NSString *resultStr = [NSString stringWithFormat:@"%@",json[@"result"]];
             if ([resultStr isEqualToString:@"1"]) {
@@ -810,7 +859,7 @@
                 _coverView.hidden = YES;
                 _buttonState = 1;
                 [MBProgressHUD hideHUD];
-                _isCalculateStart = 1;
+                _isCalculateStart = 0;
                 return ;
             } else if ([resultStr isEqualToString:@"0"]) {
                 [MBProgressHUD hideHUD];
@@ -860,7 +909,7 @@
                 _chargingBgView.hidden = NO;
                 _bottomBgView.hidden = YES;
                 _buttonState = 2;
-                _isCalculateStart = 0;
+                _isCalculateStart = 1;
                 return ;
             } else if ([resultStr isEqualToString:@"0"]) {
                 [MBProgressHUD showError:@"请重新确认开始计费"];
@@ -917,7 +966,7 @@
         [MBProgressHUD hideHUD];
         [MBProgressHUD showError:@"网络错误"];
     }];
-
+    
 }
 
 #pragma mark - UITapGestureRecognizer
@@ -1022,7 +1071,7 @@
             tap.view.y = 60;
         }];
     }
-
+    
 }
 
 @end

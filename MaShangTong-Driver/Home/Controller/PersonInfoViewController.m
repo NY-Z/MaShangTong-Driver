@@ -135,7 +135,7 @@
             return ;
         }
         
-        [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"update_personalData"] params:@{@"user_id":[USER_DEFAULT objectForKey:@"user_id"],@"age":ageStr} success:^(id json) {
+        [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"update_personalData"] params:@{@"user_id":[USER_DEFAULT objectForKey:@"user_id"],@"byear":ageStr} success:^(id json) {
             @try {
                 NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
                 if ([dataStr isEqualToString:@"0"]) {

@@ -12,7 +12,9 @@
 
 @end
 
+@implementation RuleInfoModel
 
+@end
 
 @implementation PassengerModel
 

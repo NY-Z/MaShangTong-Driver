@@ -54,6 +54,8 @@
 		0EEF3F0C1C3CBB92001D8F30 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0EEF3F0B1C3CBB92001D8F30 /* PushConfig.plist */; };
 		0EEF3F151C3D556D001D8F30 /* NYSuggestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF3F131C3D556D001D8F30 /* NYSuggestionViewController.m */; };
 		0EEF3F161C3D556D001D8F30 /* NYSuggestionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EEF3F141C3D556D001D8F30 /* NYSuggestionViewController.xib */; };
+		0EEF5F1F1C4798A1009B299B /* NYCalculateSpecialCarPrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF5F1E1C4798A1009B299B /* NYCalculateSpecialCarPrice.m */; };
+		0EEF5F221C47AD55009B299B /* CarRuleModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF5F211C47AD55009B299B /* CarRuleModel.m */; };
 		18B4E7701C2C104A004E0ACC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4E76F1C2C104A004E0ACC /* main.m */; };
 		18B4E7731C2C104A004E0ACC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4E7721C2C104A004E0ACC /* AppDelegate.m */; };
 		18B4E7761C2C104A004E0ACC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4E7751C2C104A004E0ACC /* ViewController.m */; };
@@ -345,6 +347,10 @@
 		0EEF3F121C3D556D001D8F30 /* NYSuggestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYSuggestionViewController.h; sourceTree = "<group>"; };
 		0EEF3F131C3D556D001D8F30 /* NYSuggestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYSuggestionViewController.m; sourceTree = "<group>"; };
 		0EEF3F141C3D556D001D8F30 /* NYSuggestionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NYSuggestionViewController.xib; sourceTree = "<group>"; };
+		0EEF5F1D1C4798A1009B299B /* NYCalculateSpecialCarPrice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYCalculateSpecialCarPrice.h; sourceTree = "<group>"; };
+		0EEF5F1E1C4798A1009B299B /* NYCalculateSpecialCarPrice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYCalculateSpecialCarPrice.m; sourceTree = "<group>"; };
+		0EEF5F201C47AD55009B299B /* CarRuleModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CarRuleModel.h; sourceTree = "<group>"; };
+		0EEF5F211C47AD55009B299B /* CarRuleModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CarRuleModel.m; sourceTree = "<group>"; };
 		18B4E76B1C2C104A004E0ACC /* 码尚通-司机版.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "码尚通-司机版.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		18B4E76F1C2C104A004E0ACC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		18B4E7711C2C104A004E0ACC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -976,6 +982,8 @@
 				0EABC3CE1C2D474A000A7DED /* 我的行程 */,
 				0EABC3CD1C2D4738000A7DED /* 我的账户 */,
 				0E18DFEA1C30E98100D77CEC /* 消息中心 */,
+				0EEF5F201C47AD55009B299B /* CarRuleModel.h */,
+				0EEF5F211C47AD55009B299B /* CarRuleModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1200,6 +1208,8 @@
 				18B4E9211C2C1506004E0ACC /* MANaviPolyline.m */,
 				18B4E9221C2C1506004E0ACC /* MANaviRoute.h */,
 				18B4E9231C2C1506004E0ACC /* MANaviRoute.m */,
+				0EEF5F1D1C4798A1009B299B /* NYCalculateSpecialCarPrice.h */,
+				0EEF5F1E1C4798A1009B299B /* NYCalculateSpecialCarPrice.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1670,6 +1680,7 @@
 				18B4E9371C2C1507004E0ACC /* MANaviRoute.m in Sources */,
 				18B4E7DF1C2C146F004E0ACC /* PersonInfoCell.m in Sources */,
 				18B4E9391C2C1507004E0ACC /* DriverAnnotationView.m in Sources */,
+				0EEF5F1F1C4798A1009B299B /* NYCalculateSpecialCarPrice.m in Sources */,
 				18B4E9551C2C153C004E0ACC /* KLSwitch.m in Sources */,
 				18B4E7DB1C2C146F004E0ACC /* NYMyWalletViewController.m in Sources */,
 				18B4E9671C2C1542004E0ACC /* MBProgressHUD+MJ.m in Sources */,
@@ -1680,6 +1691,7 @@
 				18B4E7731C2C104A004E0ACC /* AppDelegate.m in Sources */,
 				18B4E7881C2C143C004E0ACC /* SharedMapView.m in Sources */,
 				0E18DFE31C30DA3C00D77CEC /* detailOrderVC.m in Sources */,
+				0EEF5F221C47AD55009B299B /* CarRuleModel.m in Sources */,
 				0E98D02D1C32BA9900E09CEA /* NYChangePriceView.m in Sources */,
 				18B4E9631C2C1542004E0ACC /* BaseNaviViewController.m in Sources */,
 				0E6B2CEA1C32339C00703F84 /* GSchangePassWordVC.m in Sources */,

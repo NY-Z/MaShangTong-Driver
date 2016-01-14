@@ -8,9 +8,12 @@
 
 #import "BaseNaviViewController.h"
 #import "PassengerModel.h"
+//#import "CarRuleModel.h"
 
 @interface PickUpPassengerViewController : BaseNaviViewController
 
 @property (nonatomic,strong) DataModel *model;
+//@property (nonatomic,strong) CarRuleModel *carRuleModel;
+@property (nonatomic,strong) RuleInfoModel *ruleInfoModel;
 
 @end

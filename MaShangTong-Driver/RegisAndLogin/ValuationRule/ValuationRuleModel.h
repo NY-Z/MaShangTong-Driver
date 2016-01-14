@@ -11,6 +11,7 @@
 @interface ValuationRuleModel : JSONModel <NSCoding>
 
 @property (nonatomic,strong) NSString <Optional> *car_type_id;
+@property (nonatomic,strong) NSString <Optional> *high_low_speed;
 @property (nonatomic,strong) NSString <Optional> *long_mileage;
 @property (nonatomic,strong) NSString <Optional> *low_speed;
 @property (nonatomic,strong) NSString <Optional> *mileage;

@@ -56,6 +56,7 @@
 @property (nonatomic, strong) MAPolyline *polyline;
 @property (nonatomic, strong) MAAnnotationView *userLocationAnnotationView;
 @property (nonatomic,strong) PersonCenterViewController *personCenter;
+@property (nonatomic,strong) NSArray *carTypeRuleArr;
 
 @end
 
@@ -531,11 +532,11 @@
                 return ;
             }
             PassengerModel *model = [[PassengerModel alloc] initWithDictionary:json error:nil];
-            DataModel *dataModel = model.data[0];
             [MBProgressHUD hideHUD];
             
             PickUpPassengerViewController *passengerVc = [[PickUpPassengerViewController alloc] init];
-            passengerVc.model = dataModel;
+            passengerVc.model = model.data[0];
+            passengerVc.ruleInfoModel = [[RuleInfoModel alloc] initWithDictionary:json[@"rule_info"] error:nil];
             [self.navigationController pushViewController:passengerVc animated:YES];
             
         }

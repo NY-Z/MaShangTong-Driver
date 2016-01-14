@@ -105,6 +105,7 @@
                     driverInfo.snum = json[@"info"][@"snum"];
                     driverInfo.point = json[@"info"][@"point"];
                     [USER_DEFAULT setObject:[NSKeyedArchiver archivedDataWithRootObject:driverInfo] forKey:@"user_info"];
+                    [USER_DEFAULT setObject:json[@"info"][@"rule"][0][@"car_type_id"] forKey:@"car_type_id"];
                     [USER_DEFAULT synchronize];
                 });
                 dispatch_async(dispatch_get_main_queue(), ^{

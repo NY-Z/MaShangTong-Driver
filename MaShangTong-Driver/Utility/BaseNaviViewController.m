@@ -62,7 +62,7 @@
     _mapView.userTrackingMode = MAUserTrackingModeFollowWithHeading;
     
     _mapView.size = CGSizeMake(SCREEN_WIDTH, SCREEN_HEIGHT);
-    
+        
     [self.view addSubview:_mapView];
 }
 

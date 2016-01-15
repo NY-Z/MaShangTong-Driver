@@ -27,6 +27,10 @@
 
 // RGB色彩
 #define RGBColor(a,b,c,t) [UIColor colorWithRed:a/255.f green:b/255.f blue:c/255.f alpha:t]
+
+
+#define background_Color [UIColor colorWithRed:238.0f/255.0f green:238.0f/255.0f blue:238.0f/255.0f alpha:1.0f]
+
 // 圆角Btn
 #define BtnRadius 3.f
 

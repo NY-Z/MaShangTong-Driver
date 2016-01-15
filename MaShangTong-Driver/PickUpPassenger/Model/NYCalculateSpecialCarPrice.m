@@ -12,13 +12,6 @@
 
 @interface NYCalculateSpecialCarPrice ()
 
-//@property (nonatomic,assign) float long_mileage;
-//@property (nonatomic,assign) float low_speed;
-//@property (nonatomic,assign) float mileage;
-//@property (nonatomic,assign) float night;
-//@property (nonatomic,assign) float step;
-//@property (nonatomic,assign) float highLowSpeed;
-
 @property (nonatomic,strong) NSDateFormatter *formatter;
 
 @property (nonatomic,assign) float distance;
@@ -58,18 +51,6 @@
     
     _price = model.step.floatValue;
 }
-
-/*
- total_price：总价
- start_price：起步价
- mileage：总里程
- mileage_price：总里程价
- low_time：低速时间
- low_price：低速价格
- far_mileage：远途里程
- far_price：远途价
- night_price：夜间费
- */
 
 - (NSDictionary *)calculatePriceWithParams:(NSDictionary *)params
 {

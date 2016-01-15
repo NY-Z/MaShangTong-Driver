@@ -9,15 +9,27 @@
 #import "DownloadManager.h"
 #import <AFNetworking.h>
 
+@interface DownloadManager()
+
+@property (nonatomic,strong) AFHTTPSessionManager *mgr;
+
+@end
+
 @implementation DownloadManager
+
+- (AFHTTPSessionManager *)mgr
+{
+    if (_mgr == nil) {
+        _mgr = [AFHTTPSessionManager manager];
+        _mgr.requestSerializer = [AFJSONRequestSerializer serializer];
+    }
+    return _mgr;
+}
 
 + (void)get:(NSString *)url params:(NSDictionary *)params success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure
 {
     AFHTTPSessionManager *mgr = [AFHTTPSessionManager manager];
     mgr.requestSerializer = [AFJSONRequestSerializer serializer];
-//    [mgr.requestSerializer willChangeValueForKey:@"timeoutInterval"];
-//    mgr.requestSerializer.timeoutInterval = 10.f;
-//    [mgr.requestSerializer didChangeValueForKey:@"timeoutInterval"];
     [mgr GET:url parameters:params success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         if (success) {
             success(responseObject);
@@ -33,12 +45,6 @@
 {
     AFHTTPSessionManager *mgr = [AFHTTPSessionManager manager];
     mgr.requestSerializer = [AFJSONRequestSerializer serializer];
-    
-//    [mgr.requestSerializer willChangeValueForKey:@"timeoutInterval"];
-//    mgr.requestSerializer.timeoutInterval = 10.f;
-//    [mgr.requestSerializer didChangeValueForKey:@"timeoutInterval"];
-    
-    //    mgr.responseSerializer.acceptableContentTypes
     [mgr POST:url parameters:params success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject) {
         if (success) {
             success(responseObject);

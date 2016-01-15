@@ -41,7 +41,8 @@
 + (BOOL) justIdentityCard: (NSString *)identityCard;
 
 // 银行卡号
-+(BOOL) isValidCardNumber:(NSString *)cardNumber;
++ (BOOL) isValidCardNumber:(NSString *)cardNumber;
++ (BOOL)checkCardNo:(NSString*)cardNo;
 
 @end
 

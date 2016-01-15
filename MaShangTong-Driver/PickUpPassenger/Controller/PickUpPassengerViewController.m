@@ -19,6 +19,7 @@
 #import "ModefiedViewController.h"
 #import "ActualPriceModel.h"
 #import "NYCalculateSpecialCarPrice.h"
+#import "NYCalculateCharteredBusPrice.h"
 #import "InputViewController.h"
 
 @interface PickUpPassengerViewController () <MAMapViewDelegate,AMapNaviManagerDelegate,AMapSearchDelegate,AMapNaviViewControllerDelegate>
@@ -59,6 +60,7 @@
 @property (nonatomic,strong) MAUserLocation *userLocation;
 // 专车 计价
 @property (nonatomic,strong) NYCalculateSpecialCarPrice *calculateSpecialCar;
+@property (nonatomic,strong) NYCalculateCharteredBusPrice *calculateCharteredBus;
 
 @end
 
@@ -68,10 +70,18 @@
 {
     if (_calculateSpecialCar == nil) {
         _calculateSpecialCar = [NYCalculateSpecialCarPrice sharedPrice];
-#warning 专车的计价规则
         _calculateSpecialCar.model = _ruleInfoModel;
     }
     return _calculateSpecialCar;
+}
+
+- (NYCalculateCharteredBusPrice *)calculateCharteredBus
+{
+    if (_calculateCharteredBus == nil) {
+        _calculateCharteredBus = [NYCalculateCharteredBusPrice shareCharteredBusPrice];
+        _calculateCharteredBus.rule = _ruleInfoModel;
+    }
+    return _calculateCharteredBus;
 }
 
 - (void)initNaviRoute
@@ -104,8 +114,16 @@
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleDone target:nil action:nil];
     
-    self.navigationItem.title = @"去接乘客";
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:21],NSForegroundColorAttributeName:RGBColor(73, 185, 254, 1.f)}];
+    UILabel *navTitleLabel = [[UILabel alloc] init];
+    navTitleLabel.size = CGSizeMake(200, 22);
+    navTitleLabel.font = [UIFont systemFontOfSize:21];
+    navTitleLabel.text = @"去接乘客";
+    navTitleLabel.textColor = RGBColor(73, 185, 254, 1.f);
+    navTitleLabel.textAlignment = 1;
+    self.navigationItem.titleView = navTitleLabel;
+    
+//    self.navigationItem.title = @"去接乘客";
+//    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:21],NSForegroundColorAttributeName:RGBColor(73, 185, 254, 1.f)}];
 }
 
 - (void)initPassengerView
@@ -327,7 +345,7 @@
     
     priceLabel = [[UILabel alloc] init];
     priceLabel.text = @"   元";
-    priceLabel.frame = CGRectMake(106, 0, 80, 40);
+    priceLabel.frame = CGRectMake(0, 0, 186, 40);
     priceLabel.font = [UIFont systemFontOfSize:13];
     [_chargingBgView addSubview:priceLabel];
     
@@ -468,17 +486,19 @@
 - (void)calculateTimeAndDistance
 {
     _driveringTime++;
-    AMapDrivingRouteSearchRequest *request = [[AMapDrivingRouteSearchRequest alloc] init];
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    request.origin = [AMapGeoPoint locationWithLatitude:delegate.driverCoordinate.latitude longitude:delegate.driverCoordinate.longitude];
-    request.destination = [AMapGeoPoint locationWithLatitude:[[_model.origin_coordinates componentsSeparatedByString:@","][1] floatValue] longitude:[[_model.origin_coordinates componentsSeparatedByString:@","][0] floatValue]];
-    request.strategy = 0;//结合交通实际情况
-    request.requireExtension = YES;
-    if (!_search) {
-        _search = [[AMapSearchAPI alloc] init];
-        _search.delegate = self;
+    if (_driveringTime%20 == 0) {
+        AMapDrivingRouteSearchRequest *request = [[AMapDrivingRouteSearchRequest alloc] init];
+        AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        request.origin = [AMapGeoPoint locationWithLatitude:delegate.driverCoordinate.latitude longitude:delegate.driverCoordinate.longitude];
+        request.destination = [AMapGeoPoint locationWithLatitude:[[_model.origin_coordinates componentsSeparatedByString:@","][1] floatValue] longitude:[[_model.origin_coordinates componentsSeparatedByString:@","][0] floatValue]];
+        request.strategy = 0;//结合交通实际情况
+        request.requireExtension = YES;
+        if (!_search) {
+            _search = [[AMapSearchAPI alloc] init];
+            _search.delegate = self;
+        }
+        [_search AMapDrivingRouteSearch:request];
     }
-    [_search AMapDrivingRouteSearch:request];
     
     for (id ann in self.mapView.annotations) {
         if ([ann isKindOfClass:[MAUserLocation class]]) {
@@ -513,73 +533,61 @@
                 NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:price];
                 [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length)];
                 priceLabel.attributedText = attri;
-                
-                [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:priceDic success:^(id json) {
-                    
-                } failure:^(NSError *error) {
-                    
-                }];
+                if (_driveringTime%60 == 0) {
+                    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:priceDic success:^(id json) {
+                        
+                    } failure:^(NSError *error) {
+                        
+                    }];
+                }
                 break;
             }
             case 2:
             {
+                speedLabel.hidden = YES;
+                NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:speed];
+                distanceLabel.text = [NSString stringWithFormat:@"里程%.2f公里",[priceArr[1] floatValue]];
+                priceLabel.text = [NSString stringWithFormat:@"%.0f元",[priceArr[0] floatValue]];
+                if (_driveringTime%60 == 0) {
+                    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:priceDic success:^(id json) {
+                        
+                    } failure:^(NSError *error) {
+                        
+                    }];
+                }
                 break;
             }
-            case 3:
+            case 3 | 4:
             {
-                break;
-            }
-            case 4:
-            {
+                distanceLabel.hidden = YES;
+                speedLabel.hidden = YES;
+                priceLabel.text = [NSString stringWithFormat:@"%.0f",_ruleInfoModel.once_price.floatValue];
+                if (_driveringTime%60 == 0) {
+                    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:priceDic success:^(id json) {
+                        
+                    } failure:^(NSError *error) {
+                        
+                    }];
+                }
                 break;
             }
             default:
-            {
                 break;
-            }
         }
         
-        //        [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"speed_price"] params:params success:^(id json) {
-        //            @try {
-        //                NYLog(@"%@",json);
-        //                if (!json) {
-        //                    return ;
-        //                }
-        //                actualPriceModel = [[ActualPriceModel alloc] initWithDictionary:json[@"info"] error:nil];
-        //                distanceLabel.text = [NSString stringWithFormat:@"里程%.2f公里",[actualPriceModel.mileage floatValue]];
-        //                speedLabel.text = [NSString stringWithFormat:@"低速%li分钟",(long)[actualPriceModel.low_time integerValue]];
-        //                price = [NSString stringWithFormat:@"%.2f",[actualPriceModel.total_price floatValue]];
-        //                NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:price];
-        //                [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length)];
-        //                priceLabel.attributedText = attri;
-        //            }
-        //            @catch (NSException *exception) {
-        //
-        //            }
-        //            @finally {
-        //
-        //            }
-        //        } failure:^(NSError *error) {
-        //
-        //        }];
-    } else {
-//        NSMutableDictionary *params = [NSMutableDictionary dictionary];
-//        [params setValue:_model.route_id forKey:@"route_id"];
-//        [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"near_cars"] params:params success:^(id json) {
-//            
+//        [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"speed_price"] params:params success:^(id json) {
 //            @try {
 //                NYLog(@"%@",json);
-//                NSString *routeStatus = [NSString stringWithFormat:@"%@",json[@"data"][@"route_status"]];
-//                if ([routeStatus isEqualToString:@"-1"]) {
-//                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"乘客已取消订单" message:nil preferredStyle:UIAlertControllerStyleAlert];
-//                    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//                        [_timer setFireDate:[NSDate distantFuture]];
-//                        [_timer invalidate];
-//                        _timer = nil;
-//                        [self.navigationController popViewControllerAnimated:YES];
-//                    }]];
-//                    [self presentViewController:alert animated:YES completion:nil];
+//                if (!json) {
+//                    return ;
 //                }
+//                actualPriceModel = [[ActualPriceModel alloc] initWithDictionary:json[@"info"] error:nil];
+//                distanceLabel.text = [NSString stringWithFormat:@"里程%.2f公里",[actualPriceModel.mileage floatValue]];
+//                speedLabel.text = [NSString stringWithFormat:@"低速%li分钟",(long)[actualPriceModel.low_time integerValue]];
+//                price = [NSString stringWithFormat:@"%.2f",[actualPriceModel.total_price floatValue]];
+//                NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:price];
+//                [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length)];
+//                priceLabel.attributedText = attri;
 //            }
 //            @catch (NSException *exception) {
 //                
@@ -587,10 +595,40 @@
 //            @finally {
 //                
 //            }
-//            
 //        } failure:^(NSError *error) {
 //            
 //        }];
+    } else {
+        if (_driveringTime % 10 == 0) {
+            NSMutableDictionary *params = [NSMutableDictionary dictionary];
+            [params setValue:_model.route_id forKey:@"route_id"];
+            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"near_cars"] params:params success:^(id json) {
+                
+                @try {
+                    NYLog(@"%@",json);
+                    NSString *routeStatus = [NSString stringWithFormat:@"%@",json[@"data"][@"route_status"]];
+                    if ([routeStatus isEqualToString:@"-1"]) {
+                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"乘客已取消订单" message:nil preferredStyle:UIAlertControllerStyleAlert];
+                        [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                            [_timer setFireDate:[NSDate distantFuture]];
+                            [_timer invalidate];
+                            _timer = nil;
+                            [self.navigationController popViewControllerAnimated:YES];
+                        }]];
+                        [self presentViewController:alert animated:YES completion:nil];
+                    }
+                }
+                @catch (NSException *exception) {
+                    
+                }
+                @finally {
+                    
+                }
+                
+            } failure:^(NSError *error) {
+                
+            }];
+        }
     }
 }
 

@@ -343,7 +343,7 @@
     
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [self.mapView setCenterCoordinate:delegate.driverCoordinate];
-    [self.mapView setZoomLevel:14 animated:YES];
+    [self.mapView setZoomLevel:16 animated:YES];
 }
 
 - (void)viewDidLoad {

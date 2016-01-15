@@ -48,6 +48,16 @@
 		0E6B2CEB1C32339C00703F84 /* GSchangePassWordVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E6B2CE91C32339C00703F84 /* GSchangePassWordVC.xib */; };
 		0E98D02D1C32BA9900E09CEA /* NYChangePriceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E98D02C1C32BA9900E09CEA /* NYChangePriceView.m */; };
 		0EA245521C434DE800ADACAA /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EA245511C434DE800ADACAA /* ImageIO.framework */; };
+		0EDE51AB1C48EF8C001803C5 /* AddCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE51A01C48EF8C001803C5 /* AddCardViewController.m */; };
+		0EDE51AC1C48EF8C001803C5 /* AddCardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EDE51A11C48EF8C001803C5 /* AddCardViewController.xib */; };
+		0EDE51AD1C48EF8C001803C5 /* SelfCardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE51A31C48EF8C001803C5 /* SelfCardTableViewCell.m */; };
+		0EDE51AE1C48EF8C001803C5 /* SelfCardTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EDE51A41C48EF8C001803C5 /* SelfCardTableViewCell.xib */; };
+		0EDE51AF1C48EF8C001803C5 /* SelfCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE51A61C48EF8C001803C5 /* SelfCardViewController.m */; };
+		0EDE51B01C48EF8C001803C5 /* SelfCardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EDE51A71C48EF8C001803C5 /* SelfCardViewController.xib */; };
+		0EDE51B11C48EF8C001803C5 /* WithdrawingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE51A91C48EF8C001803C5 /* WithdrawingViewController.m */; };
+		0EDE51B21C48EF8C001803C5 /* WithdrawingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EDE51AA1C48EF8C001803C5 /* WithdrawingViewController.xib */; };
+		0EDE51B41C48F545001803C5 /* addCard.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EDE51B31C48F545001803C5 /* addCard.png */; };
+		0EDE51B71C492441001803C5 /* NYCalculateCharteredBusPrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EDE51B61C492441001803C5 /* NYCalculateCharteredBusPrice.m */; };
 		0EE997A41C3F95ED004DA07B /* NYWithdrawViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE997A21C3F95ED004DA07B /* NYWithdrawViewController.m */; };
 		0EE997A51C3F95ED004DA07B /* NYWithdrawViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EE997A31C3F95ED004DA07B /* NYWithdrawViewController.xib */; };
 		0EEF3F0A1C3BAC69001D8F30 /* InputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF3F091C3BAC69001D8F30 /* InputViewController.m */; };
@@ -338,6 +348,21 @@
 		0E98D02B1C32BA9900E09CEA /* NYChangePriceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYChangePriceView.h; sourceTree = "<group>"; };
 		0E98D02C1C32BA9900E09CEA /* NYChangePriceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYChangePriceView.m; sourceTree = "<group>"; };
 		0EA245511C434DE800ADACAA /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		0EDE519F1C48EF8C001803C5 /* AddCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddCardViewController.h; sourceTree = "<group>"; };
+		0EDE51A01C48EF8C001803C5 /* AddCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddCardViewController.m; sourceTree = "<group>"; };
+		0EDE51A11C48EF8C001803C5 /* AddCardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddCardViewController.xib; sourceTree = "<group>"; };
+		0EDE51A21C48EF8C001803C5 /* SelfCardTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfCardTableViewCell.h; sourceTree = "<group>"; };
+		0EDE51A31C48EF8C001803C5 /* SelfCardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelfCardTableViewCell.m; sourceTree = "<group>"; };
+		0EDE51A41C48EF8C001803C5 /* SelfCardTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelfCardTableViewCell.xib; sourceTree = "<group>"; };
+		0EDE51A51C48EF8C001803C5 /* SelfCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfCardViewController.h; sourceTree = "<group>"; };
+		0EDE51A61C48EF8C001803C5 /* SelfCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelfCardViewController.m; sourceTree = "<group>"; };
+		0EDE51A71C48EF8C001803C5 /* SelfCardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelfCardViewController.xib; sourceTree = "<group>"; };
+		0EDE51A81C48EF8C001803C5 /* WithdrawingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WithdrawingViewController.h; sourceTree = "<group>"; };
+		0EDE51A91C48EF8C001803C5 /* WithdrawingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WithdrawingViewController.m; sourceTree = "<group>"; };
+		0EDE51AA1C48EF8C001803C5 /* WithdrawingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WithdrawingViewController.xib; sourceTree = "<group>"; };
+		0EDE51B31C48F545001803C5 /* addCard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = addCard.png; sourceTree = "<group>"; };
+		0EDE51B51C492441001803C5 /* NYCalculateCharteredBusPrice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYCalculateCharteredBusPrice.h; sourceTree = "<group>"; };
+		0EDE51B61C492441001803C5 /* NYCalculateCharteredBusPrice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYCalculateCharteredBusPrice.m; sourceTree = "<group>"; };
 		0EE997A11C3F95ED004DA07B /* NYWithdrawViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYWithdrawViewController.h; sourceTree = "<group>"; };
 		0EE997A21C3F95ED004DA07B /* NYWithdrawViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYWithdrawViewController.m; sourceTree = "<group>"; };
 		0EE997A31C3F95ED004DA07B /* NYWithdrawViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NYWithdrawViewController.xib; sourceTree = "<group>"; };
@@ -778,6 +803,7 @@
 				0EE997A11C3F95ED004DA07B /* NYWithdrawViewController.h */,
 				0EE997A21C3F95ED004DA07B /* NYWithdrawViewController.m */,
 				0EE997A31C3F95ED004DA07B /* NYWithdrawViewController.xib */,
+				0EDE519E1C48EF8C001803C5 /* AddBankCards */,
 			);
 			name = "我的账户";
 			sourceTree = "<group>";
@@ -881,6 +907,25 @@
 				18B4E7A51C2C146F004E0ACC /* NYMyCommentModel.m */,
 			);
 			name = "我的评论";
+			sourceTree = "<group>";
+		};
+		0EDE519E1C48EF8C001803C5 /* AddBankCards */ = {
+			isa = PBXGroup;
+			children = (
+				0EDE519F1C48EF8C001803C5 /* AddCardViewController.h */,
+				0EDE51A01C48EF8C001803C5 /* AddCardViewController.m */,
+				0EDE51A11C48EF8C001803C5 /* AddCardViewController.xib */,
+				0EDE51A21C48EF8C001803C5 /* SelfCardTableViewCell.h */,
+				0EDE51A31C48EF8C001803C5 /* SelfCardTableViewCell.m */,
+				0EDE51A41C48EF8C001803C5 /* SelfCardTableViewCell.xib */,
+				0EDE51A51C48EF8C001803C5 /* SelfCardViewController.h */,
+				0EDE51A61C48EF8C001803C5 /* SelfCardViewController.m */,
+				0EDE51A71C48EF8C001803C5 /* SelfCardViewController.xib */,
+				0EDE51A81C48EF8C001803C5 /* WithdrawingViewController.h */,
+				0EDE51A91C48EF8C001803C5 /* WithdrawingViewController.m */,
+				0EDE51AA1C48EF8C001803C5 /* WithdrawingViewController.xib */,
+			);
+			path = AddBankCards;
 			sourceTree = "<group>";
 		};
 		18B4E7621C2C104A004E0ACC = {
@@ -1004,6 +1049,7 @@
 		18B4E7E61C2C1476004E0ACC /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				0EDE51B31C48F545001803C5 /* addCard.png */,
 				0E20D3DC1C44A76800BF6177 /* discover@2x.png */,
 				0E20D3DD1C44A76800BF6177 /* discover@3x.png */,
 				0E05EBCC1C3E97A5008010AC /* SettingContractUs@2x.png */,
@@ -1210,6 +1256,8 @@
 				18B4E9231C2C1506004E0ACC /* MANaviRoute.m */,
 				0EEF5F1D1C4798A1009B299B /* NYCalculateSpecialCarPrice.h */,
 				0EEF5F1E1C4798A1009B299B /* NYCalculateSpecialCarPrice.m */,
+				0EDE51B51C492441001803C5 /* NYCalculateCharteredBusPrice.h */,
+				0EDE51B61C492441001803C5 /* NYCalculateCharteredBusPrice.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1395,6 +1443,7 @@
 				18B4E8C81C2C1476004E0ACC /* quanquan@3x.png in Resources */,
 				0EE997A51C3F95ED004DA07B /* NYWithdrawViewController.xib in Resources */,
 				18B4E8961C2C1476004E0ACC /* che3Deselect@2x.png in Resources */,
+				0EDE51B21C48EF8C001803C5 /* WithdrawingViewController.xib in Resources */,
 				18B4E8BA1C2C1476004E0ACC /* navigation@3x.png in Resources */,
 				18B4E8BF1C2C1476004E0ACC /* pengyouquanfenxiang@2x.png in Resources */,
 				0E18DFE91C30DF5800D77CEC /* NYCommentDetailViewController.xib in Resources */,
@@ -1443,6 +1492,7 @@
 				0E11E76E1C3E416A00B7F624 /* minus@2x.png in Resources */,
 				18B4E8E51C2C1476004E0ACC /* tuijianyoujiang@2x.png in Resources */,
 				18B4E8E11C2C1476004E0ACC /* tuangoushangcheng@2x.png in Resources */,
+				0EDE51B01C48EF8C001803C5 /* SelfCardViewController.xib in Resources */,
 				18B4E8A51C2C1476004E0ACC /* dingweizhongxin@3x.png in Resources */,
 				18B4E8F81C2C1476004E0ACC /* xiaoxi@3x.png in Resources */,
 				18B4E8D11C2C1476004E0ACC /* shezhi@2x.png in Resources */,
@@ -1450,6 +1500,7 @@
 				18B4E9071C2C1476004E0ACC /* yue@2x.png in Resources */,
 				18B4E8DA1C2C1476004E0ACC /* sijizhaomu@3x.png in Resources */,
 				18B4E8CE1C2C1476004E0ACC /* sendBtnSelect@3x.png in Resources */,
+				0EDE51AC1C48EF8C001803C5 /* AddCardViewController.xib in Resources */,
 				18B4E7D31C2C146F004E0ACC /* NYMyBalanceTableViewCell.xib in Resources */,
 				18B4E8F41C2C1476004E0ACC /* xiala@3x.png in Resources */,
 				0E18DFE41C30DA3C00D77CEC /* detailOrderVC.xib in Resources */,
@@ -1480,6 +1531,7 @@
 				18B4E8BB1C2C1476004E0ACC /* payBtnDeselect@2x.png in Resources */,
 				18B4E8B01C2C1476004E0ACC /* icon.png in Resources */,
 				18B4E8E81C2C1476004E0ACC /* weixinpengyoufenxiang@3x.png in Resources */,
+				0EDE51B41C48F545001803C5 /* addCard.png in Resources */,
 				18B4E89E1C2C1476004E0ACC /* dingwei1@2x.png in Resources */,
 				0E20D3DF1C44A76800BF6177 /* discover@3x.png in Resources */,
 				18B4E8AE1C2C1476004E0ACC /* gerenzhongxin@2x.png in Resources */,
@@ -1514,6 +1566,7 @@
 				18B4E8CC1C2C1476004E0ACC /* sendBtnDeselect@3x.png in Resources */,
 				0E6B2CEB1C32339C00703F84 /* GSchangePassWordVC.xib in Resources */,
 				18B4E87C1C2C1476004E0ACC /* advertisementImage@2x.png in Resources */,
+				0EDE51AE1C48EF8C001803C5 /* SelfCardTableViewCell.xib in Resources */,
 				18B4E9081C2C1476004E0ACC /* yue@3x.png in Resources */,
 				18B4E8871C2C1476004E0ACC /* baojifuben@3x.png in Resources */,
 				0E18E0061C31298D00D77CEC /* StarsBackground@3x.png in Resources */,
@@ -1641,6 +1694,7 @@
 				18B4E7CF1C2C146F004E0ACC /* NYInvitationViewController.m in Sources */,
 				18B4E7D71C2C146F004E0ACC /* NYMyCommentViewController.m in Sources */,
 				0E6B2CE51C3228A600703F84 /* MyNewsTableViewCell.m in Sources */,
+				0EDE51B11C48EF8C001803C5 /* WithdrawingViewController.m in Sources */,
 				18B4E9311C2C1507004E0ACC /* PickUpPassengerViewController.m in Sources */,
 				18B4E9381C2C1507004E0ACC /* DriverAnnotation.m in Sources */,
 				18B4E9361C2C1507004E0ACC /* MANaviPolyline.m in Sources */,
@@ -1674,6 +1728,7 @@
 				0E5A15281C3B661F001380C6 /* NYForgetPasswordViewController.m in Sources */,
 				18B4E92F1C2C1506004E0ACC /* ModefiedViewController.m in Sources */,
 				18B4E94E1C2C1535004E0ACC /* DriverRegisViewController.m in Sources */,
+				0EDE51AB1C48EF8C001803C5 /* AddCardViewController.m in Sources */,
 				18B4E7DA1C2C146F004E0ACC /* NYMyVoucherModel.m in Sources */,
 				0E5BD0491C2E628800814CD9 /* GSageView.m in Sources */,
 				18B4E7DC1C2C146F004E0ACC /* NYShareViewController.m in Sources */,
@@ -1685,6 +1740,7 @@
 				18B4E7DB1C2C146F004E0ACC /* NYMyWalletViewController.m in Sources */,
 				18B4E9671C2C1542004E0ACC /* MBProgressHUD+MJ.m in Sources */,
 				0EEF3F151C3D556D001D8F30 /* NYSuggestionViewController.m in Sources */,
+				0EDE51B71C492441001803C5 /* NYCalculateCharteredBusPrice.m in Sources */,
 				0E18DFE81C30DF5800D77CEC /* NYCommentDetailViewController.m in Sources */,
 				0E20D3DA1C44A10200BF6177 /* NYDiscoverViewController.m in Sources */,
 				0E5BD0521C2E677F00814CD9 /* GSauthenticationVC.m in Sources */,
@@ -1701,6 +1757,8 @@
 				0E5BD05C1C2E6D1D00814CD9 /* NYAboutUsViewController.m in Sources */,
 				18B4E7C81C2C146F004E0ACC /* MyCenterCell.m in Sources */,
 				18B4E7701C2C104A004E0ACC /* main.m in Sources */,
+				0EDE51AF1C48EF8C001803C5 /* SelfCardViewController.m in Sources */,
+				0EDE51AD1C48EF8C001803C5 /* SelfCardTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

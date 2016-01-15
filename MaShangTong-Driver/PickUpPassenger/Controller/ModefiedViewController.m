@@ -32,8 +32,16 @@
 
 - (void)setNavigationBar
 {
-    self.navigationItem.title = @"修改账单";
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:21],NSForegroundColorAttributeName:RGBColor(73, 185, 254, 1.f)}];
+//    self.navigationItem.title = @"修改账单";
+//    [self.navigationController.navigationBar setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:21],NSForegroundColorAttributeName:RGBColor(73, 185, 254, 1.f)}];
+
+    UILabel *navTitleLabel = [[UILabel alloc] init];
+    navTitleLabel.size = CGSizeMake(200, 22);
+    navTitleLabel.font = [UIFont systemFontOfSize:21];
+    navTitleLabel.text = @"修改账单";
+    navTitleLabel.textColor = RGBColor(73, 185, 254, 1.f);
+    navTitleLabel.textAlignment = 1;
+    self.navigationItem.titleView = navTitleLabel;
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.size = CGSizeMake(66, 44);

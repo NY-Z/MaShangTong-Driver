@@ -128,7 +128,7 @@
     
     _ageV = [[GSageView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-220-64, SCREEN_WIDTH, 220)];
     _ageV.chooseAge = ^(NSString *ageStr){
-        
+
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:3 inSection:0];
         PersonInfoCell *cell = [weakTableView cellForRowAtIndexPath:indexPath];
         if ([cell.subTitleLabel.text isEqualToString:ageStr]) {
@@ -146,7 +146,7 @@
                     cell.subTitleLabel.text = ageStr;
                     
                     DriverInfoModel *driverInfo = [NSKeyedUnarchiver unarchiveObjectWithData:[USER_DEFAULT objectForKey:@"user_info"]];
-                    driverInfo.snum = [ageStr substringWithRange:NSMakeRange(0, 2)];
+                    driverInfo.byear = ageStr;
                     [USER_DEFAULT setObject:[NSKeyedArchiver archivedDataWithRootObject:driverInfo] forKey:@"user_info"];
                     [USER_DEFAULT synchronize];
                 }
@@ -236,10 +236,9 @@
     _dataArr = [@[@{kPersonInfoTitle:@"头像",kPersonInfoSubTitle:@""},
                  @{kPersonInfoTitle:@"昵称",kPersonInfoSubTitle:_driverInfo.user_name},
                  @{kPersonInfoTitle:@"性别",kPersonInfoSubTitle:_driverInfo.sex},
-                  @{kPersonInfoTitle:@"年龄",kPersonInfoSubTitle:[NSString stringWithFormat:@"%@后",_driverInfo.byear]},
+                  @{kPersonInfoTitle:@"年龄",kPersonInfoSubTitle:[NSString stringWithFormat:@"%@",_driverInfo.byear]},
                  @{kPersonInfoTitle:@"所在地",kPersonInfoSubTitle:_driverInfo.city},
                  @{kPersonInfoTitle:@"手机",kPersonInfoSubTitle:_driverInfo.mobile},
-                 @{kPersonInfoTitle:@"实名认证",kPersonInfoSubTitle:@"已认证"},
                   @{kPersonInfoTitle:@"修改密码",kPersonInfoSubTitle:@""}] mutableCopy];
 }
 
@@ -272,7 +271,7 @@
         [tableFooterView addSubview:starView];
         
         UILabel *pointLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 45, SCREEN_WIDTH, 20)];
-        pointLabel.text = [NSString stringWithFormat:@"%@分",_driverInfo.point];
+        pointLabel.text = [NSString stringWithFormat:@"%.2f分",_driverInfo.point.floatValue];
         pointLabel.textAlignment = 1;
         pointLabel.textColor = RGBColor(109, 188, 209, 1.f);
         pointLabel.font = [UIFont systemFontOfSize:15];
@@ -349,16 +348,7 @@
             [self.view addSubview:_cityV];
             break;
         }
-        case 5:
-        {
-            break;
-        }
         case 6:
-        {
-            [self.navigationController pushViewController:[[GSauthenticationVC alloc] init] animated:YES];
-            break;
-        }
-        case 7:
         {
             [self changeThePassWord];
         }

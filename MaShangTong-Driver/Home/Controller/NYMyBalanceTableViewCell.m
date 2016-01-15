@@ -22,10 +22,10 @@
 
 - (void)configModel:(NYMyBalanceModel *)model
 {
-
-    
-    
-//    _balanceValueLabel = model.money;
+    _balanceValueLabel.text = model.money;
+    _priceDetailLabel.text = model.log_info;
+    _sourceLabel.text = model.action_type;
+    _dateLAbel.text = model.log_time;
 }
 
 @end

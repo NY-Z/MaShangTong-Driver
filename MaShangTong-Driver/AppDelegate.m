@@ -69,6 +69,12 @@
 //        }
 //    [APService setupWithOption:launchOptions];
     
+    // 禁用缓存
+    NSURLCache *sharedCache = [[NSURLCache alloc] initWithMemoryCapacity:0
+                                                            diskCapacity:0
+                                                                diskPath:nil];
+    [NSURLCache setSharedURLCache:sharedCache];
+    
     // 友盟分享
     [UMSocialData setAppKey:(NSString *)UMSocialAppKey];
     [UMSocialQQHandler setQQWithAppId:@"1105033522" appKey:@"REaQLYFREilVdVxY" url:@"http://www.umeng.com/social"];

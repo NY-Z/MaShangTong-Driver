@@ -12,6 +12,8 @@
 #import "NYMyVoucherModel.h"
 #import "NYMyBalanceModel.h"
 #import "NYWithdrawViewController.h"
+#import "WithdrawingViewController.h"
+
 
 @interface NYMyWalletViewController () <UITableViewDataSource,UITableViewDelegate>
 {
@@ -248,7 +250,6 @@
         @finally {
             
         }
-        
     } failure:^(NSError *error) {
         NYLog(@"%@",error.localizedDescription);
         [MBProgressHUD hideHUD];
@@ -407,7 +408,7 @@
 // 提现
 - (void)balanceBtnClicked
 {
-    [self.navigationController pushViewController:[[NYWithdrawViewController alloc] init] animated:YES];
+    [self.navigationController pushViewController:[[WithdrawingViewController alloc] init] animated:YES];
 }
 
 // 兑换
@@ -415,7 +416,7 @@
 {
     [MBProgressHUD showMessage:@"兑换中"];
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"exchange"] params:@{@"user_id":[USER_DEFAULT objectForKey:@"user_id"]} success:^(id json) {
-        
+        [MBProgressHUD hideHUD];
         @try {
             NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
             if ([dataStr isEqualToString:@"0"]) {

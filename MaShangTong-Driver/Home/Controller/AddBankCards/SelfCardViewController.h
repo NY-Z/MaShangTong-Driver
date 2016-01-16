@@ -10,7 +10,6 @@
 
 @interface SelfCardViewController : UIViewController
 
-- (IBAction)back:(id)sender;
 @property (weak, nonatomic) IBOutlet UITableView *mainTableView;
 @property (nonatomic,strong) void (^selectBankCard) (NSDictionary *dic,NSString *text);
 

@@ -34,11 +34,6 @@ Copyright © 2014 AutoNavi. All Rights Reserved.
 Copyright © 2014 AutoNavi. All Rights Reserved.
 
 
-## AlipaySDK-2.0
-
-支付宝(中国)网络技术有限公司 ^? 版权所有.
-
-
 ## IQKeyboardManager
 
 IQKeyboardManager license
@@ -66,10 +61,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-
-## JPush
-
-Copyright jpush.cn
 
 ## JSONModel
 
@@ -164,11 +155,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-
-
-## UMengFeedback
-
-Copyright 2011 - 2015 UMeng.com. All rights reserved.
 
 
 ## UMengSocial

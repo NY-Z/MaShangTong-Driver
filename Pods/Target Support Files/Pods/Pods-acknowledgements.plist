@@ -59,15 +59,6 @@ THE SOFTWARE.
 		</dict>
 		<dict>
 			<key>FooterText</key>
-			<string>&#25903;&#20184;&#23453;(&#20013;&#22269;)&#32593;&#32476;&#25216;&#26415;&#26377;&#38480;&#20844;&#21496; ^? &#29256;&#26435;&#25152;&#26377;.
-</string>
-			<key>Title</key>
-			<string>AlipaySDK-2.0</string>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-		</dict>
-		<dict>
-			<key>FooterText</key>
 			<string>IQKeyboardManager license
 =========================
 
@@ -95,14 +86,6 @@ SOFTWARE.
 </string>
 			<key>Title</key>
 			<string>IQKeyboardManager</string>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-		</dict>
-		<dict>
-			<key>FooterText</key>
-			<string>Copyright jpush.cn</string>
-			<key>Title</key>
-			<string>JPush</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>
@@ -214,15 +197,6 @@ THE SOFTWARE.
 </string>
 			<key>Title</key>
 			<string>SDWebImage</string>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-		</dict>
-		<dict>
-			<key>FooterText</key>
-			<string>Copyright 2011 - 2015 UMeng.com. All rights reserved.
-</string>
-			<key>Title</key>
-			<string>UMengFeedback</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 		</dict>

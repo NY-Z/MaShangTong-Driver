@@ -19,7 +19,7 @@
                         <rect key="frame" x="10" y="15" width="337" height="59"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </imageView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="navi" translatesAutoresizingMaskIntoConstraints="NO" id="oPE-KX-6rT">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oPE-KX-6rT">
                         <rect key="frame" x="28" y="37" width="15" height="15"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="15" id="8Lz-6m-dwE"/>
@@ -62,7 +62,4 @@
             <point key="canvasLocation" x="503.5" y="159.5"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="navi" width="17" height="44"/>
-    </resources>
 </document>

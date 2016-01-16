@@ -154,7 +154,7 @@
     
     DriverInfoModel *driverInfo = [NSKeyedUnarchiver unarchiveObjectWithData:[USER_DEFAULT objectForKey:@"user_info"]];
     
-    NSArray *titleArr = @[[NSString stringWithFormat:@"单数：%@单",driverInfo.snum],@"今日流水：90.30",[NSString stringWithFormat:@"%.2f★",[driverInfo.point floatValue]]];
+    NSArray *titleArr = @[[NSString stringWithFormat:@"单数：%@单",driverInfo.snum],[NSString stringWithFormat:@"今日流水：%@",driverInfo.money],[NSString stringWithFormat:@"%.2f★",[driverInfo.point floatValue]]];
     for (NSInteger i = 0; i < 3; i++) {
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(i*width, 0, width, height)];
         label.text = titleArr[i];

@@ -235,13 +235,13 @@
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"recharge"] params:params success:^(id json) {
         @try {
             NYLog(@"%@",json);
+            [MBProgressHUD hideHUD];
             NSString *money = json[@"money"];
             UIView *view = _balanceTableView.tableHeaderView;
             UILabel *label = (UILabel *)[view viewWithTag:100];
             NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@元",money]];
             [attri addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:30]} range:NSMakeRange(0, money.length)];
             label.attributedText = attri;
-            [MBProgressHUD hideHUD];
         }
         @catch (NSException *exception) {
             [MBProgressHUD hideHUD];
@@ -261,7 +261,6 @@
         NYLog(@"%@",json);
         
         @try {
-            [MBProgressHUD hideHUD];
             NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
             if ([dataStr isEqualToString:@"0"]) {
                 [MBProgressHUD showSuccess:@"您暂时没有收支明细"];
@@ -313,7 +312,6 @@
             
         }
     } failure:^(NSError *error) {
-        [MBProgressHUD hideHUD];
         [MBProgressHUD showError:@"网络错误"];
     }];
 }

@@ -9,7 +9,6 @@
 #import "SettingViewController.h"
 #import "SettingTableViewCell.h"
 #import "KLSwitch.h"
-#import "UMFeedback.h"
 #import "NYContactUsViewController.h"
 #import "NYAboutUsViewController.h"
 #import "NYTaxiGuideViewController.h"

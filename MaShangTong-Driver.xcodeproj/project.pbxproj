@@ -1879,7 +1879,7 @@
 				);
 				GCC_PREFIX_HEADER = "MaShangTong-Driver/MaShangTong.pch";
 				INFOPLIST_FILE = "MaShangTong-Driver/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.NY.Mast.Driver;
 				PRODUCT_NAME = "码尚通-司机版";
@@ -1900,7 +1900,7 @@
 				);
 				GCC_PREFIX_HEADER = "MaShangTong-Driver/MaShangTong.pch";
 				INFOPLIST_FILE = "MaShangTong-Driver/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.NY.Mast.Driver;
 				PRODUCT_NAME = "码尚通-司机版";

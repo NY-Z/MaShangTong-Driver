@@ -26,7 +26,7 @@
 - (NSDictionary *)transParams
 {
     if (_transParams == nil) {
-        _transParams = [NSDictionary dictionary];
+        _transParams = [NSMutableDictionary dictionary];
     }
     return _transParams;
 }

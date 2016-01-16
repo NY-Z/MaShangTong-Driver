@@ -1,1 +1,0 @@
-../../../AlipaySDK-2.0/sources/extensions/ANAlipayResultCode.h

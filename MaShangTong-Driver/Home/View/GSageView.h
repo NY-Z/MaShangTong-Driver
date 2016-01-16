@@ -11,7 +11,7 @@
 @interface GSageView : UIView<UIPickerViewDelegate,UIPickerViewDataSource>
 
 {
-    NSInteger *ageNum;
+    NSInteger ageNum;
     NSArray *_dataAry;
 }
 @property (nonatomic,strong)void(^chooseAge)(NSString *ageStr);

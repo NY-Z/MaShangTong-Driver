@@ -156,7 +156,7 @@
                 _stepLabel.text = [NSString stringWithFormat:@"%.2f元",[self.priceModel.start_price floatValue]];
                 _distanceLabel.text = [NSString stringWithFormat:@"里程%.2fkm",[self.priceModel.mileage floatValue]];
                 _distancePriceLabel.text = [NSString stringWithFormat:@"%.2f元",[self.priceModel.mileage_price floatValue]*1.5];
-                _lowSpeedTimeLabel.text = [NSString stringWithFormat:@"低速%.2f分钟",[self.priceModel.low_time floatValue]];
+                _lowSpeedTimeLabel.text = [NSString stringWithFormat:@"低速%.2f分钟",[self.priceModel.low_time floatValue]/60];
                 _lowSpeedPriceLabel.text = [NSString stringWithFormat:@"%.2f元",[self.priceModel.low_price floatValue]];
                 _longMileagePriceLabel.text = [NSString stringWithFormat:@"%.2f元",[self.priceModel.far_price floatValue]];
                 _nightDrivePriceLabel.text = [NSString stringWithFormat:@"%.2f元",[self.priceModel.night_price floatValue]];

@@ -93,7 +93,7 @@
     [params setValue:@"码尚通" forKey:@"sign"];
     [params setValue:@"6C572C72EE1CA257886E65C7E5F3" forKey:@"pwd"];
     [params setValue:[NSString stringWithFormat:@"（%@）邀请您加入码尚通司机，让我们低碳出行，绿色生活！赶快点击加入吧，（）退订回复TD",_nameTextField.text] forKey:@"content"];
-    [params setValue:@"18752008629" forKey:@"mobile"];
+    [params setValue:_mobileTextField.text forKey:@"mobile"];
     [params setValue:@"pt" forKey:@"type"];
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];

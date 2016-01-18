@@ -29,7 +29,6 @@
     UILabel *navTitleLabel = [[UILabel alloc] init];
     navTitleLabel.size = CGSizeMake(200, 22);
     navTitleLabel.font = [UIFont systemFontOfSize:21];
-    navTitleLabel.text = @"服务中";
     navTitleLabel.textColor = RGBColor(73, 185, 254, 1.f);
     navTitleLabel.textAlignment = 1;
     self.navigationItem.titleView = navTitleLabel;
@@ -93,12 +92,12 @@
     _totalPriceLabel.textColor = [UIColor blackColor];
     [self.view addSubview:_totalPriceLabel];
     
-    UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_totalPriceLabel.frame), SCREEN_WIDTH, 15)];
-    detailLabel.text = @"查看详情";
-    detailLabel.textAlignment = 1;
-    detailLabel.textColor = RGBColor(123, 123, 123, 1.f);
-    detailLabel.font = [UIFont systemFontOfSize:12];
-    [self.view addSubview:detailLabel];
+//    UILabel *detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_totalPriceLabel.frame), SCREEN_WIDTH, 15)];
+//    detailLabel.text = @"查看详情";
+//    detailLabel.textAlignment = 1;
+//    detailLabel.textColor = RGBColor(123, 123, 123, 1.f);
+//    detailLabel.font = [UIFont systemFontOfSize:12];
+//    [self.view addSubview:detailLabel];
     
     restBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [restBtn setTitle:@"休息" forState:UIControlStateNormal];
@@ -147,6 +146,7 @@
                 [restBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
                 restBtn.enabled = YES;
                 [getPayBtn setBackgroundColor:RGBColor(99, 190, 255, 1.f)];
+                [getPayBtn setTitle:@"已付款，继续接单" forState:UIControlStateNormal];
                 getPayBtn.enabled = YES;
                 return;
             }

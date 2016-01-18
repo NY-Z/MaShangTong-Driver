@@ -89,13 +89,15 @@
 {
     UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT-BottomViewHeight-64, SCREEN_WIDTH, BottomViewHeight)];
     bottomView.backgroundColor = [UIColor whiteColor];
+    bottomView.tag = 2000;
     [self.view addSubview:bottomView];
     
     UIButton *modeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [modeBtn setTitle:@"模式" forState:UIControlStateNormal];
+    [modeBtn setTitle:@"立即  " forState:UIControlStateNormal];
     [modeBtn setTitleColor:RGBColor(82, 170, 255, 1.f) forState:UIControlStateNormal];
         [modeBtn addTarget:self action:@selector(modeBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     modeBtn.selected = NO;
+    modeBtn.tag = 2100;
     [bottomView addSubview:modeBtn];
     [modeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(bottomView).offset(31);
@@ -146,6 +148,7 @@
 {
     topView = [[UIView alloc] initWithFrame:CGRectMake(0, 11, SCREEN_WIDTH, 48)];
     topView.backgroundColor = [UIColor whiteColor];
+    topView.tag = 380;
     [self.view addSubview:topView];
     topView.clipsToBounds = YES;
     
@@ -154,13 +157,14 @@
     
     DriverInfoModel *driverInfo = [NSKeyedUnarchiver unarchiveObjectWithData:[USER_DEFAULT objectForKey:@"user_info"]];
     
-    NSArray *titleArr = @[[NSString stringWithFormat:@"单数：%@单",driverInfo.snum],[NSString stringWithFormat:@"今日流水：%@",driverInfo.money],[NSString stringWithFormat:@"%.2f★",[driverInfo.point floatValue]]];
+    NSArray *titleArr = @[@"0单",@"今日流水：0元",[NSString stringWithFormat:@"%.2f★",[driverInfo.point floatValue]]];
     for (NSInteger i = 0; i < 3; i++) {
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(i*width, 0, width, height)];
         label.text = titleArr[i];
         label.textColor = RGBColor(38, 164, 254, 1.f);
         label.font = [UIFont systemFontOfSize:13];
         label.textAlignment = 1;
+        label.tag = 100+i;
         [topView addSubview:label];
     }
     
@@ -201,6 +205,25 @@
     [dropOffBtn addTarget:self action:@selector(dropBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     dropOffBtn.frame = CGRectMake(0, 0, SCREEN_WIDTH, 24);
     [topBottomView addSubview:dropOffBtn];
+}
+
+- (void)configTopData
+{
+    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"orderApi",@"day_order"] params:@{@"driver_id":[USER_DEFAULT objectForKey:@"user_id"]} success:^(id json) {
+        NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+        if ([dataStr isEqualToString:@"1"]) {
+            UIView *bgView = [self.view viewWithTag:380];
+            NSArray *titleArr = @[[NSString stringWithFormat:@"%@单",json[@"num"]],[NSString stringWithFormat:@"%@元",json[@"price"]]];
+            for (NSInteger i = 0; i < 2; i++) {
+                UILabel *label = (UILabel *)[bgView viewWithTag:i+100];
+                label.text = titleArr[i];
+            }
+        } else {
+            [self configTopData];
+        }
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 - (void)configSwitchMode
@@ -360,6 +383,7 @@
         [self configSwitchMode];
         [self configBottom];
         [self configTop];
+        [self configTopData];
         [self configLeftViewController];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(listenTheOrder:) name:@"GetTheOrderList" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(continueListenTheOrder:) name:@"ContinueListenTheOrders" object:nil];
@@ -611,6 +635,10 @@
     _currentSpeakIndex = 0;
     _isChangeMode = YES;
     [self configTimer];
+    
+    UIView *bgView = [self.view viewWithTag:2000];
+    UIButton *modeBtn = (UIButton *)[bgView viewWithTag:2100];
+    [modeBtn setTitle:@"预约" forState:UIControlStateNormal];
 }
 
 - (void)rightNowCarBtnClicked:(UIButton *)btn
@@ -627,6 +655,10 @@
     _currentSpeakIndex = 0;
     _isChangeMode = YES;
     [self configTimer];
+    
+    UIView *bgView = [self.view viewWithTag:2000];
+    UIButton *modeBtn = (UIButton *)[bgView viewWithTag:2100];
+    [modeBtn setTitle:@"立即" forState:UIControlStateNormal];
 }
 
 #pragma mark - AMapNaviManagerDelegate

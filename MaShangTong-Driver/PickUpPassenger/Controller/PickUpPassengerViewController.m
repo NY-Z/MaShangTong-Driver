@@ -504,11 +504,20 @@
     for (id ann in self.mapView.annotations) {
         if ([ann isKindOfClass:[MAUserLocation class]]) {
             MAUserLocation *userLocation = (MAUserLocation *)ann;
-            NSString *annTitle = [NSString stringWithFormat:@"剩余%.2f公里 已行驶%ld:%ld",((float)_distance)/1000,(long)_driveringTime/60,(long)_driveringTime%60];
+            NSInteger minute = (long)_driveringTime/60;
+            NSInteger second = (long)_driveringTime%60;
+            NSMutableString *minuteStr = [NSMutableString stringWithFormat:@"%ld",minute];
+            NSMutableString *secondStr = [NSMutableString stringWithFormat:@"%ld",second];
+            if (minuteStr.length == 1) {
+                minuteStr = [NSMutableString stringWithFormat:@"0%@",minuteStr];
+            }
+            if (secondStr.length == 1) {
+                secondStr = [NSMutableString stringWithFormat:@"0%@",secondStr];
+            }
+            NSString *annTitle = [NSString stringWithFormat:@"剩余%.2f公里 已行驶%@:%@",((float)_distance)/1000,minuteStr,secondStr];
             userLocation.title = annTitle;
         }
     }
-    
     CLLocationSpeed speed = _userLocation.location.speed;
     if (speed == -1) {
         speed = 0;
@@ -550,7 +559,11 @@
                 speedLabel.hidden = YES;
                 NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:speed];
                 distanceLabel.text = [NSString stringWithFormat:@"里程%.2f公里",[priceArr[1] floatValue]];
-                priceLabel.text = [NSString stringWithFormat:@"%.0f元",[priceArr[0] floatValue]];
+//                priceLabel.text = [NSString stringWithFormat:@"%.0f元",[priceArr[0] floatValue]];
+                price = [NSString stringWithFormat:@"%.2f元",[priceArr[0] floatValue]];
+                NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:price];
+                [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length)];
+                priceLabel.attributedText = attri;
                 if (_driveringTime%60 == 0) {
                     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":priceArr[0],@"mileage":priceArr[1]} success:^(id json) {
                         
@@ -560,11 +573,31 @@
                 }
                 break;
             }
-            case 3 | 4:
+            case 3:
             {
                 distanceLabel.hidden = YES;
                 speedLabel.hidden = YES;
-                priceLabel.text = [NSString stringWithFormat:@"%.0f",_ruleInfoModel.once_price.floatValue];
+                price = [NSString stringWithFormat:@"%.0f元",_ruleInfoModel.once_price.floatValue];
+                NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:price];
+                [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length)];
+                priceLabel.attributedText = attri;
+                if (_driveringTime%60 == 0) {
+                    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":_ruleInfoModel.once_price} success:^(id json) {
+                        
+                    } failure:^(NSError *error) {
+                        
+                    }];
+                }
+                break;
+            }
+            case 4:
+            {
+                distanceLabel.hidden = YES;
+                speedLabel.hidden = YES;
+                price = [NSString stringWithFormat:@"%.0f元",_ruleInfoModel.once_price.floatValue];
+                NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:price];
+                [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length)];
+                priceLabel.attributedText = attri;
                 if (_driveringTime%60 == 0) {
                     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":_ruleInfoModel.once_price} success:^(id json) {
                         
@@ -781,15 +814,11 @@
     AMapPath *path = response.route.paths[0];
     self.naviRoute = [MANaviRoute naviRouteForPath:path withNaviType:type];
     
-    _distance = path.distance;
-    
-    for (id ann in self.mapView.annotations) {
-        if ([ann isKindOfClass:[MAUserLocation class]]) {
-            MAUserLocation *userLocation = (MAUserLocation *)ann;
-            NSString *annTitle = [NSString stringWithFormat:@"剩余%.2f公里 已行驶%ld:%ld",((float)_distance)/1000,(long)_driveringTime/60,(long)_driveringTime%60];
-            userLocation.title = annTitle;
-        }
+    NSInteger distance = 0;
+    for (AMapStep *step in path.steps) {
+        distance += step.distance;
     }
+    _distance = distance;
 }
 
 #pragma mark - AMapNaviManager Delegate
@@ -924,7 +953,7 @@
     }];
 }
 
-// 确定上车
+// 开始计费
 - (void)billingLeftBtnClicked:(UIButton *)btn
 {
     _billingBgView.hidden = YES;
@@ -932,7 +961,7 @@
     _buttonState = 1;
 }
 
-// 确定上车
+// 开始计费
 - (void)billingRightBtnClicked:(UIButton *)btn
 {
     [MBProgressHUD showMessage:@"请稍候"];
@@ -944,6 +973,7 @@
             [params setObject:_ruleInfoModel.step forKey:@"start_price"];
             [params setObject:@"3" forKey:@"route_status"];
             [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:params success:^(id json) {
+                [MBProgressHUD hideHUD];
                 NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
                 if ([dataStr isEqualToString:@"1"]) {
                     _billingBgView.hidden = YES;
@@ -965,19 +995,64 @@
         case 2:
         {
             NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:0];
-            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":priceArr[0],@"mileage":priceArr[1]} success:^(id json) {
-                
+            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":priceArr[0],@"mileage":priceArr[1],@"route_status":@"3"} success:^(id json) {
+                [MBProgressHUD hideHUD];
+                NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+                if ([dataStr isEqualToString:@"1"]) {
+                    _billingBgView.hidden = YES;
+                    _coverView.hidden = YES;
+                    _chargingBgView.hidden = NO;
+                    _bottomBgView.hidden = YES;
+                    _buttonState = 2;
+                    _isCalculateStart = 1;
+                } else {
+                    [MBProgressHUD showError:@"请重新确认开始计费"];
+                }
             } failure:^(NSError *error) {
-                
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showError:@"网络错误"];
             }];
             break;
         }
-        case 3 | 4:
+        case 3:
         {
-            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":_ruleInfoModel.once_price} success:^(id json) {
-                
+            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":_ruleInfoModel.once_price,@"route_status":@"3"} success:^(id json) {
+                [MBProgressHUD hideHUD];
+                NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+                if ([dataStr isEqualToString:@"1"]) {
+                    _billingBgView.hidden = YES;
+                    _coverView.hidden = YES;
+                    _chargingBgView.hidden = NO;
+                    _bottomBgView.hidden = YES;
+                    _buttonState = 2;
+                    _isCalculateStart = 1;
+                } else {
+                    [MBProgressHUD showError:@"请重新确认开始计费"];
+                }
             } failure:^(NSError *error) {
-                
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showError:@"网络错误"];
+            }];
+            break;
+        }
+        case 4:
+        {
+            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":_ruleInfoModel.once_price,@"route_status":@"3"} success:^(id json) {
+                [MBProgressHUD hideHUD];
+                NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+                if ([dataStr isEqualToString:@"1"]) {
+                    _billingBgView.hidden = YES;
+                    _coverView.hidden = YES;
+                    _chargingBgView.hidden = NO;
+                    _bottomBgView.hidden = YES;
+                    _buttonState = 2;
+                    _isCalculateStart = 1;
+                } else {
+                    [MBProgressHUD showError:@"请重新确认开始计费"];
+                }
+            } failure:^(NSError *error) {
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showError:@"网络错误"];
             }];
             break;
         }
@@ -1018,6 +1093,7 @@
     //    }];
 }
 
+// 结束计费
 - (void)chargingBtnClicked
 {
     [MBProgressHUD showMessage:@"请稍候"];
@@ -1033,6 +1109,7 @@
                 [MBProgressHUD hideHUD];
                 NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
                 if ([dataStr isEqualToString:@"1"]) {
+                    _isCalculateStart = 0;
                     ModefiedViewController *modefied = [[ModefiedViewController alloc] init];
                     modefied.model = self.model;
                     [_timer setFireDate:[NSDate distantFuture]];
@@ -1049,19 +1126,61 @@
         case 2:
         {
             NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:0];
-            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":priceArr[0],@"mileage":priceArr[1]} success:^(id json) {
-                
+            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":priceArr[0],@"mileage":priceArr[1],@"route_status":@"4"} success:^(id json) {
+                [MBProgressHUD hideHUD];
+                NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+                if ([dataStr isEqualToString:@"1"]) {
+                    _isCalculateStart = 0;
+                    ModefiedViewController *modefied = [[ModefiedViewController alloc] init];
+                    modefied.model = self.model;
+                    [_timer setFireDate:[NSDate distantFuture]];
+                    [self.navigationController pushViewController:modefied animated:YES];
+                } else {
+                    [MBProgressHUD showError:@"请重新确认计费"];
+                }
             } failure:^(NSError *error) {
-                
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showError:@"网络错误"];
             }];
             break;
         }
-        case 3 | 4:
+        case 3:
         {
-            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":_ruleInfoModel.once_price} success:^(id json) {
-                
+            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":_ruleInfoModel.once_price,@"route_status":@"4"} success:^(id json) {
+                [MBProgressHUD hideHUD];
+                _isCalculateStart = 0;
+                NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+                if ([dataStr isEqualToString:@"1"]) {
+                    ModefiedViewController *modefied = [[ModefiedViewController alloc] init];
+                    modefied.model = self.model;
+                    [_timer setFireDate:[NSDate distantFuture]];
+                    [self.navigationController pushViewController:modefied animated:YES];
+                } else {
+                    [MBProgressHUD showError:@"请重新确认计费"];
+                }
             } failure:^(NSError *error) {
-                
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showError:@"网络错误"];
+            }];
+            break;
+        }
+        case 4:
+        {
+            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":_ruleInfoModel.once_price,@"route_status":@"4"} success:^(id json) {
+                [MBProgressHUD hideHUD];
+                _isCalculateStart = 0;
+                NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+                if ([dataStr isEqualToString:@"1"]) {
+                    ModefiedViewController *modefied = [[ModefiedViewController alloc] init];
+                    modefied.model = self.model;
+                    [_timer setFireDate:[NSDate distantFuture]];
+                    [self.navigationController pushViewController:modefied animated:YES];
+                } else {
+                    [MBProgressHUD showError:@"请重新确认计费"];
+                }
+            } failure:^(NSError *error) {
+                [MBProgressHUD hideHUD];
+                [MBProgressHUD showError:@"网络错误"];
             }];
             break;
         }

@@ -93,7 +93,7 @@
     [self.view addSubview:bottomView];
     
     UIButton *modeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [modeBtn setTitle:@"立即  " forState:UIControlStateNormal];
+    [modeBtn setTitle:@"立即" forState:UIControlStateNormal];
     [modeBtn setTitleColor:RGBColor(82, 170, 255, 1.f) forState:UIControlStateNormal];
         [modeBtn addTarget:self action:@selector(modeBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     modeBtn.selected = NO;
@@ -357,6 +357,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self configTopData];
+
     [self configNavigationBar];
     self.mapView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     self.mapView.delegate = self;
@@ -383,7 +385,6 @@
         [self configSwitchMode];
         [self configBottom];
         [self configTop];
-        [self configTopData];
         [self configLeftViewController];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(listenTheOrder:) name:@"GetTheOrderList" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(continueListenTheOrder:) name:@"ContinueListenTheOrders" object:nil];

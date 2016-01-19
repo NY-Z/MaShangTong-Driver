@@ -164,6 +164,7 @@
             [MBProgressHUD hideHUD];
             if ([dataStr isEqualToString:@"1"]) {
                 [MBProgressHUD showSuccess:@"密码修改成功，请重新登录"];
+                [self.navigationController popViewControllerAnimated:YES];
             } else if ([dataStr isEqualToString:@"0"]) {
                 [MBProgressHUD showSuccess:@"密码修改失败，请重试"];
             } else {

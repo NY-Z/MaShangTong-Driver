@@ -31,6 +31,7 @@
     navTitleLabel.font = [UIFont systemFontOfSize:21];
     navTitleLabel.textColor = RGBColor(73, 185, 254, 1.f);
     navTitleLabel.textAlignment = 1;
+    navTitleLabel.text = @"服务中";
     self.navigationItem.titleView = navTitleLabel;
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -143,7 +144,7 @@
             if ([routeStatus isEqualToString:@"6"]) {
                 _waitForPayLabel.text = @"支付完成";
                 _waitForPayLabel.textColor = [UIColor blackColor];
-                [restBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                [restBtn setTitleColor:RGBColor(123, 123, 123, 1.f) forState:UIControlStateNormal];
                 restBtn.enabled = YES;
                 [getPayBtn setBackgroundColor:RGBColor(99, 190, 255, 1.f)];
                 [getPayBtn setTitle:@"已付款，继续接单" forState:UIControlStateNormal];

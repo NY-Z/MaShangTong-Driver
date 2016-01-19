@@ -421,6 +421,10 @@
     navigationImageView.userInteractionEnabled = YES;
     [navigationImageView addGestureRecognizer:navigationGesture];
     
+    if (self.ruleInfoModel.rule_type.integerValue == 2) {
+        navigationImageView.hidden = YES;
+    }
+    
     UIImageView *roadConditionImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"lukuang"]];
     roadConditionImageView.backgroundColor = [UIColor whiteColor];
     roadConditionImageView.contentMode = UIViewContentModeCenter;

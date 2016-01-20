@@ -86,7 +86,8 @@
              @"low_price":[NSString stringWithFormat:@"%f",_lowSpeedPrice],
              @"far_mileage":[NSString stringWithFormat:@"%f",_longDistance],
              @"far_price":[NSString stringWithFormat:@"%f",_longPrice],
-             @"night_price":[NSString stringWithFormat:@"%f",_nightPrice]};
+             @"night_price":[NSString stringWithFormat:@"%f",_nightPrice],
+             @"carbon_emission":[NSString stringWithFormat:@"%f",_distance*0.00013]};
 }
 
 // 是否是高峰期

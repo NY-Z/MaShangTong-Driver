@@ -386,6 +386,7 @@
         [self configBottom];
         [self configTop];
         [self configLeftViewController];
+        [self configBackLoge];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(listenTheOrder:) name:@"GetTheOrderList" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(continueListenTheOrder:) name:@"ContinueListenTheOrders" object:nil];
     }
@@ -396,6 +397,53 @@
     [super viewWillDisappear:animated];
     [self clearMapView];
 }
+
+- (void)configBackLoge
+{
+    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"driver_backLoge"] params:@{@"driver_id":[USER_DEFAULT objectForKey:@"user_id"]} success:^(id json) {
+        NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+        if ([dataStr isEqualToString:@"1"]) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"您有未完成的行程" preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:@"进入我的订单" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                PickUpPassengerViewController *passengerVc = [[PickUpPassengerViewController alloc] init];
+                passengerVc.model = [[DataModel alloc] initWithDictionary:json[@"info"] error:nil];
+                passengerVc.ruleInfoModel = [[RuleInfoModel alloc] initWithDictionary:json[@"rule"] error:nil];
+                [self.navigationController pushViewController:passengerVc animated:YES];
+            }]];
+            [alert addAction:[UIAlertAction actionWithTitle:@"取消订单" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self cancelOrderWithRouteId:json[@"info"][@"route_id"]];
+            }]];
+            [self presentViewController:alert animated:YES completion:nil];
+        } else {
+            
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)cancelOrderWithRouteId:(NSString *)routeId{
+    [MBProgressHUD showMessage:@"正在取消订单"];
+    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"cacelorder"] params:@{@"user":[USER_DEFAULT objectForKey:@"user_id"] ,@"route_id":routeId} success:^(id json) {
+        
+        NYLog(@"%@",json);
+        NSString *resultStr = [NSString stringWithFormat:@"%@",json[@"result"]];
+        [MBProgressHUD hideHUD];
+        if ([resultStr isEqualToString:@"1"]) {
+            [MBProgressHUD showSuccess:@"取消订单成功"];
+        } else {
+            [MBProgressHUD showError:@"取消订单失败"];
+            [self cancelOrderWithRouteId:routeId];
+        }
+        
+        
+    } failure:^(NSError *error) {
+        [MBProgressHUD hideHUD];
+        [MBProgressHUD showError:@"请求超时"];
+        [self cancelOrderWithRouteId:routeId];
+    }];
+}
+
 
 #pragma mark - MAMapViewDelegate
 -(void)mapView:(MAMapView *)mapView didUpdateUserLocation:(MAUserLocation *)userLocation updatingLocation:(BOOL)updatingLocation

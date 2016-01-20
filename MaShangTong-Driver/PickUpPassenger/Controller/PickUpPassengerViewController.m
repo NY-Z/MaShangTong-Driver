@@ -21,6 +21,7 @@
 #import "NYCalculateSpecialCarPrice.h"
 #import "NYCalculateCharteredBusPrice.h"
 #import "InputViewController.h"
+#import "HomeDriverViewController.h"
 
 @interface PickUpPassengerViewController () <MAMapViewDelegate,AMapNaviManagerDelegate,AMapSearchDelegate,AMapNaviViewControllerDelegate>
 {
@@ -55,7 +56,7 @@
 
 @property (nonatomic, strong) AMapNaviPoint* startPoint;
 @property (nonatomic, strong) AMapNaviPoint* endPoint;
-@property (nonatomic,assign) NSInteger driverDistance;
+@property (nonatomic,assign) float driverDistance;
 // 用户定位
 @property (nonatomic,strong) MAUserLocation *userLocation;
 // 专车 计价
@@ -491,7 +492,7 @@
 - (void)calculateTimeAndDistance
 {
     _driveringTime++;
-    if (_driveringTime%20 == 0) {
+    if (_driveringTime%14 == 0) {
         AMapDrivingRouteSearchRequest *request = [[AMapDrivingRouteSearchRequest alloc] init];
         AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
         request.origin = [AMapGeoPoint locationWithLatitude:delegate.driverCoordinate.latitude longitude:delegate.driverCoordinate.longitude];
@@ -545,7 +546,7 @@
                 speedLabel.text = [NSString stringWithFormat:@"低速%li分钟",[priceDic[@"low_time"] integerValue]/60];
                 price = [NSString stringWithFormat:@"%.2f元",[priceDic[@"total_price"] floatValue]];
                 NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:price];
-                [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length)];
+                [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length-1)];
                 priceLabel.attributedText = attri;
                 [priceDic setObject:_model.route_id forKey:@"route_id"];
                 [priceDic setObject:_ruleInfoModel.step forKey:@"start_price"];
@@ -563,13 +564,12 @@
                 speedLabel.hidden = YES;
                 NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:speed];
                 distanceLabel.text = [NSString stringWithFormat:@"里程%.2f公里",[priceArr[1] floatValue]];
-//                priceLabel.text = [NSString stringWithFormat:@"%.0f元",[priceArr[0] floatValue]];
                 price = [NSString stringWithFormat:@"%.2f元",[priceArr[0] floatValue]];
                 NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:price];
-                [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length)];
+                [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length-1)];
                 priceLabel.attributedText = attri;
                 if (_driveringTime%60 == 0) {
-                    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":priceArr[0],@"mileage":priceArr[1]} success:^(id json) {
+                    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":priceArr[0],@"mileage":priceArr[1],@"carbon_emission":priceArr[2]} success:^(id json) {
                         
                     } failure:^(NSError *error) {
                         
@@ -579,14 +579,14 @@
             }
             case 3:
             {
-                distanceLabel.hidden = YES;
+                _driverDistance += speed;
                 speedLabel.hidden = YES;
                 price = [NSString stringWithFormat:@"%.0f元",_ruleInfoModel.once_price.floatValue];
                 NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:price];
-                [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length)];
+                [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length-1)];
                 priceLabel.attributedText = attri;
                 if (_driveringTime%60 == 0) {
-                    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":_ruleInfoModel.once_price} success:^(id json) {
+                    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":_ruleInfoModel.once_price,@"mileage":[NSString stringWithFormat:@"%f",_driverDistance],@"carbon_emission":[NSString stringWithFormat:@"%f",_driverDistance*0.00013]} success:^(id json) {
                         
                     } failure:^(NSError *error) {
                         
@@ -596,14 +596,14 @@
             }
             case 4:
             {
-                distanceLabel.hidden = YES;
+                _driverDistance += speed;
                 speedLabel.hidden = YES;
                 price = [NSString stringWithFormat:@"%.0f元",_ruleInfoModel.once_price.floatValue];
                 NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:price];
-                [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length)];
+                [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length-1)];
                 priceLabel.attributedText = attri;
                 if (_driveringTime%60 == 0) {
-                    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":_ruleInfoModel.once_price} success:^(id json) {
+                    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":_ruleInfoModel.once_price,@"mileage":[NSString stringWithFormat:@"%f",_driverDistance],@"carbon_emission":[NSString stringWithFormat:@"%f",_driverDistance*0.00013]} success:^(id json) {
                         
                     } failure:^(NSError *error) {
                         
@@ -653,7 +653,11 @@
                             [_timer setFireDate:[NSDate distantFuture]];
                             [_timer invalidate];
                             _timer = nil;
-                            [self.navigationController popViewControllerAnimated:YES];
+                            for (UIViewController *vc in self.navigationController.viewControllers) {
+                                if ([vc isKindOfClass:[HomeDriverViewController class]]) {
+                                    [self.navigationController popToViewController:vc animated:YES];
+                                }
+                            }
                         }]];
                         [self presentViewController:alert animated:YES completion:nil];
                     }
@@ -999,7 +1003,7 @@
         case 2:
         {
             NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:0];
-            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":priceArr[0],@"mileage":priceArr[1],@"route_status":@"3"} success:^(id json) {
+            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":priceArr[0],@"mileage":priceArr[1],@"route_status":@"3",@"carbon_emission":priceArr[2]} success:^(id json) {
                 [MBProgressHUD hideHUD];
                 NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
                 if ([dataStr isEqualToString:@"1"]) {
@@ -1020,7 +1024,7 @@
         }
         case 3:
         {
-            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":_ruleInfoModel.once_price,@"route_status":@"3"} success:^(id json) {
+            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":_ruleInfoModel.once_price,@"route_status":@"3",@"mileage":[NSString stringWithFormat:@"%f",_driverDistance],@"carbon_emission":[NSString stringWithFormat:@"%f",_driverDistance*0.00013]} success:^(id json) {
                 [MBProgressHUD hideHUD];
                 NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
                 if ([dataStr isEqualToString:@"1"]) {
@@ -1041,7 +1045,7 @@
         }
         case 4:
         {
-            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":_ruleInfoModel.once_price,@"route_status":@"3"} success:^(id json) {
+            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":_ruleInfoModel.once_price,@"route_status":@"3",@"mileage":[NSString stringWithFormat:@"%f",_driverDistance],@"carbon_emission":[NSString stringWithFormat:@"%f",_driverDistance*0.00013]} success:^(id json) {
                 [MBProgressHUD hideHUD];
                 NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
                 if ([dataStr isEqualToString:@"1"]) {
@@ -1130,7 +1134,7 @@
         case 2:
         {
             NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:0];
-            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":priceArr[0],@"mileage":priceArr[1],@"route_status":@"4"} success:^(id json) {
+            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":priceArr[0],@"mileage":priceArr[1],@"route_status":@"4",@"carbon_emission":priceArr[2]} success:^(id json) {
                 [MBProgressHUD hideHUD];
                 NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
                 if ([dataStr isEqualToString:@"1"]) {
@@ -1150,7 +1154,7 @@
         }
         case 3:
         {
-            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":_ruleInfoModel.once_price,@"route_status":@"4"} success:^(id json) {
+            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":_ruleInfoModel.once_price,@"route_status":@"4",@"mileage":[NSString stringWithFormat:@"%f",_driverDistance],@"carbon_emission":[NSString stringWithFormat:@"%f",_driverDistance*0.00013]} success:^(id json) {
                 [MBProgressHUD hideHUD];
                 _isCalculateStart = 0;
                 NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
@@ -1170,7 +1174,7 @@
         }
         case 4:
         {
-            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":_ruleInfoModel.once_price,@"route_status":@"4"} success:^(id json) {
+            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":_ruleInfoModel.once_price,@"route_status":@"4",@"mileage":[NSString stringWithFormat:@"%f",_driverDistance],@"carbon_emission":[NSString stringWithFormat:@"%f",_driverDistance*0.00013]} success:^(id json) {
                 [MBProgressHUD hideHUD];
                 _isCalculateStart = 0;
                 NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];

@@ -11,20 +11,9 @@
 
 @interface DownloadManager()
 
-@property (nonatomic,strong) AFHTTPSessionManager *mgr;
-
 @end
 
 @implementation DownloadManager
-
-- (AFHTTPSessionManager *)mgr
-{
-    if (_mgr == nil) {
-        _mgr = [AFHTTPSessionManager manager];
-        _mgr.requestSerializer = [AFJSONRequestSerializer serializer];
-    }
-    return _mgr;
-}
 
 + (void)get:(NSString *)url params:(NSDictionary *)params success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure
 {

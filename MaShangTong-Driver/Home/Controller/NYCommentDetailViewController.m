@@ -49,14 +49,19 @@
 //            NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@元",price]];
 //            [attri addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:42]} range:NSMakeRange(0, price.length)];
 //            _passengerPriceLabel.attributedText = attri;
-            NSArray *arr = json[@"info"][@"res"];
-            NSDictionary *dic = arr[0];
-            _passengerNameLabel.text = dic[@"user_name"];
-            NSMutableString *mulStr = [dic[@"mobile"] mutableCopy];
-            [mulStr replaceCharactersInRange:NSMakeRange(3, 4) withString:@"****"];
-            _passengerMobileLabel.text = mulStr;
-            _commentLabel.text = dic[@"content"];
-            [_rateImageView setRating:[dic[@"stars"] floatValue]];
+            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+            if ([dataStr isEqualToString:@"1"]) {
+                NSArray *arr = json[@"info"][@"res"];
+                NSDictionary *dic = arr[0];
+                _passengerNameLabel.text = dic[@"user_name"];
+                NSMutableString *mulStr = [dic[@"mobile"] mutableCopy];
+                [mulStr replaceCharactersInRange:NSMakeRange(3, 4) withString:@"****"];
+                _passengerMobileLabel.text = mulStr;
+                _commentLabel.text = dic[@"content"];
+                [_rateImageView setRating:[dic[@"stars"] floatValue]];
+            } else {
+                [MBProgressHUD showError:json[@"info"]];
+            }
         }
         @catch (NSException *exception) {
             

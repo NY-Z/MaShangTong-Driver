@@ -85,13 +85,19 @@
 - (IBAction)Done:(id)sender {
     [MBProgressHUD showMessage:@"请稍候"];
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"withDraw"] params:@{@"user_id":[USER_DEFAULT objectForKey:@"user_id"],@"money":_balance.text,@"bank_name":_transParams[@"bank_name"],@"bank_account":_transParams[@"car_num"],@"bank_user":_transParams[@"real_name"],@"bank_id":_transParams[@"bank_id"],@"mobile":_transParams[@"mobile"]} success:^(id json) {
-        [MBProgressHUD hideHUD];
-        NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-        if ([dataStr isEqualToString:@"1"]) {
-            [MBProgressHUD showSuccess:@"已申请提现，请等待发放"];
-            [self.navigationController popViewControllerAnimated:YES];
-        } else {
-            [MBProgressHUD showError:@"提现失败"];
+        @try {
+            [MBProgressHUD hideHUD];
+            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+            if ([dataStr isEqualToString:@"1"]) {
+                [MBProgressHUD showSuccess:@"已申请提现，请等待发放"];
+                [self.navigationController popViewControllerAnimated:YES];
+            } else {
+                [MBProgressHUD showError:@"提现失败"];
+            }
+        } @catch (NSException *exception) {
+            
+        } @finally {
+            
         }
     } failure:^(NSError *error) {
         [MBProgressHUD hideHUD];

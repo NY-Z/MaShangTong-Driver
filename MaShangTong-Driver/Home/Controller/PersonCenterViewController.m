@@ -90,6 +90,7 @@
     }];
     
     UILabel *numberLabel = [[UILabel alloc] init];
+    numberLabel.tag = 890;
     numberLabel.text = [NSString stringWithFormat:@"%@单",driverInfo.snum];
     numberLabel.textColor = RGBColor(163, 163, 163, 1.f);
     numberLabel.font = [UIFont systemFontOfSize:13];
@@ -207,6 +208,7 @@
 {
     [super viewWillAppear:animated];
     self.view.backgroundColor=[UIColor colorWithWhite:0.6 alpha:0];
+    [self reloadDriverInfo];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -215,6 +217,14 @@
     [UIView animateWithDuration:0.001 animations:^{
         self.view.backgroundColor=[UIColor colorWithWhite:0.6 alpha:0.6];
     }];
+}
+
+- (void)reloadDriverInfo
+{
+    DriverInfoModel *driverInfo = [NSKeyedUnarchiver unarchiveObjectWithData:[USER_DEFAULT objectForKey:@"user_info"]];
+    UIView *tableHeaderBgView = _tableView.tableHeaderView;
+    UILabel *numberLabel = (UILabel *)[tableHeaderBgView viewWithTag:890];
+    numberLabel.text = [NSString stringWithFormat:@"%@单",driverInfo.snum];
 }
 
 //设置每个cell的数据（即是图片）

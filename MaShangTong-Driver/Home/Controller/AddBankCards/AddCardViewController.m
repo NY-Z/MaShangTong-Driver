@@ -69,14 +69,20 @@
     }
     [MBProgressHUD showMessage:@"正在添加"];
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"add_bank"] params:@{@"user_id":[USER_DEFAULT objectForKey:@"user_id"],@"real_name":_nameText.text,@"car_num":_cardNum.text,@"bank_name":_cardType.text,@"mobile":_phoneText.text} success:^(id json) {
-        NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-        [MBProgressHUD hideHUD];
-        if ([dataStr isEqualToString:@"0"]) {
-            [MBProgressHUD showError:@"银行卡添加失败，请重试"];
-            return ;
-        } else {
-            [MBProgressHUD showSuccess:@"添加成功"];
-            [self.navigationController popViewControllerAnimated:YES];
+        @try {
+            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+            [MBProgressHUD hideHUD];
+            if ([dataStr isEqualToString:@"0"]) {
+                [MBProgressHUD showError:@"银行卡添加失败，请重试"];
+                return ;
+            } else {
+                [MBProgressHUD showSuccess:@"添加成功"];
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+        } @catch (NSException *exception) {
+            
+        } @finally {
+            
         }
     } failure:^(NSError *error) {
         [MBProgressHUD hideHUD];

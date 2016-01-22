@@ -7,16 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-@class MyNewsTableViewCell;
 
 @interface MyNewsCenterVC : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,retain) UITableView *tableView;
-//@property (nonatomic,retain) MyNewsTableViewCell *cell;
 
 //储存数据的array
 @property (nonatomic,copy) NSArray *newsDataAry;
 
-
+@property (nonatomic,copy) NSMutableArray *hightAry;
 
 @end

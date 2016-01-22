@@ -81,7 +81,7 @@
     
     return @{@"total_price":[NSString stringWithFormat:@"%f",_price],
              @"mileage":[NSString stringWithFormat:@"%f",_distance/1000],
-             @"mileage_price":[NSString stringWithFormat:@"%f",_price-_model.step.floatValue],
+             @"mileage_price":[NSString stringWithFormat:@"%f",_price-_model.step.floatValue-_lowSpeedPrice],
              @"low_time":[NSString stringWithFormat:@"%li",_lowSpeedTime],
              @"low_price":[NSString stringWithFormat:@"%f",_lowSpeedPrice],
              @"far_mileage":[NSString stringWithFormat:@"%f",_longDistance],

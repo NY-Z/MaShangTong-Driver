@@ -207,19 +207,53 @@
     [topBottomView addSubview:dropOffBtn];
 }
 
-- (void)configTopData
+- (void)configTodayData
 {
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"orderApi",@"day_order"] params:@{@"driver_id":[USER_DEFAULT objectForKey:@"user_id"]} success:^(id json) {
-        NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-        if ([dataStr isEqualToString:@"1"]) {
-            UIView *bgView = [self.view viewWithTag:380];
-            NSArray *titleArr = @[[NSString stringWithFormat:@"%@单",json[@"num"]],[NSString stringWithFormat:@"%@元",json[@"price"]]];
-            for (NSInteger i = 0; i < 2; i++) {
-                UILabel *label = (UILabel *)[bgView viewWithTag:i+100];
-                label.text = titleArr[i];
+        @try {
+            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+            if ([dataStr isEqualToString:@"1"]) {
+                UIView *bgView = [self.view viewWithTag:380];
+                NSArray *titleArr = @[[NSString stringWithFormat:@"%@单",json[@"num"]],[NSString stringWithFormat:@"%@元",json[@"price"]]];
+                for (NSInteger i = 0; i < 2; i++) {
+                    UILabel *label = (UILabel *)[bgView viewWithTag:i+100];
+                    label.text = titleArr[i];
+                }
             }
-        } else {
-            [self configTopData];
+        } @catch (NSException *exception) {
+            
+        } @finally {
+            
+        }
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+- (void)configDriverDetail
+{
+    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"dri_detail"] params:@{@"driver_id":[USER_DEFAULT objectForKey:@"user_id"]} success:^(id json) {
+        @try {
+            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+            if ([dataStr isEqualToString:@"1"]) {
+                DriverInfoModel *driverInfo = [NSKeyedUnarchiver unarchiveObjectWithData:[USER_DEFAULT objectForKey:@"user_info"]];
+                driverInfo.snum = json[@"snum"];
+                driverInfo.point = json[@"point"];
+                driverInfo.byear = json[@"info"][@"byear"];
+                driverInfo.city = json[@"info"][@"city"];
+                driverInfo.head_image = json[@"info"][@"head_image"];
+                driverInfo.mobile = json[@"info"][@"mobile"];
+                driverInfo.sex = json[@"info"][@"sex"];
+                driverInfo.user_name = json[@"info"][@"user_name"];
+                [USER_DEFAULT setObject:[NSKeyedArchiver archivedDataWithRootObject:driverInfo] forKey:@"user_info"];
+                [USER_DEFAULT synchronize];
+            } else {
+                
+            }
+        } @catch (NSException *exception) {
+            
+        } @finally {
+            
         }
     } failure:^(NSError *error) {
         
@@ -357,7 +391,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self configTopData];
+    [self configTodayData];
+    [self configDriverDetail];
 
     [self configNavigationBar];
     self.mapView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -401,20 +436,26 @@
 - (void)configBackLoge
 {
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"driver_backLoge"] params:@{@"driver_id":[USER_DEFAULT objectForKey:@"user_id"]} success:^(id json) {
-        NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-        if ([dataStr isEqualToString:@"1"]) {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"您有未完成的行程" preferredStyle:UIAlertControllerStyleAlert];
-            [alert addAction:[UIAlertAction actionWithTitle:@"进入我的订单" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                PickUpPassengerViewController *passengerVc = [[PickUpPassengerViewController alloc] init];
-                passengerVc.model = [[DataModel alloc] initWithDictionary:json[@"info"] error:nil];
-                passengerVc.ruleInfoModel = [[RuleInfoModel alloc] initWithDictionary:json[@"rule"] error:nil];
-                [self.navigationController pushViewController:passengerVc animated:YES];
-            }]];
-            [alert addAction:[UIAlertAction actionWithTitle:@"取消订单" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [self cancelOrderWithRouteId:json[@"info"][@"route_id"]];
-            }]];
-            [self presentViewController:alert animated:YES completion:nil];
-        } else {
+        @try {
+            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+            if ([dataStr isEqualToString:@"1"]) {
+                UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"您有未完成的行程" preferredStyle:UIAlertControllerStyleAlert];
+                [alert addAction:[UIAlertAction actionWithTitle:@"进入我的订单" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    PickUpPassengerViewController *passengerVc = [[PickUpPassengerViewController alloc] init];
+                    passengerVc.model = [[DataModel alloc] initWithDictionary:json[@"info"] error:nil];
+                    passengerVc.ruleInfoModel = [[RuleInfoModel alloc] initWithDictionary:json[@"rule"] error:nil];
+                    [self.navigationController pushViewController:passengerVc animated:YES];
+                }]];
+                [alert addAction:[UIAlertAction actionWithTitle:@"取消订单" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [self cancelOrderWithRouteId:json[@"info"][@"route_id"]];
+                }]];
+                [self presentViewController:alert animated:YES completion:nil];
+            } else {
+                
+            }
+        } @catch (NSException *exception) {
+            
+        } @finally {
             
         }
     } failure:^(NSError *error) {
@@ -425,18 +466,21 @@
 - (void)cancelOrderWithRouteId:(NSString *)routeId{
     [MBProgressHUD showMessage:@"正在取消订单"];
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"cacelorder"] params:@{@"user":[USER_DEFAULT objectForKey:@"user_id"] ,@"route_id":routeId} success:^(id json) {
-        
-        NYLog(@"%@",json);
-        NSString *resultStr = [NSString stringWithFormat:@"%@",json[@"result"]];
-        [MBProgressHUD hideHUD];
-        if ([resultStr isEqualToString:@"1"]) {
-            [MBProgressHUD showSuccess:@"取消订单成功"];
-        } else {
-            [MBProgressHUD showError:@"取消订单失败"];
-            [self cancelOrderWithRouteId:routeId];
+        @try {
+            NYLog(@"%@",json);
+            NSString *resultStr = [NSString stringWithFormat:@"%@",json[@"result"]];
+            [MBProgressHUD hideHUD];
+            if ([resultStr isEqualToString:@"1"]) {
+                [MBProgressHUD showSuccess:@"取消订单成功"];
+            } else {
+                [MBProgressHUD showError:@"取消订单失败"];
+                [self cancelOrderWithRouteId:routeId];
+            }
+        } @catch (NSException *exception) {
+            
+        } @finally {
+            
         }
-        
-        
     } failure:^(NSError *error) {
         [MBProgressHUD hideHUD];
         [MBProgressHUD showError:@"请求超时"];

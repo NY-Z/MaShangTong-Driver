@@ -197,7 +197,7 @@
         [MBProgressHUD showError:@"您的密码格式不正确"];
         return;
     }
-    [params setValue:_codeTextField.text forKey:@"pwd"];
+    [params setValue:_codeTextField.text forKey:@"user_pwd"];
     [params setValue:@"3" forKey:@"group_id"];
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"register"] params:params success:^(id json) {
         

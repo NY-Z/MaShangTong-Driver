@@ -69,15 +69,21 @@
 {
     [MBProgressHUD showMessage:@"加载中"];
     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"orderApi",@"myCards"] params:@{@"user_id":[USER_DEFAULT objectForKey:@"user_id"]} success:^(id json) {
-        NSLog(@"%@",json);
-        NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-        [MBProgressHUD hideHUD];
-        if ([dataStr isEqualToString:@"1"]) {
-            _cardArr = [json[@"info"] mutableCopy];
-            [_mainTableView reloadData];
-        } else {
-            [MBProgressHUD showError:json[@"info"]];
+        @try {
+            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+            [MBProgressHUD hideHUD];
+            if ([dataStr isEqualToString:@"1"]) {
+                _cardArr = [json[@"info"] mutableCopy];
+                [_mainTableView reloadData];
+            } else {
+                [MBProgressHUD showError:json[@"info"]];
+            }
+        } @catch (NSException *exception) {
+            
+        } @finally {
+        
         }
+        
     } failure:^(NSError *error) {
         [MBProgressHUD hideHUD];
         [MBProgressHUD showError:@"查询失败，请重试"];
@@ -174,13 +180,19 @@
         [MBProgressHUD showMessage:@"正在删除"];
         [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"orderApi",@"del_card"] params:@{@"bank_id":dic[@"bank_id"]} success:^(id json) {
             [MBProgressHUD hideHUD];
-            NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
-            if ([dataStr isEqualToString:@"1"]) {
-                [MBProgressHUD showSuccess:@"删除成功"];
-                [_cardArr removeObjectAtIndex:indexPath.row];
-                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            } else {
-                [MBProgressHUD showError:@"删除失败，请重试"];
+            @try {
+                NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
+                if ([dataStr isEqualToString:@"1"]) {
+                    [MBProgressHUD showSuccess:@"删除成功"];
+                    [_cardArr removeObjectAtIndex:indexPath.row];
+                    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                } else {
+                    [MBProgressHUD showError:@"删除失败，请重试"];
+                }
+            } @catch (NSException *exception) {
+                
+            } @finally {
+                
             }
         } failure:^(NSError *error) {
             [MBProgressHUD hideHUD];

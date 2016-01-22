@@ -708,14 +708,16 @@
                 [self.mapView setVisibleMapRect:rect animated:YES];
             });
         });
-        NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"];
-        NSString *locationStr = [NSString stringWithFormat:@"%f,%f",userLocation.coordinate.longitude,userLocation.coordinate.latitude];
-        NSMutableDictionary *params = [NSMutableDictionary dictionary];
-        [params setValue:userId forKey:@"user_id"];
-        [params setValue:locationStr forKey:@"location"];
-        [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"dri_address"] params:params success:^(id json) {
-        } failure:^(NSError *error) {
-        }];
+//        NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"];
+//        NSString *locationStr = [NSString stringWithFormat:@"%f,%f",userLocation.coordinate.longitude,userLocation.coordinate.latitude];
+//        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+//        [params setValue:userId forKey:@"user_id"];
+//        [params setValue:locationStr forKey:@"location"];
+//        if (_driveringTime % 15 == 0) {
+//            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"dri_address"] params:params success:^(id json) {
+//            } failure:^(NSError *error) {
+//            }];
+//        }
     }
 }
 

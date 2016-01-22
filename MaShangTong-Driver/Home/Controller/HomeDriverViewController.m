@@ -51,6 +51,8 @@
     
     NSString *_reservation_type;
     BOOL _isChangeMode;
+    NSInteger _sendLocation;
+    BOOL _isSendLocation;
 }
 @property (nonatomic, strong) NSArray *annotations;
 @property (nonatomic, strong) MAPolyline *polyline;
@@ -400,10 +402,13 @@
     [self.view addSubview:self.mapView];
     [self.view sendSubviewToBack:self.mapView];
     self.mapView.showsUserLocation = YES;
+    self.mapView.desiredAccuracy = 1000;
     
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [self.mapView setCenterCoordinate:delegate.driverCoordinate];
     [self.mapView setZoomLevel:16 animated:YES];
+    
+    _isSendLocation = 1;
 }
 
 - (void)viewDidLoad {
@@ -416,6 +421,7 @@
         _isChangeMode = NO;
         _isFirstSetCenter = 0;
         _reservation_type = @"1";
+        _sendLocation = 0;
         [self configTimer];
         [self configSwitchMode];
         [self configBottom];
@@ -431,6 +437,7 @@
 {
     [super viewWillDisappear:animated];
     [self clearMapView];
+    _isSendLocation = 0;
 }
 
 - (void)configBackLoge
@@ -503,6 +510,17 @@
     if (_isFirstSetCenter <= 3) {
         [self.mapView setCenterCoordinate:userLocation.location.coordinate];
         _isFirstSetCenter++;
+    }
+    _sendLocation++;
+    if (_sendLocation % 10 == 0 && _isSendLocation) {
+        NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"];
+        NSString *locationStr = [NSString stringWithFormat:@"%f,%f",userLocation.coordinate.longitude,userLocation.coordinate.latitude];
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setValue:userId forKey:@"user_id"];
+        [params setValue:locationStr forKey:@"location"];
+        [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"dri_address"] params:params success:^(id json) {
+        } failure:^(NSError *error) {
+        }];
     }
 }
 

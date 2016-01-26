@@ -477,9 +477,51 @@
         [self initCoverView];
         [self initBillingBgView];
         [self initAppointmenetBgView];
+        
+        [self judgeOrderState];
     }
 }
-
+#pragma mark - 判断订单状态
+-(void)judgeOrderState
+{
+    switch ([_model.route_status integerValue]) {
+            //已经结单
+        case 1:
+            
+            break;
+            //到达约定地点
+        case 2:{
+            [_confirmBtn setTitle:@"开始计费" forState:UIControlStateNormal];
+            _appointBgView.hidden = YES;
+            _coverView.hidden = YES;
+            _buttonState = 1;
+            _isCalculateStart = 0;
+        }
+            break;
+            //开始计费
+        case 3:{
+            _billingBgView.hidden = YES;
+            _coverView.hidden = YES;
+            _chargingBgView.hidden = NO;
+            _bottomBgView.hidden = YES;
+            _buttonState = 2;
+            _isCalculateStart = 1;
+        }
+            break;
+            //结束计费
+        case 4:{
+            _isCalculateStart = 0;
+            ModefiedViewController *modefied = [[ModefiedViewController alloc] init];
+            modefied.model = self.model;
+            [_timer setFireDate:[NSDate distantFuture]];
+            [self.navigationController pushViewController:modefied animated:YES];
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
 - (void)initDriveringTime
 {
     if (!_timer) {

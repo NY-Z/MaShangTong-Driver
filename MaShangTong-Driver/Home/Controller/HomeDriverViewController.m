@@ -28,6 +28,8 @@
 #import "NYShareViewController.h"
 #import "SettingViewController.h"
 #import "DriverInfoModel.h"
+#import "WaitForPayViewController.h"
+
 
 #define BottomViewHeight 89
 
@@ -448,14 +450,23 @@
             if ([dataStr isEqualToString:@"1"]) {
                 UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"您有未完成的行程" preferredStyle:UIAlertControllerStyleAlert];
                 [alert addAction:[UIAlertAction actionWithTitle:@"进入我的订单" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    PickUpPassengerViewController *passengerVc = [[PickUpPassengerViewController alloc] init];
-                    passengerVc.model = [[DataModel alloc] initWithDictionary:json[@"info"] error:nil];
-                    passengerVc.ruleInfoModel = [[RuleInfoModel alloc] initWithDictionary:json[@"rule"] error:nil];
-                    [self.navigationController pushViewController:passengerVc animated:YES];
+                    NSString *str = [NSString stringWithFormat:@"%@",json[@"info"][@"route_status"]];
+                    if ([str isEqualToString:@"5"]) {
+                        WaitForPayViewController *waitForPay = [[WaitForPayViewController alloc] init];
+                        waitForPay.model = [[DataModel alloc] initWithDictionary:json[@"info"] error:nil];
+                        waitForPay.price = json[@"info"][@"total_price"];
+                        [self.navigationController pushViewController:waitForPay animated:YES];
+                    }
+                    else{
+                        PickUpPassengerViewController *passengerVc = [[PickUpPassengerViewController alloc] init];
+                        passengerVc.model = [[DataModel alloc] initWithDictionary:json[@"info"] error:nil];
+                        passengerVc.ruleInfoModel = [[RuleInfoModel alloc] initWithDictionary:json[@"rule"] error:nil];
+                        [self.navigationController pushViewController:passengerVc animated:YES];
+                    }
                 }]];
-                [alert addAction:[UIAlertAction actionWithTitle:@"取消订单" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    [self cancelOrderWithRouteId:json[@"info"][@"route_id"]];
-                }]];
+//                [alert addAction:[UIAlertAction actionWithTitle:@"取消订单" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//                    [self cancelOrderWithRouteId:json[@"info"][@"route_id"]];
+//                }]];
                 [self presentViewController:alert animated:YES completion:nil];
             } else {
                 
@@ -470,30 +481,30 @@
     }];
 }
 
-- (void)cancelOrderWithRouteId:(NSString *)routeId{
-    [MBProgressHUD showMessage:@"正在取消订单"];
-    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"cacelorder"] params:@{@"user":[USER_DEFAULT objectForKey:@"user_id"] ,@"route_id":routeId} success:^(id json) {
-        @try {
-            NYLog(@"%@",json);
-            NSString *resultStr = [NSString stringWithFormat:@"%@",json[@"result"]];
-            [MBProgressHUD hideHUD];
-            if ([resultStr isEqualToString:@"1"]) {
-                [MBProgressHUD showSuccess:@"取消订单成功"];
-            } else {
-                [MBProgressHUD showError:@"取消订单失败"];
-                [self cancelOrderWithRouteId:routeId];
-            }
-        } @catch (NSException *exception) {
-            
-        } @finally {
-            
-        }
-    } failure:^(NSError *error) {
-        [MBProgressHUD hideHUD];
-        [MBProgressHUD showError:@"请求超时"];
-        [self cancelOrderWithRouteId:routeId];
-    }];
-}
+//- (void)cancelOrderWithRouteId:(NSString *)routeId{
+//    [MBProgressHUD showMessage:@"正在取消订单"];
+//    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"UserApi",@"cacelorder"] params:@{@"user":[USER_DEFAULT objectForKey:@"user_id"] ,@"route_id":routeId} success:^(id json) {
+//        @try {
+//            NYLog(@"%@",json);
+//            NSString *resultStr = [NSString stringWithFormat:@"%@",json[@"result"]];
+//            [MBProgressHUD hideHUD];
+//            if ([resultStr isEqualToString:@"1"]) {
+//                [MBProgressHUD showSuccess:@"取消订单成功"];
+//            } else {
+//                [MBProgressHUD showError:@"取消订单失败"];
+//                [self cancelOrderWithRouteId:routeId];
+//            }
+//        } @catch (NSException *exception) {
+//            
+//        } @finally {
+//            
+//        }
+//    } failure:^(NSError *error) {
+//        [MBProgressHUD hideHUD];
+//        [MBProgressHUD showError:@"请求超时"];
+//        [self cancelOrderWithRouteId:routeId];
+//    }];
+//}
 
 
 #pragma mark - MAMapViewDelegate

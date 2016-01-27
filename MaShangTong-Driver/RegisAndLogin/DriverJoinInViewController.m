@@ -189,7 +189,7 @@
     
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     if (![Helper justMobile:_numberTextField.text]) {
-        [MBProgressHUD showMessage:@"请输入正确的手机号"];
+        [MBProgressHUD showError:@"请输入正确的手机号"];
         return;
     }
     [params setValue:_numberTextField.text forKey:@"mobile"];

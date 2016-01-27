@@ -16,4 +16,6 @@
 //@property (nonatomic,strong) CarRuleModel *carRuleModel;
 @property (nonatomic,strong) RuleInfoModel *ruleInfoModel;
 
+@property (nonatomic,strong) NSString *gonePrice;
+
 @end

@@ -18,11 +18,14 @@
     NSInteger _timeOver;
     NSInteger _distanceFlag;
     NSInteger _timeFlag;
+    
+
 }
 
 @property (nonatomic,assign) float containMileage;
 @end
 
+static    BOOL addGonePrice = NO;
 @implementation NYCalculateCharteredBusPrice
 
 + (instancetype)shareCharteredBusPrice
@@ -46,10 +49,14 @@
     _distanceFlag = 0;
 }
 
-- (NSArray *)calculatePriceWithSpeed:(CLLocationSpeed)speed
+- (NSArray *)calculatePriceWithSpeed:(CLLocationSpeed)speed andGonePrice:(NSString *)gonePrice
 {
     _totalTime++;
     _distance += speed;
+    if (gonePrice && !addGonePrice) {
+        _totalPrice += [gonePrice floatValue];
+        addGonePrice = !addGonePrice;
+    }
     if (_distanceFlag > _timeFlag) {
         _totalPrice += (((long)_distance/1000)+1-_containMileage)*(_rule.over_mileage_money.floatValue);
         return @[[NSString stringWithFormat:@"%.0f",_totalPrice],[NSString stringWithFormat:@"%.0f",_distance]];

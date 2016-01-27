@@ -461,6 +461,7 @@
                         PickUpPassengerViewController *passengerVc = [[PickUpPassengerViewController alloc] init];
                         passengerVc.model = [[DataModel alloc] initWithDictionary:json[@"info"] error:nil];
                         passengerVc.ruleInfoModel = [[RuleInfoModel alloc] initWithDictionary:json[@"rule"] error:nil];
+                        passengerVc.gonePrice = [NSString stringWithFormat:@"%f" ,[json[@"info"][@"total_price"] floatValue] - [json[@"info"][@"start_price"] floatValue]];
                         [self.navigationController pushViewController:passengerVc animated:YES];
                     }
                 }]];

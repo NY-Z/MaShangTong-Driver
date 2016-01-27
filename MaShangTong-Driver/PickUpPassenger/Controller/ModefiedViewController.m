@@ -152,7 +152,7 @@
             NSString *dataStr = [NSString stringWithFormat:@"%@",json[@"data"]];
             if ([dataStr isEqualToString:@"1"]) {
                 self.priceModel = [[ActualPriceModel alloc] initWithDictionary:json[@"info"] error:nil];
-                _priceLabel.text = [NSString stringWithFormat:@"%.2f元",[self.priceModel.total_price floatValue]];
+                _priceLabel.text = [NSString stringWithFormat:@"%.0f元",[self.priceModel.total_price floatValue]];
                 _stepLabel.text = [NSString stringWithFormat:@"%.2f元",[self.priceModel.start_price floatValue]];
                 _distanceLabel.text = [NSString stringWithFormat:@"里程%.2fkm",[self.priceModel.mileage floatValue]];
                 _distancePriceLabel.text = [NSString stringWithFormat:@"%.2f元",[self.priceModel.mileage_price floatValue]*1.5];

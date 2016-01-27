@@ -14,6 +14,6 @@
 @property (nonatomic,strong) RuleInfoModel *rule;
 
 + (instancetype)shareCharteredBusPrice;
-- (NSArray *)calculatePriceWithSpeed:(CLLocationSpeed)speed;
+- (NSArray *)calculatePriceWithSpeed:(CLLocationSpeed)speed andGonePrice:(NSString *)gonePrice;
 
 @end

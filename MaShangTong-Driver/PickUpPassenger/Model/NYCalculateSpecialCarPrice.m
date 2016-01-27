@@ -12,18 +12,14 @@
 
 @interface NYCalculateSpecialCarPrice ()
 
+
 @property (nonatomic,strong) NSDateFormatter *formatter;
 
-@property (nonatomic,assign) float distance;
-@property (nonatomic,assign) float price;
-@property (nonatomic,assign) NSInteger lowSpeedTime;
-@property (nonatomic,assign) float lowSpeedPrice;
-@property (nonatomic,assign) float longDistance;
-@property (nonatomic,assign) float longPrice;
-@property (nonatomic,assign) float nightPrice;
+
 
 @end
 
+static    BOOL addGonePrice = NO;
 @implementation NYCalculateSpecialCarPrice
 
 - (NSDateFormatter *)formatter
@@ -57,6 +53,11 @@
     float speed = [[NSString stringWithFormat:@"%@",params[@"distance"]] floatValue];
     _distance += speed;
     _price += speed*_model.mileage.floatValue/1000;
+    
+    if (params[@"gonePrice"] && !addGonePrice) {
+        _price += [params[@"gonePrice"] floatValue];
+        addGonePrice = !addGonePrice;
+    }
     
     if (speed <= 3.333334) {
         _lowSpeedTime++;

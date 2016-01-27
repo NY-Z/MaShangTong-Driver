@@ -506,6 +506,8 @@
             _bottomBgView.hidden = YES;
             _buttonState = 2;
             _isCalculateStart = 1;
+            
+            
         }
             break;
             //结束计费
@@ -561,7 +563,7 @@
             if (secondStr.length == 1) {
                 secondStr = [NSMutableString stringWithFormat:@"0%@",secondStr];
             }
-            NSString *annTitle = [NSString stringWithFormat:@"剩余%.2f公里 已行驶%@:%@",((float)_distance)/1000,minuteStr,secondStr];
+            NSString *annTitle = [NSString stringWithFormat:@"剩余%.2f公里 已行驶%@:%@",((float)_distance )/1000,minuteStr,secondStr];
             userLocation.title = annTitle;
         }
     }
@@ -579,6 +581,7 @@
         [params setValue:_model.route_id forKey:@"route_id"];
         [params setValue:@"3" forKey:@"route_status"];
         [params setValue:isLowSpeed forKey:@"time"];
+        [params setValue:_gonePrice forKey:@"gonePrice"];
         
         switch (self.ruleInfoModel.rule_type.integerValue) {
             case 1:
@@ -586,7 +589,7 @@
                 NSMutableDictionary *priceDic = [[self.calculateSpecialCar calculatePriceWithParams:params] mutableCopy];
                 distanceLabel.text = [NSString stringWithFormat:@"里程%.2f公里",[priceDic[@"mileage"] floatValue]];
                 speedLabel.text = [NSString stringWithFormat:@"低速%li分钟",[priceDic[@"low_time"] integerValue]/60];
-                price = [NSString stringWithFormat:@"%.2f元",[priceDic[@"total_price"] floatValue]];
+                price = [NSString stringWithFormat:@"%.0f元",[priceDic[@"total_price"] floatValue]];
                 NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:price];
                 [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length-1)];
                 priceLabel.attributedText = attri;
@@ -604,9 +607,9 @@
             case 2:
             {
                 speedLabel.hidden = YES;
-                NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:speed];
+                NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:speed andGonePrice:_gonePrice];
                 distanceLabel.text = [NSString stringWithFormat:@"里程%.2f公里",[priceArr[1] floatValue]];
-                price = [NSString stringWithFormat:@"%.2f元",[priceArr[0] floatValue]];
+                price = [NSString stringWithFormat:@"%.0f元",[priceArr[0] floatValue]];
                 NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:price];
                 [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length-1)];
                 priceLabel.attributedText = attri;
@@ -1058,7 +1061,7 @@
         }
         case 2:
         {
-            NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:0];
+            NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:0 andGonePrice:_gonePrice];
             [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":priceArr[0],@"mileage":priceArr[1],@"route_status":@"3",@"carbon_emission":priceArr[2]} success:^(id json) {
                 [MBProgressHUD hideHUD];
                 @try {
@@ -1213,7 +1216,7 @@
         }
         case 2:
         {
-            NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:0];
+            NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:0 andGonePrice:_gonePrice];
             [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":priceArr[0],@"mileage":priceArr[1],@"route_status":@"4",@"carbon_emission":priceArr[2]} success:^(id json) {
                 [MBProgressHUD hideHUD];
                 @try {

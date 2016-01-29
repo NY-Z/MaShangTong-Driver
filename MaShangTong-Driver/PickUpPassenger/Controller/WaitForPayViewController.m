@@ -88,7 +88,7 @@
     [self.view addSubview:_waitForPayLabel];
     
     _totalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(_waitForPayLabel.frame), SCREEN_WIDTH, 32)];
-    _totalPriceLabel.text = self.price;
+    _totalPriceLabel.text = [NSString stringWithFormat:@"%.0f元",[ self.price floatValue]];
     _totalPriceLabel.textAlignment = 1;
     _totalPriceLabel.textColor = [UIColor blackColor];
     [self.view addSubview:_totalPriceLabel];
@@ -129,6 +129,13 @@
     [self configViews];
     [self configPriceViews];
     [self deductMoney];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
 }
 
 - (void)deductMoney

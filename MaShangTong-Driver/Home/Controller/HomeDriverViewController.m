@@ -462,6 +462,15 @@
                         passengerVc.model = [[DataModel alloc] initWithDictionary:json[@"info"] error:nil];
                         passengerVc.ruleInfoModel = [[RuleInfoModel alloc] initWithDictionary:json[@"rule"] error:nil];
                         passengerVc.gonePrice = [NSString stringWithFormat:@"%f" ,[json[@"info"][@"total_price"] floatValue] - [json[@"info"][@"start_price"] floatValue]];
+                        passengerVc.isHadExit = HadExit;
+                        passengerVc.low_time = json[@"info"][@"low_time"];
+                        passengerVc.mileage = json[@"info"][@"mileage"];
+                        //如推出之前订单的 状态时已经开始计费了（2），则为包车传开始计费的时间戳
+                        NSString *str = [NSString stringWithFormat:@"%@",json[@"info"][@"route_status"]];
+                        if ([str isEqualToString:@"3"]) {
+                            passengerVc.boardingTime = json[@"info"][@"boarding_time"];
+                        }
+                        
                         [self.navigationController pushViewController:passengerVc animated:YES];
                     }
                 }]];

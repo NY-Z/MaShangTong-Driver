@@ -36,6 +36,9 @@
     UILabel *priceLabel;
     
     ActualPriceModel *actualPriceModel;
+    
+    CLLocationCoordinate2D lastPoint;//上一秒的坐标经纬度
+    CLLocationCoordinate2D nowPoint;//下一秒的坐标经纬度
 }
 @property (nonatomic, strong) MAPolyline *polyline;
 @property (nonatomic,strong) DriverCalloutAnnotation *diverAnnotation;
@@ -65,6 +68,8 @@
 
 @end
 
+//重新进入程序后，判断是否已经记录退出前坐标经纬度
+static BOOL isHadRecord = NO;
 @implementation PickUpPassengerViewController
 
 - (NYCalculateSpecialCarPrice *)calculateSpecialCar
@@ -454,6 +459,17 @@
     [_timer setFireDate:[NSDate distantFuture]];
     [self clearMapView];
 }
+#pragma mark - 清空上一单的数据
+-(void)clearCalculateSpecialCarData{
+
+    self.calculateSpecialCar.distance = 0;
+//    self.calculateSpecialCar.price = 0;
+    self.calculateSpecialCar.lowSpeedTime = 0;
+    self.calculateSpecialCar.lowSpeedPrice = 0;
+    self.calculateSpecialCar.longDistance = 0;
+    self.calculateSpecialCar.longPrice = 0;
+    self.calculateSpecialCar.nightPrice = 0;
+}
 
 #pragma mark - ViewDidLoad
 - (void)viewDidLoad
@@ -461,10 +477,14 @@
     [super viewDidLoad];
     
     @autoreleasepool {
+        if(self.calculateSpecialCar){
+            [self clearCalculateSpecialCarData];
+        }
         _isLocationSuccess = NO;
         _buttonState = 0;
         _isShowNavigation = 0;
         _isCalculateStart = 0;
+        
         [self configNavBar];
         [self initNaviRoute];
         [self initPassengerLocation];
@@ -524,6 +544,8 @@
             break;
     }
 }
+
+
 - (void)initDriveringTime
 {
     if (!_timer) {
@@ -563,32 +585,61 @@
             if (secondStr.length == 1) {
                 secondStr = [NSMutableString stringWithFormat:@"0%@",secondStr];
             }
+            _distance += [_mileage floatValue];
             NSString *annTitle = [NSString stringWithFormat:@"剩余%.2f公里 已行驶%@:%@",((float)_distance )/1000,minuteStr,secondStr];
             userLocation.title = annTitle;
         }
     }
+    if(_userLocation.location){
+        nowPoint = _userLocation.location.coordinate;
+    }
+    else{
+        return;
+    }
+    if (_isHadExit == HadExit && !isHadRecord) {//如果退出过程序，那么上一秒的坐标经纬度就是请求道服务器的坐标
+        NSArray *ary = [_model.origin_coordinates componentsSeparatedByString:@","];
+        lastPoint = CLLocationCoordinate2DMake([ary[1] doubleValue], [ary[0] doubleValue]);
+        isHadRecord = !isHadRecord;
+    }
+    else{//如果没有退出过程序，那么就是正常计费，上一秒坐标经纬度是上一秒定位到的坐标
+        if(_userLocation.location){
+            lastPoint = _userLocation.location.coordinate;
+        }
+    }
+    
+    
     CLLocationSpeed speed = _userLocation.location.speed;
     if (speed == -1) {
         speed = 0;
     }
     if (_isCalculateStart) {
-        NSString *isLowSpeed = @"0";
-        if (speed <= 3.4) {
-            isLowSpeed = @"1";
-        }
+        
         NSMutableDictionary *params = [NSMutableDictionary dictionary];
         [params setValue:[NSString stringWithFormat:@"%.0f",speed] forKey:@"distance"];
         [params setValue:_model.route_id forKey:@"route_id"];
         [params setValue:@"3" forKey:@"route_status"];
-        [params setValue:isLowSpeed forKey:@"time"];
-        [params setValue:_gonePrice forKey:@"gonePrice"];
+        
+        if(_gonePrice){
+            [params setValue:_gonePrice forKey:@"gonePrice"];
+        }
+        //记录上一秒和当前一秒的经纬度。
+        [params setValue:[NSString stringWithFormat:@"%f",lastPoint.latitude] forKey:@"last_latitude"];
+        [params setValue:[NSString stringWithFormat:@"%f",lastPoint.longitude] forKey:@"last_longitude"];
+        [params setValue:[NSString stringWithFormat:@"%f",nowPoint.latitude] forKey:@"now_latitude"];
+        [params setValue:[NSString stringWithFormat:@"%f",nowPoint.longitude] forKey:@"now_longitude"];
         
         switch (self.ruleInfoModel.rule_type.integerValue) {
             case 1:
             {
-                NSMutableDictionary *priceDic = [[self.calculateSpecialCar calculatePriceWithParams:params] mutableCopy];
+//                NSMutableDictionary *priceDic = [[self.calculateSpecialCar calculatePriceWithParams:params] mutableCopy];
+                NSMutableDictionary *priceDic = [[self.calculateSpecialCar calculatePriceByLocationWithParams:params] mutableCopy];
                 distanceLabel.text = [NSString stringWithFormat:@"里程%.2f公里",[priceDic[@"mileage"] floatValue]];
-                speedLabel.text = [NSString stringWithFormat:@"低速%li分钟",[priceDic[@"low_time"] integerValue]/60];
+                if (_isHadExit == HadExit) {//如果是退出程序重新启动，低速时间要加上之前的低速时间
+                    [priceDic setValue:[NSString stringWithFormat:@"%ld",[priceDic[@"low_time"] integerValue] + [_low_time integerValue]] forKey:@"low_time"];
+                    speedLabel.text = [NSString stringWithFormat:@"低速%li分钟",[priceDic[@"low_time"] integerValue]/60];
+                }else{
+                    speedLabel.text = [NSString stringWithFormat:@"低速%li分钟",[priceDic[@"low_time"] integerValue]/60];
+                }
                 price = [NSString stringWithFormat:@"%.0f元",[priceDic[@"total_price"] floatValue]];
                 NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:price];
                 [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length-1)];
@@ -596,8 +647,9 @@
                 [priceDic setObject:_model.route_id forKey:@"route_id"];
                 [priceDic setObject:_ruleInfoModel.step forKey:@"start_price"];
                 if (_driveringTime%60 == 0) {
+                    NSLog(@"%@",priceDic);
                     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:priceDic success:^(id json) {
-                        
+                        NSLog(@"%@",json);
                     } failure:^(NSError *error) {
                         
                     }];
@@ -607,7 +659,13 @@
             case 2:
             {
                 speedLabel.hidden = YES;
-                NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:speed andGonePrice:_gonePrice];
+                
+                //将每秒根据经纬度定位到的距离按照速度传给计价规则
+                MAMapPoint point1 = MAMapPointMake(lastPoint.longitude, lastPoint.latitude);
+                MAMapPoint point2 = MAMapPointMake(nowPoint.longitude, nowPoint.latitude);
+                CLLocationDistance distance = MAMetersBetweenMapPoints(point1, point2);
+                speed = distance;
+                NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:speed andGonePrice:_mileage andBordingTime:_boardingTime];
                 distanceLabel.text = [NSString stringWithFormat:@"里程%.2f公里",[priceArr[1] floatValue]];
                 price = [NSString stringWithFormat:@"%.0f元",[priceArr[0] floatValue]];
                 NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:price];
@@ -1061,7 +1119,7 @@
         }
         case 2:
         {
-            NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:0 andGonePrice:_gonePrice];
+            NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:0 andGonePrice:_gonePrice andBordingTime:_boardingTime];
             [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":priceArr[0],@"mileage":priceArr[1],@"route_status":@"3",@"carbon_emission":priceArr[2]} success:^(id json) {
                 [MBProgressHUD hideHUD];
                 @try {
@@ -1216,7 +1274,7 @@
         }
         case 2:
         {
-            NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:0 andGonePrice:_gonePrice];
+            NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:0 andGonePrice:_gonePrice andBordingTime:_boardingTime];
             [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":priceArr[0],@"mileage":priceArr[1],@"route_status":@"4",@"carbon_emission":priceArr[2]} success:^(id json) {
                 [MBProgressHUD hideHUD];
                 @try {

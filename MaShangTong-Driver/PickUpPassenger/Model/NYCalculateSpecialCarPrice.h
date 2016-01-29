@@ -26,5 +26,7 @@
 + (instancetype)sharedPrice;
 
 - (NSDictionary *)calculatePriceWithParams:(NSDictionary *)params;
+//按照经纬度计算价格
+-(NSDictionary *)calculatePriceByLocationWithParams:(NSDictionary *)params;
 
 @end

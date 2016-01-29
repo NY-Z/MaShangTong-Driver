@@ -230,7 +230,23 @@
         return;
     }
     
-    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"update_bill"] params:@{@"highway_fee":tempArr[0],@"road_roll":tempArr[1],@"parking_fee":tempArr[2],@"other_fee":tempArr[3],@"route_id":_model.route_id,@"route_status":@"5"} success:^(id json) {
+    NSMutableDictionary *params = [NSMutableDictionary dictionary];
+    if (tempArr[0]) {
+        [params setValue:tempArr[0] forKey:@"highway_fee"];
+    }
+    if (tempArr[1]) {
+        [params setValue:tempArr[1] forKey:@"road_roll"];
+    }
+    if (tempArr[2]) {
+        [params setValue:tempArr[2] forKey:@"parking_fee"];
+    }
+    if (tempArr[3]) {
+        [params setValue:tempArr[3] forKey:@"other_fee"];
+    }
+    [params setValue:_model.route_id forKey:@"route_id"];
+    [params setValue:@"5" forKey:@"route_status"];
+    
+    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"update_bill"] params:params success:^(id json) {
         @try {
             NYLog(@"%@",json);
             [MBProgressHUD hideHUD];

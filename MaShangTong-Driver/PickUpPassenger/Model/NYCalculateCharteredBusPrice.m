@@ -49,12 +49,21 @@ static    BOOL addGonePrice = NO;
     _distanceFlag = 0;
 }
 
-- (NSArray *)calculatePriceWithSpeed:(CLLocationSpeed)speed andGonePrice:(NSString *)gonePrice
+- (NSArray *)calculatePriceWithSpeed:(CLLocationSpeed)speed andGonePrice:(NSString *)mileage andBordingTime:(NSString *)boardingTime
 {
+    
     _totalTime++;
     _distance += speed;
-    if (gonePrice && !addGonePrice) {
-        _totalPrice += [gonePrice floatValue];
+    if (mileage && boardingTime && !addGonePrice) {
+        _distance += mileage.floatValue;
+        
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:boardingTime.doubleValue];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+        [formatter setDateFormat:@"HH mm"];
+        NSString *dateStr = [formatter stringFromDate:date];
+        NSLog(@"%@",dateStr);
+        NSInteger goneTime = [date timeIntervalSinceNow];
+        _totalTime += 1-goneTime;
         addGonePrice = !addGonePrice;
     }
     if (_distanceFlag > _timeFlag) {

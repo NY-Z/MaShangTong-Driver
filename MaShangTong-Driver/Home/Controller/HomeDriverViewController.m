@@ -397,7 +397,7 @@
     [super viewWillAppear:animated];
     [self configTodayData];
     [self configDriverDetail];
-
+    
     [self configNavigationBar];
     self.mapView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     self.mapView.delegate = self;
@@ -417,6 +417,7 @@
     [super viewDidLoad];
     @autoreleasepool {
         [self.view addSubview:self.mapView];
+
         _isRequest = NO;
         _isAllowSpeaking = YES;
         _isLocationSuccess = NO;
@@ -844,11 +845,13 @@
 
 - (void)continueListenTheOrder:(NSNotification *)noti
 {
+    
     listenBtn.enabled = NO;
     _isRequest = YES;
     _isAllowSpeaking = YES;
     [_timer setFireDate:[NSDate distantPast]];
     
+    listenBtn.selected = YES;
     listenBtn.enabled = YES;
     offRunningBtn.selected = YES;
 }

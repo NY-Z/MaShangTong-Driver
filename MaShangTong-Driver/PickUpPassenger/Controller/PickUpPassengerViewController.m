@@ -753,11 +753,12 @@ static BOOL isHadRecord = NO;
                     if ([routeStatus isEqualToString:@"-1"]) {
                         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"乘客已取消订单" message:nil preferredStyle:UIAlertControllerStyleAlert];
                         [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                            [_timer setFireDate:[NSDate distantFuture]];
-                            [_timer invalidate];
-                            _timer = nil;
+//                            [_timer setFireDate:[NSDate distantFuture]];
+//                            [_timer invalidate];
+//                            _timer = nil;
                             for (UIViewController *vc in self.navigationController.viewControllers) {
                                 if ([vc isKindOfClass:[HomeDriverViewController class]]) {
+                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"ContinueListenTheOrders" object:nil];
                                     [self.navigationController popToViewController:vc animated:YES];
                                 }
                             }

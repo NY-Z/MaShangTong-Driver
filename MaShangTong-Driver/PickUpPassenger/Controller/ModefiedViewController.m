@@ -193,14 +193,14 @@
     NSMutableArray *tempArr = [NSMutableArray array];
     for (NSInteger i = 0; i < 4; i++) {
         NYChangePriceView *change = (NYChangePriceView *)[self.view viewWithTag:1000+i];
-        if (change.price == 0) {
-            continue;
-        }
+//        if (change.price == 0) {
+//            continue;
+//        }
         [tempArr addObject:[NSString stringWithFormat:@"%li",change.price]];
     }
     NYLog(@"%@",tempArr);
     
-    if (tempArr.count == 0) {
+    if ([tempArr[0] isEqualToString: @"0"] && [tempArr[1] isEqualToString: @"0"] && [tempArr[2] isEqualToString: @"0"] && [tempArr[3] isEqualToString: @"0"] ) {
         [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"boarding"] params:@{@"route_id":_model.route_id,@"route_status":@"5"} success:^(id json) {
             @try {
                 NSString *resultStr = [NSString stringWithFormat:@"%@",json[@"result"]];
@@ -243,6 +243,7 @@
     if (tempArr[3]) {
         [params setValue:tempArr[3] forKey:@"other_fee"];
     }
+    NSLog(@"%@",params);
     [params setValue:_model.route_id forKey:@"route_id"];
     [params setValue:@"5" forKey:@"route_status"];
     

@@ -118,7 +118,9 @@
     listenBtn.enabled = NO;
     listenBtn.selected = NO;
     [listenBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [listenBtn setBackgroundColor:RGBColor(82, 170, 255, 1.f)];
+//    [listenBtn setBackgroundColor:RGBColor(82, 170, 255, 1.f)];
+    listenBtn.layer.borderColor = RGBColor(220, 220, 220, 1.f).CGColor;
+    [listenBtn setBackgroundColor:RGBColor(220, 220, 220, 1.f)];
     [listenBtn addTarget:self action:@selector(listenBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:listenBtn];
     [listenBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -128,7 +130,7 @@
     listenBtn.clipsToBounds = YES;
     listenBtn.layer.cornerRadius = 30.5;
     listenBtn.layer.borderWidth = 2.f;
-    listenBtn.layer.borderColor = RGBColor(82, 170, 255, 1.f).CGColor;
+//    listenBtn.layer.borderColor = RGBColor(82, 170, 255, 1.f).CGColor;
     
     offRunningBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [offRunningBtn setTitle:@"出车" forState:UIControlStateNormal];
@@ -719,12 +721,16 @@
         _isAllowSpeaking = YES;
         listenBtn.enabled = YES;
         [_timer setFireDate:[NSDate distantPast]];
+        listenBtn.layer.borderColor = RGBColor(93, 195, 255, 1.f).CGColor;
+        [listenBtn setBackgroundColor:RGBColor(93, 195, 255, 1.f)];
     } else {
         _isRequest = NO;
         _isAllowSpeaking = NO;
         listenBtn.enabled = NO;
         [self.iFlySpeechSynthesizer stopSpeaking];
         [_timer setFireDate:[NSDate distantFuture]];
+        listenBtn.layer.borderColor = RGBColor(220, 220, 220, 1.f).CGColor;
+        [listenBtn setBackgroundColor:RGBColor(220, 220, 220, 1.f)];
     }
 }
 
@@ -854,6 +860,8 @@
     listenBtn.selected = YES;
     listenBtn.enabled = YES;
     offRunningBtn.selected = YES;
+    listenBtn.layer.borderColor = RGBColor(93, 195, 255, 1.f).CGColor;
+    [listenBtn setBackgroundColor:RGBColor(93, 195, 255, 1.f)];
 }
 
 #pragma mark - dealloc

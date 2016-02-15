@@ -49,11 +49,16 @@ static    BOOL addGonePrice = NO;
     _distanceFlag = 0;
 }
 
+<<<<<<< Updated upstream
 - (NSArray *)calculatePriceWithSpeed:(CLLocationSpeed)speed andGonePrice:(NSString *)mileage andBordingTime:(NSString *)boardingTime
+=======
+- (NSArray *)calculatePriceWithSpeed:(CLLocationSpeed)speed andGonePrice:(NSString *)gonePrice
+>>>>>>> Stashed changes
 {
     
     _totalTime++;
     _distance += speed;
+<<<<<<< Updated upstream
     if (mileage && boardingTime && !addGonePrice) {
         _distance += mileage.floatValue;
         
@@ -64,6 +69,10 @@ static    BOOL addGonePrice = NO;
         NSLog(@"%@",dateStr);
         NSInteger goneTime = [date timeIntervalSinceNow];
         _totalTime += 1-goneTime;
+=======
+    if (gonePrice && !addGonePrice) {
+        _totalPrice += [gonePrice floatValue];
+>>>>>>> Stashed changes
         addGonePrice = !addGonePrice;
     }
     if (_distanceFlag > _timeFlag) {

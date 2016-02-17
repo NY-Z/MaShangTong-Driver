@@ -89,6 +89,17 @@ static BOOL isHadRecord = NO;
     }
     return _calculateCharteredBus;
 }
+#pragma mark - 路线规划，根据终点
+-(void)routePlanWithCllocation:(CLLocation *)location andEndPoint:(NSString *)endPointStr
+{
+    AMapNaviPoint *startPoint = [AMapNaviPoint locationWithLatitude:location.coordinate.latitude longitude:location.coordinate.longitude];
+    AMapNaviPoint *endPoints = [AMapNaviPoint locationWithLatitude:[[endPointStr componentsSeparatedByString:@","][1] floatValue]  longitude:[[endPointStr componentsSeparatedByString:@","][0] floatValue]];
+    
+    NSArray *startPointAry = @[startPoint];
+    NSArray *endPointsAry = @[endPoints];
+    
+    [self.naviManager calculateDriveRouteWithStartPoints:startPointAry endPoints:endPointsAry wayPoints:nil drivingStrategy:2];
+}
 
 - (void)initNaviRoute
 {
@@ -99,7 +110,7 @@ static BOOL isHadRecord = NO;
     NSArray *startPoints = @[startPoint];
     NSArray *endPoints   = @[endPoint];
     
-    [self.naviManager calculateDriveRouteWithStartPoints:startPoints endPoints:endPoints wayPoints:nil drivingStrategy:0];
+    [self.naviManager calculateDriveRouteWithStartPoints:startPoints endPoints:endPoints wayPoints:nil drivingStrategy:2];
 }
 
 - (void)configPriginAndEndRoute
@@ -110,7 +121,7 @@ static BOOL isHadRecord = NO;
     NSArray *startPoints = @[startPoint];
     NSArray *endPoints   = @[endPoint];
     
-    [self.naviManager calculateDriveRouteWithStartPoints:startPoints endPoints:endPoints wayPoints:nil drivingStrategy:0];
+    [self.naviManager calculateDriveRouteWithStartPoints:startPoints endPoints:endPoints wayPoints:nil drivingStrategy:2];
 }
 
 - (void)configNavBar
@@ -562,7 +573,13 @@ static BOOL isHadRecord = NO;
         AMapDrivingRouteSearchRequest *request = [[AMapDrivingRouteSearchRequest alloc] init];
         AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
         request.origin = [AMapGeoPoint locationWithLatitude:delegate.driverCoordinate.latitude longitude:delegate.driverCoordinate.longitude];
-        request.destination = [AMapGeoPoint locationWithLatitude:[[_model.origin_coordinates componentsSeparatedByString:@","][1] floatValue] longitude:[[_model.origin_coordinates componentsSeparatedByString:@","][0] floatValue]];
+        
+        if(!_isCalculateStart){//如果没有开始计费，那么就按照用户的起点坐标规划路线
+            request.destination = [AMapGeoPoint locationWithLatitude:[[_model.origin_coordinates componentsSeparatedByString:@","][1] floatValue] longitude:[[_model.origin_coordinates componentsSeparatedByString:@","][0] floatValue]];
+        }
+        else{//如果开始规划路线了，那么就按照用户的终点坐标规划路线（若修改终点之后，则model的终点坐标是自改后的）
+            request.destination = [AMapGeoPoint locationWithLatitude:[[_model.end_coordinates componentsSeparatedByString:@","][1] floatValue] longitude:[[_model.end_coordinates componentsSeparatedByString:@","][0] floatValue]];
+        }
         request.strategy = 0;//结合交通实际情况
         request.requireExtension = YES;
         if (!_search) {
@@ -591,10 +608,24 @@ static BOOL isHadRecord = NO;
         }
     }
 
-    if (_isHadExit == HadExit && !isHadRecord) {//如果退出过程序，那么上一秒的坐标经纬度就是请求道服务器的坐标
-        NSArray *ary = [_model.origin_coordinates componentsSeparatedByString:@","];
-        lastPoint = CLLocationCoordinate2DMake([ary[1] doubleValue], [ary[0] doubleValue]);
-        isHadRecord = !isHadRecord;
+    if (_isHadExit == HadExit && !isHadRecord) {//如果退出过程序，那么上一秒的坐标经纬度就是请求道服务器的坐标(上一秒坐标从服务器获取)
+        NSDictionary *parmas = [NSDictionary dictionaryWithObject:_model.route_id forKey:@"route_id"];
+        [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"driver_location"] params:parmas success:^(id json) {
+            @try {
+                NSString *str = [NSString stringWithFormat:@"%@",json[@"data"]];
+                if([str isEqualToString:@"1"]){
+                    NSArray *ary = [json[@"info"][@"user_location"] componentsSeparatedByString:@","];
+                    lastPoint = CLLocationCoordinate2DMake([ary[1] doubleValue], [ary[0] doubleValue]);
+                    isHadRecord = YES;
+                }
+            } @catch (NSException *exception) {
+                
+            } @finally {
+                
+            }
+        } failure:^(NSError *error) {
+            
+        }];
     }
     else{//如果没有退出过程序，那么就是正常计费，上一秒坐标经纬度是上一秒定位到的坐标
         if(nowPoint.latitude != 0){
@@ -633,27 +664,30 @@ static BOOL isHadRecord = NO;
             case 1:
             {
 //                NSMutableDictionary *priceDic = [[self.calculateSpecialCar calculatePriceWithParams:params] mutableCopy];
-                NSMutableDictionary *priceDic = [[self.calculateSpecialCar calculatePriceByLocationWithParams:params] mutableCopy];
-                distanceLabel.text = [NSString stringWithFormat:@"里程%.2f公里",[priceDic[@"mileage"] floatValue]];
-                if (_isHadExit == HadExit) {//如果是退出程序重新启动，低速时间要加上之前的低速时间
-                    [priceDic setValue:[NSString stringWithFormat:@"%ld",[priceDic[@"low_time"] integerValue] + [_low_time integerValue]] forKey:@"low_time"];
-                    speedLabel.text = [NSString stringWithFormat:@"低速%li分钟",[priceDic[@"low_time"] integerValue]/60];
-                }else{
-                    speedLabel.text = [NSString stringWithFormat:@"低速%li分钟",[priceDic[@"low_time"] integerValue]/60];
-                }
-                price = [NSString stringWithFormat:@"%.0f元",[priceDic[@"total_price"] floatValue]];
-                NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:price];
-                [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length-1)];
-                priceLabel.attributedText = attri;
-                [priceDic setObject:_model.route_id forKey:@"route_id"];
-                [priceDic setObject:_ruleInfoModel.step forKey:@"start_price"];
-                if (_driveringTime%60 == 0) {
-                    NSLog(@"%@",priceDic);
-                    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:priceDic success:^(id json) {
-                        NSLog(@"%@",json);
-                    } failure:^(NSError *error) {
-                        
-                    }];
+                if(lastPoint.latitude != 0 && nowPoint.latitude != 0){//上一秒和这一秒的坐标都不为0时，开始计价
+                    NSMutableDictionary *priceDic = [[self.calculateSpecialCar calculatePriceByLocationWithParams:params] mutableCopy];
+                    
+                    distanceLabel.text = [NSString stringWithFormat:@"里程%.2f公里",[priceDic[@"mileage"] floatValue]];
+                    if (_isHadExit == HadExit) {//如果是退出程序重新启动，低速时间要加上之前的低速时间
+                        [priceDic setValue:[NSString stringWithFormat:@"%ld",[priceDic[@"low_time"] integerValue] + [_low_time integerValue]] forKey:@"low_time"];
+                        speedLabel.text = [NSString stringWithFormat:@"低速%li分钟",[priceDic[@"low_time"] integerValue]/60];
+                    }else{
+                        speedLabel.text = [NSString stringWithFormat:@"低速%li分钟",[priceDic[@"low_time"] integerValue]/60];
+                    }
+                    price = [NSString stringWithFormat:@"%.0f元",[priceDic[@"total_price"] floatValue]];
+                    NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:price];
+                    [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length-1)];
+                    priceLabel.attributedText = attri;
+                    [priceDic setObject:_model.route_id forKey:@"route_id"];
+                    [priceDic setObject:_ruleInfoModel.step forKey:@"start_price"];
+                    if (_driveringTime%60 == 0) {
+                        NSLog(@"%@",priceDic);
+                        [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:priceDic success:^(id json) {
+                            NSLog(@"%@",json);
+                        } failure:^(NSError *error) {
+                            
+                        }];
+                    }
                 }
                 break;
             }
@@ -787,7 +821,7 @@ static BOOL isHadRecord = NO;
         NSArray *startPoints = @[_startPoint];
         NSArray *endPoints   = @[_endPoint];
         
-        [self.naviManager calculateDriveRouteWithStartPoints:startPoints endPoints:endPoints wayPoints:nil drivingStrategy:0];
+        [self.naviManager calculateDriveRouteWithStartPoints:startPoints endPoints:endPoints wayPoints:nil drivingStrategy:2];
     } else {
         [MBProgressHUD showError:@"导航失败，请稍后重试"];
     }
@@ -813,16 +847,25 @@ static BOOL isHadRecord = NO;
                 [self.mapView setVisibleMapRect:rect animated:YES];
             });
         });
-//        NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"];
-//        NSString *locationStr = [NSString stringWithFormat:@"%f,%f",userLocation.coordinate.longitude,userLocation.coordinate.latitude];
-//        NSMutableDictionary *params = [NSMutableDictionary dictionary];
-//        [params setValue:userId forKey:@"user_id"];
-//        [params setValue:locationStr forKey:@"location"];
-//        if (_driveringTime % 15 == 0) {
-//            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"dri_address"] params:params success:^(id json) {
-//            } failure:^(NSError *error) {
-//            }];
-//        }
+        NSString *userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"user_id"];
+        NSString *locationStr = [NSString stringWithFormat:@"%f,%f",userLocation.coordinate.longitude,userLocation.coordinate.latitude];
+        NSMutableDictionary *params = [NSMutableDictionary dictionary];
+        [params setValue:userId forKey:@"user_id"];
+        [params setValue:locationStr forKey:@"location"];
+        if (_driveringTime % 10 == 0) {
+            
+            //根据终点路线规划
+            if(!_isCalculateStart){//开始计费之前，路线规划按照乘客的下单起点规划
+                [self routePlanWithCllocation:userLocation.location andEndPoint:_model.origin_coordinates];
+            }
+            else{//开始计费之后，路线规划按照下单终点规划
+                [self routePlanWithCllocation:userLocation.location andEndPoint:_model.end_coordinates];
+            }
+            
+            [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"dri_address"] params:params success:^(id json) {
+            } failure:^(NSError *error) {
+            }];
+        }
     }
 }
 
@@ -1086,6 +1129,8 @@ static BOOL isHadRecord = NO;
 - (void)billingRightBtnClicked:(UIButton *)btn
 {
     [MBProgressHUD showMessage:@"请稍候"];
+    //开始计费之后，移除客户的定位大头针
+#warning 移除客户的大头针
     switch (self.ruleInfoModel.rule_type.integerValue) {
         case 1:
         {
@@ -1438,12 +1483,17 @@ static BOOL isHadRecord = NO;
                 if ([dataStr isEqualToString:@"1"]) {
                     [MBProgressHUD showError:json[@"info"]];
                     
+                    //将修改后的终点的坐标传给model
+                    NSString *modelEndCoordinates = [NSString stringWithFormat:@"%f,%f",p.location.longitude,p.location.latitude];
+                    
+                    _model.end_coordinates = modelEndCoordinates;
+                    
                     AMapNaviPoint *startPoint = [AMapNaviPoint locationWithLatitude:[[_model.origin_coordinates componentsSeparatedByString:@","][1] floatValue] longitude:[[_model.origin_coordinates componentsSeparatedByString:@","][0] floatValue]];
                     AMapNaviPoint *endPoint = [AMapNaviPoint locationWithLatitude:p.location.latitude longitude:p.location.longitude];
                     NSArray *startPoints = @[startPoint];
                     NSArray *endPoints   = @[endPoint];
                     
-                    [self.naviManager calculateDriveRouteWithStartPoints:startPoints endPoints:endPoints wayPoints:nil drivingStrategy:0];
+                    [self.naviManager calculateDriveRouteWithStartPoints:startPoints endPoints:endPoints wayPoints:nil drivingStrategy:2];
                     
                     UIView *bgView = [self.view viewWithTag:2000];
                     UILabel *destinationLabel = (UILabel *)[bgView viewWithTag:2001];

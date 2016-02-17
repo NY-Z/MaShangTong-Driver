@@ -85,7 +85,7 @@ static    BOOL addGonePrice = NO;
         _timeFlag++;
         return @[[NSString stringWithFormat:@"%.0f",_totalPrice],[NSString stringWithFormat:@"%.0f",_distance]];
     }
-    return @[[NSString stringWithFormat:@"%.0f",_totalPrice],[NSString stringWithFormat:@"%.0f",_distance],[NSString stringWithFormat:@"%.0f",_distance*0.00013]];
+    return @[[NSString stringWithFormat:@"%.0f",_totalPrice/1],[NSString stringWithFormat:@"%.0f",_distance],[NSString stringWithFormat:@"%.0f",_distance*0.00013]];
 }
 
 @end

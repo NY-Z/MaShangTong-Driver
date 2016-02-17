@@ -134,9 +134,9 @@ static    BOOL addGonePrice = NO;
     }
     NSLog(@"距离：%f,低速时间：%ld,价格:%f",_distance,_lowSpeedTime,_price);
     
-    return @{@"total_price":[NSString stringWithFormat:@"%f",_price],
+    return @{@"total_price":[NSString stringWithFormat:@"%f",_price/1],
              @"mileage":[NSString stringWithFormat:@"%f",_distance/1000],
-             @"mileage_price":[NSString stringWithFormat:@"%f",_distance * [_model.mileage floatValue]],
+             @"mileage_price":[NSString stringWithFormat:@"%f",_distance * [_model.mileage floatValue]/1000],
              @"low_time":[NSString stringWithFormat:@"%li",_lowSpeedTime],
              @"low_price":[NSString stringWithFormat:@"%f",_lowSpeedPrice],
              @"far_mileage":[NSString stringWithFormat:@"%f",_longDistance],

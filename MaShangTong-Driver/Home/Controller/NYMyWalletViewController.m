@@ -248,7 +248,7 @@
             [MBProgressHUD showError:@"网络错误"];
         }
         @finally {
-            
+            [MBProgressHUD hideHUD];
         }
     } failure:^(NSError *error) {
         NYLog(@"%@",error.localizedDescription);

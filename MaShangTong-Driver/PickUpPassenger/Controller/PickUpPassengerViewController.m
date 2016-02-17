@@ -555,8 +555,6 @@ static BOOL isHadRecord = NO;
             break;
     }
 }
-
-
 - (void)initDriveringTime
 {
     if (!_timer) {
@@ -650,7 +648,7 @@ static BOOL isHadRecord = NO;
         [params setValue:[NSString stringWithFormat:@"%.0f",speed] forKey:@"distance"];
         [params setValue:_model.route_id forKey:@"route_id"];
         [params setValue:@"3" forKey:@"route_status"];
-        
+
         if(_gonePrice){
             [params setValue:_gonePrice forKey:@"gonePrice"];
         }
@@ -660,10 +658,15 @@ static BOOL isHadRecord = NO;
         [params setValue:[NSString stringWithFormat:@"%f",nowPoint.latitude] forKey:@"now_latitude"];
         [params setValue:[NSString stringWithFormat:@"%f",nowPoint.longitude] forKey:@"now_longitude"];
         
+        [params setValue:isLowSpeed forKey:@"time"];
+        [params setValue:_gonePrice forKey:@"gonePrice"];
+        
         switch (self.ruleInfoModel.rule_type.integerValue) {
             case 1:
             {
+<<<<<<< Updated upstream
 //                NSMutableDictionary *priceDic = [[self.calculateSpecialCar calculatePriceWithParams:params] mutableCopy];
+<<<<<<< HEAD
                 if(lastPoint.latitude != 0 && nowPoint.latitude != 0){//上一秒和这一秒的坐标都不为0时，开始计价
                     NSMutableDictionary *priceDic = [[self.calculateSpecialCar calculatePriceByLocationWithParams:params] mutableCopy];
                     
@@ -688,12 +691,41 @@ static BOOL isHadRecord = NO;
                             
                         }];
                     }
+=======
+                NSMutableDictionary *priceDic = [[self.calculateSpecialCar calculatePriceByLocationWithParams:params] mutableCopy];
+                distanceLabel.text = [NSString stringWithFormat:@"里程%.2f公里",[priceDic[@"mileage"] floatValue]];
+                if (_isHadExit == HadExit) {//如果是退出程序重新启动，低速时间要加上之前的低速时间
+                    [priceDic setValue:[NSString stringWithFormat:@"%ld",[priceDic[@"low_time"] integerValue] + [_low_time integerValue]] forKey:@"low_time"];
+                    speedLabel.text = [NSString stringWithFormat:@"低速%li分钟",[priceDic[@"low_time"] integerValue]/60];
+                }else{
+                    speedLabel.text = [NSString stringWithFormat:@"低速%li分钟",[priceDic[@"low_time"] integerValue]/60];
+                }
+=======
+                NSMutableDictionary *priceDic = [[self.calculateSpecialCar calculatePriceWithParams:params] mutableCopy];
+                distanceLabel.text = [NSString stringWithFormat:@"里程%.0f公里",[priceDic[@"mileage"] floatValue]];
+                speedLabel.text = [NSString stringWithFormat:@"低速%li分钟",[priceDic[@"low_time"] integerValue]/60];
+>>>>>>> Stashed changes
+                price = [NSString stringWithFormat:@"%.0f元",[priceDic[@"total_price"] floatValue]];
+                NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:price];
+                [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length-1)];
+                priceLabel.attributedText = attri;
+                [priceDic setObject:_model.route_id forKey:@"route_id"];
+                [priceDic setObject:_ruleInfoModel.step forKey:@"start_price"];
+                if (_driveringTime%60 == 0) {
+                    NSLog(@"%@",priceDic);
+                    [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:priceDic success:^(id json) {
+                        NSLog(@"%@",json);
+                    } failure:^(NSError *error) {
+                        
+                    }];
+>>>>>>> origin/master
                 }
                 break;
             }
             case 2:
             {
                 speedLabel.hidden = YES;
+<<<<<<< Updated upstream
                 
                 //将每秒根据经纬度定位到的距离按照速度传给计价规则
                 MAMapPoint point1 = MAMapPointMake(lastPoint.longitude, lastPoint.latitude);
@@ -702,15 +734,22 @@ static BOOL isHadRecord = NO;
                 speed = distance;
                 NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:speed andGonePrice:_mileage andBordingTime:_boardingTime];
                 distanceLabel.text = [NSString stringWithFormat:@"里程%.2f公里",[priceArr[1] floatValue]];
+=======
+<<<<<<< HEAD
+                NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:speed];
+                distanceLabel.text = [NSString stringWithFormat:@"里程%.0f公里",[priceArr[1] floatValue]];
+=======
+                NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:speed andGonePrice:_gonePrice];
+                distanceLabel.text = [NSString stringWithFormat:@"里程%.2f公里",[priceArr[1] floatValue]];
+>>>>>>> origin/master
+>>>>>>> Stashed changes
                 price = [NSString stringWithFormat:@"%.0f元",[priceArr[0] floatValue]];
                 NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:price];
                 [attri addAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:22],NSForegroundColorAttributeName : RGBColor(44, 44, 44, 1.f)} range:NSMakeRange(0, price.length-1)];
                 priceLabel.attributedText = attri;
                 if (_driveringTime%60 == 0) {
                     [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":priceArr[0],@"mileage":priceArr[1],@"carbon_emission":priceArr[2]} success:^(id json) {
-                        
                     } failure:^(NSError *error) {
-                        
                     }];
                 }
                 break;
@@ -1166,7 +1205,11 @@ static BOOL isHadRecord = NO;
         }
         case 2:
         {
+<<<<<<< Updated upstream
             NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:0 andGonePrice:_gonePrice andBordingTime:_boardingTime];
+=======
+            NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:0 andGonePrice:_gonePrice];
+>>>>>>> Stashed changes
             [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":priceArr[0],@"mileage":priceArr[1],@"route_status":@"3",@"carbon_emission":priceArr[2]} success:^(id json) {
                 [MBProgressHUD hideHUD];
                 @try {
@@ -1321,7 +1364,11 @@ static BOOL isHadRecord = NO;
         }
         case 2:
         {
+<<<<<<< Updated upstream
             NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:0 andGonePrice:_gonePrice andBordingTime:_boardingTime];
+=======
+            NSArray *priceArr = [self.calculateCharteredBus calculatePriceWithSpeed:0 andGonePrice:_gonePrice];
+>>>>>>> Stashed changes
             [DownloadManager post:[NSString stringWithFormat:URL_HEADER,@"OrderApi",@"billing"] params:@{@"route_id":_model.route_id,@"total_price":priceArr[0],@"mileage":priceArr[1],@"route_status":@"4",@"carbon_emission":priceArr[2]} success:^(id json) {
                 [MBProgressHUD hideHUD];
                 @try {

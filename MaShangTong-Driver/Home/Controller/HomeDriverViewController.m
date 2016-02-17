@@ -465,6 +465,7 @@
                         passengerVc.model = [[DataModel alloc] initWithDictionary:json[@"info"] error:nil];
                         passengerVc.ruleInfoModel = [[RuleInfoModel alloc] initWithDictionary:json[@"rule"] error:nil];
                         passengerVc.gonePrice = [NSString stringWithFormat:@"%f" ,[json[@"info"][@"total_price"] floatValue] - [json[@"info"][@"start_price"] floatValue]];
+<<<<<<< Updated upstream
                         passengerVc.isHadExit = HadExit;
                         passengerVc.low_time = json[@"info"][@"low_time"];
                         passengerVc.mileage = json[@"info"][@"mileage"];
@@ -474,6 +475,8 @@
                             passengerVc.boardingTime = json[@"info"][@"boarding_time"];
                         }
                         
+=======
+>>>>>>> Stashed changes
                         [self.navigationController pushViewController:passengerVc animated:YES];
                     }
                 }]];

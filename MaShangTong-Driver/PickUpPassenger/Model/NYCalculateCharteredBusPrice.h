@@ -14,6 +14,10 @@
 @property (nonatomic,strong) RuleInfoModel *rule;
 
 + (instancetype)shareCharteredBusPrice;
+<<<<<<< Updated upstream
 - (NSArray *)calculatePriceWithSpeed:(CLLocationSpeed)speed andGonePrice:(NSString *)mileage andBordingTime:(NSString *)boardingTime;
+=======
+- (NSArray *)calculatePriceWithSpeed:(CLLocationSpeed)speed andGonePrice:(NSString *)gonePrice;
+>>>>>>> Stashed changes
 
 @end

@@ -22,6 +22,7 @@ typedef enum{
 
 @property (nonatomic,strong) NSString *gonePrice;
 
+<<<<<<< Updated upstream
 //是否退出程序
 @property (nonatomic,assign) IsHadExit isHadExit;
 //退出程序之前的低速时间
@@ -32,4 +33,6 @@ typedef enum{
 @property (nonatomic,strong) NSString *boardingTime;
 
 
+=======
+>>>>>>> Stashed changes
 @end
